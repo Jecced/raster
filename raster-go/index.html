@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<img id="dia" src="diablo3/0.png" width="50%" height="50%">
+</body>
+
+<script>
+
+    var i = 0;
+    setInterval(()=>{
+        i--;
+        if(i < 0) i = 359;
+        document.getElementById("dia").src = "diablo3/"+i+".png"
+
+    }, 16)
+
+    let dia = document.getElementById("dia")
+    console.log(dia);
+    console.log(dia.src)
+
+
+</script>
+</html>
