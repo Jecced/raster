@@ -74,9 +74,9 @@ func drawTri(uv [][]float64, fvs []int, png *image.RGBA) {
 	float64s2 := uv[fvs[1]-1]
 	float64s3 := uv[fvs[2]-1]
 
-	x1, y1 := getXy(float64s1[0], float64s1[1])
-	x2, y2 := getXy(float64s2[0], float64s2[1])
-	x3, y3 := getXy(float64s3[0], float64s3[1])
+	x1, y1 := getXy1(float64s1[0], float64s1[1])
+	x2, y2 := getXy1(float64s2[0], float64s2[1])
+	x3, y3 := getXy1(float64s3[0], float64s3[1])
 
 	line(x1, y1, x2, y2, png)
 	line(x2, y2, x3, y3, png)
