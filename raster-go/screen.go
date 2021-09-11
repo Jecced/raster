@@ -87,6 +87,12 @@ func (s Screen) Bound(x1, y1, x2, y2, x3, y3 int) (maxX, maxY, minX, minY int) {
 	return
 }
 
+func (s *Screen) Clean() {
+	for _, pixi := range s.pixies {
+		pixi.Clean()
+	}
+}
+
 func (s Screen) MaxX(a ...int) int {
 	return s.min(s.max(a...), s.W)
 }
