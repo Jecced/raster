@@ -1,15 +1,14 @@
 package raster_go
 
 import (
-	"fmt"
 	"github.com/Jecced/go-tools/src/imgutil"
 	"image"
-	"math"
-	"strconv"
+	"raster-go/gl"
+	"raster-go/load"
 	"testing"
 )
 
-var obj *ObjModel
+var obj *load.ObjModel
 
 var diffuse image.Image
 
@@ -19,7 +18,7 @@ var screen *Screen = NewScreen(1000, 1000)
 
 func init() {
 	objPath := "obj/Bulbasaur.obj"
-	obj = LoadObj(objPath)
+	obj, _ = load.LoadObjModelByPath(objPath)
 
 	diffuse, _ = imgutil.LoadImage("obj/FushigidaneDh.png")
 
@@ -27,52 +26,53 @@ func init() {
 	my = diffuse.Bounds().Max.Y
 }
 
-func TestDrawDiablo360(t *testing.T) {
-	for i := 0; i < 360; i++ {
-
-		png := imgutil.CreatPng(screen.W, screen.H)
-
-		for _, vert := range obj.v {
-			vert[0], vert[1], vert[2] = RotateY(vert[0], vert[1], vert[2], math.Pi/180)
-		}
-
-		// 绘制三角形
-		for i, _ := range obj.fv {
-			drawTri1(obj.v, obj.fv[i], obj.vt, obj.fuv[i])
-		}
-
-		for x := 0; x < screen.W; x++ {
-			for y := 0; y < screen.H; y++ {
-				png.Set(x, y, screen.GetColor(x, y))
-			}
-		}
-
-		// 绘制三角形的线
-		//for _, fvs := range obj.fv {
-		//	drawTri(obj.v, fvs, png)
-		//}
-		out := "out/a/tri_diffuse_" + strconv.Itoa(i) + ".png"
-		// 写出文件
-		imgutil.SaveImage(out, png)
-		fmt.Println("write:", out)
-		screen.Clean()
-	}
-}
+//func TestDrawDiablo360(t *testing.T) {
+//	for i := 0; i < 360; i++ {
+//
+//		png := imgutil.CreatPng(screen.W, screen.H)
+//
+//		for _, vert := range obj.V {
+//			vert.RotateY(1)
+//		}
+//
+//		// 绘制三角形
+//		for i, _ := range obj.fv {
+//			drawTri1(obj.v, obj.fv[i], obj.vt, obj.fuv[i])
+//		}
+//
+//		for x := 0; x < screen.W; x++ {
+//			for y := 0; y < screen.H; y++ {
+//				png.Set(x, y, screen.GetColor(x, y))
+//			}
+//		}
+//
+//		// 绘制三角形的线
+//		//for _, fvs := range obj.fv {
+//		//	drawTri(obj.v, fvs, png)
+//		//}
+//		out := "out/a/tri_diffuse_" + strconv.Itoa(i) + ".png"
+//		// 写出文件
+//		imgutil.SaveImage(out, png)
+//		fmt.Println("write:", out)
+//		screen.Clean()
+//	}
+//}
 
 func TestDrawDiablo(t *testing.T) {
 
 	png := imgutil.CreatPng(screen.W, screen.H)
 
-	// 旋转90度
-	for _, vert := range obj.v {
-		vert[0], vert[1], vert[2] = RotateY(vert[0], vert[1], vert[2], math.Pi/180*-40)
-	}
+	// 旋转40度
+	//for _, vert := range obj.V {
+	//	vert.RotateY(-40)
+	//}
 
 	// 绘制三角形
-	for i, _ := range obj.fv {
-		drawTri1(obj.v, obj.fv[i], obj.vt, obj.fuv[i])
+	for i, l := 0, obj.FaceLen; i < l; i++ {
+		drawTri2(obj, i)
 	}
 
+	// 屏幕中的颜色绘制到png中
 	for x := 0; x < screen.W; x++ {
 		for y := 0; y < screen.H; y++ {
 			png.Set(x, y, screen.GetColor(x, y))
@@ -88,30 +88,27 @@ func TestDrawDiablo(t *testing.T) {
 
 }
 
-func drawTri1(v [][]float64, fv []int, uv [][]float64, fuv []int) {
+func drawTri2(obj *load.ObjModel, i int) {
+	face := obj.Face[i]
 	// 从所有三角形顶点坐标中找到索引的位置信息
-	float64s1 := v[fv[0]-1]
-	float64s2 := v[fv[1]-1]
-	float64s3 := v[fv[2]-1]
-
-	// 三角形坐标
-	x1, y1 := getXy1(float64s1[0], float64s1[1])
-	x2, y2 := getXy1(float64s2[0], float64s2[1])
-	x3, y3 := getXy1(float64s3[0], float64s3[1])
-	z1, z2, z3 := float64s1[2], float64s2[2], float64s3[2]
+	v1 := obj.V[face.V[0]-1]
+	v2 := obj.V[face.V[1]-1]
+	v3 := obj.V[face.V[2]-1]
 
 	// 从所有的顶点信息中, 找到索引的顶点位置信息
-	uv1 := uv[fuv[0]-1]
-	uv2 := uv[fuv[1]-1]
-	uv3 := uv[fuv[2]-1]
-	//fmt.Println("111", uv1, uv2, uv3)
-
-	BarycentricDiabloDiffuseTest(x1, y1, x2, y2, x3, y3, uv1[0], uv1[1], uv2[0], uv2[1], uv3[0], uv3[1], z1, z2, z3)
+	uv1 := obj.VT[face.VT[0]-1]
+	uv2 := obj.VT[face.VT[1]-1]
+	uv3 := obj.VT[face.VT[2]-1]
+	BarycentricDiabloDiffuseTest(v1, v2, v3, uv2, uv3, uv1)
 }
 
-func BarycentricDiabloDiffuseTest(x1, y1, x2, y2, x3, y3 int, u2, v2, u0, v0, u1, v1 float64, z1, z2, z3 float64) {
-	maxX, maxY, minX, minY := screen.Bound(x1, y1, x2, y2, x3, y3)
+//func BarycentricDiabloDiffuseTest(x1, y1, x2, y2, x3, y3 int, u2, v2, u0, v0, u1, v1 float64, z1, z2, z3 float64) {
+func BarycentricDiabloDiffuseTest(v1, v2, v3 gl.Vec3f, uv0, uv1, uv2 gl.Vec3f) {
+	x1, y1 := getXy1(v1.X, v1.Y)
+	x2, y2 := getXy1(v2.X, v2.Y)
+	x3, y3 := getXy1(v3.X, v3.Y)
 
+	maxX, maxY, minX, minY := screen.Bound(x1, y1, x2, y2, x3, y3)
 	for x := minX; x < maxX; x++ {
 		for y := minY; y < maxY; y++ {
 			a, b, c := Barycentric(x1, y1, x2, y2, x3, y3, x, y)
@@ -120,11 +117,10 @@ func BarycentricDiabloDiffuseTest(x1, y1, x2, y2, x3, y3 int, u2, v2, u0, v0, u1
 				continue
 			}
 
-			//ux := mx - int((a*u0+b*u1+c*u2)*float64(mx))
-			//vy := my - int((a*v0+b*v1+c*v2)*float64(my))
-			ux := int((a*u0 + b*u1 + c*u2) * float64(mx))
-			vy := my - int((a*v0+b*v1+c*v2)*float64(my))
-			z := a*z1 + b*z2 + c*z3
+			// UV 坐标 0, 0 在左下角
+			ux := int((a*uv0.X + b*uv1.X + c*uv2.X) * float64(mx))
+			vy := my - int((a*uv0.Y+b*uv1.Y+c*uv2.Y)*float64(my))
+			z := a*v1.Z + b*v2.Z + c*v3.Z
 
 			at := diffuse.At(ux, vy)
 
@@ -135,26 +131,5 @@ func BarycentricDiabloDiffuseTest(x1, y1, x2, y2, x3, y3 int, u2, v2, u0, v0, u1
 }
 
 func getXy1(x, y float64) (int, int) {
-	return int(x*100) + 500, (-int(y*100) + 500 + 400)
-}
-
-func RotateX(x, y, z float64, rad float64) (x1, y1, z1 float64) {
-	x1 = x
-	y1 = y*math.Cos(rad) - y*math.Sin(rad)
-	z1 = y*math.Sin(rad) + y*math.Cos(rad)
-	return x1, y1, z1
-}
-
-func RotateY(x, y, z float64, rad float64) (x1, y1, z1 float64) {
-	x1 = z*math.Sin(rad) + x*math.Cos(rad)
-	y1 = y
-	z1 = z*math.Cos(rad) - x*math.Sin(rad)
-	return x1, y1, z1
-}
-
-func RotateZ(x, y, z float64, rad float64) (x1, y1, z1 float64) {
-	x1 = x*math.Cos(rad) - y*math.Sin(rad)
-	y1 = x*math.Sin(rad) + y*math.Cos(rad)
-	z1 = z
-	return x1, y1, z1
+	return int(x*100) + 500, -int(y*100) + 500 + 400
 }
