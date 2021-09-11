@@ -1,6 +1,7 @@
 package load
 
 import (
+	"github.com/Jecced/go-tools/src/fileutil"
 	"raster-go/gl"
 	"strconv"
 	"strings"
@@ -41,11 +42,20 @@ func toFace(line, key string) ObjFace {
 
 // ObjModel 3D 模型描述文件
 type ObjModel struct {
-	Mat  *ObjMat    // 材质部分
-	V    []gl.Vec3f // 顶点
-	VT   []gl.Vec3f // UV
-	VN   []gl.Vec3f // 法线
-	Face []ObjFace  // 面信息
+	Mat     *ObjMat    // 材质部分
+	V       []gl.Vec3f // 顶点
+	VT      []gl.Vec3f // UV
+	VN      []gl.Vec3f // 法线
+	Face    []ObjFace  // 面信息
+	FaceLen int        // 面数量
+}
+
+func LoadObjModelByPath(path string) (*ObjModel, error) {
+	text, err := fileutil.ReadText(path)
+	if err != nil {
+		return nil, err
+	}
+	return LoadObjModel(text), nil
 }
 
 func LoadObjModel(text string) *ObjModel {
@@ -74,6 +84,6 @@ func LoadObjModel(text string) *ObjModel {
 	}
 
 	return &ObjModel{
-		V: V, VT: VT, VN: VN, Face: Face,
+		V: V, VT: VT, VN: VN, Face: Face, FaceLen: len(Face),
 	}
 }
