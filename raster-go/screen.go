@@ -79,6 +79,14 @@ func (s *Screen) GetColor(x, y int) *color.RGBA {
 	return p.GetColor()
 }
 
+func (s Screen) Bound(x1, y1, x2, y2, x3, y3 int) (maxX, maxY, minX, minY int) {
+	maxX = s.MaxX(x1, x2, x3)
+	maxY = s.MaxY(y1, y2, y3)
+	minX = s.MinX(x1, x2, x3)
+	minY = s.MinY(y1, y2, y3)
+	return
+}
+
 func (s Screen) MaxX(a ...int) int {
 	return s.min(s.max(a...), s.W)
 }
