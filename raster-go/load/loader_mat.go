@@ -114,17 +114,20 @@ func LoadMat(text string) *ObjMat {
 }
 
 func toInt(line, key string) int {
+	line = strings.Trim(line, " ")
 	to, _ := strconv.Atoi(line[len(key)+1:])
 	return to
 }
 
 func toFloat64(line, key string) float64 {
+	line = strings.Trim(line, " ")
 	v2, _ := strconv.ParseFloat(line[len(key)+1:], 64)
 	return v2
 }
 
 func toVec3f(line, key string) gl.Vec3f {
 	line = line[len(key)+1:]
+	line = strings.Trim(line, " ")
 	split := strings.Split(line, " ")
 	l := len(split)
 	x, _ := strconv.ParseFloat(split[0], 64)
