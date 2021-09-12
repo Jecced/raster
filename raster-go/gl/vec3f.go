@@ -44,16 +44,22 @@ func (v *Vec3f) Div(o Vec3f) {
 
 func (v *Vec3f) RotateX(rad float64) {
 	rad *= math.Pi / 180
-	v.Y = v.Y*math.Cos(rad) - v.Z*math.Sin(rad)
-	v.Z = v.Y*math.Sin(rad) + v.Z*math.Cos(rad)
+	y := v.Y*math.Cos(rad) - v.Z*math.Sin(rad)
+	z := v.Y*math.Sin(rad) + v.Z*math.Cos(rad)
+	v.Y = y
+	v.Z = z
 }
 func (v *Vec3f) RotateY(rad float64) {
 	rad *= math.Pi / 180
-	v.X = v.Z*math.Sin(rad) + v.Y*math.Cos(rad)
-	v.Z = v.Z*math.Cos(rad) - v.X*math.Sin(rad)
+	x := v.Z*math.Sin(rad) + v.X*math.Cos(rad)
+	z := v.Z*math.Cos(rad) - v.X*math.Sin(rad)
+	v.Z = z
+	v.X = x
 }
 func (v *Vec3f) RotateZ(rad float64) {
 	rad *= math.Pi / 180
-	v.X = v.X*math.Cos(rad) - v.Y*math.Sin(rad)
-	v.Z = v.X*math.Sin(rad) + v.Y*math.Cos(rad)
+	x := v.X*math.Cos(rad) - v.Y*math.Sin(rad)
+	y := v.X*math.Sin(rad) + v.Y*math.Cos(rad)
+	v.X = x
+	v.Y = y
 }
