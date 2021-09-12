@@ -42,12 +42,12 @@ func toFace(line, key string) ObjFace {
 
 // ObjModel 3D 模型描述文件
 type ObjModel struct {
-	Mat     *ObjMat    // 材质部分
-	V       []gl.Vec3f // 顶点
-	VT      []gl.Vec3f // UV
-	VN      []gl.Vec3f // 法线
-	Face    []ObjFace  // 面信息
-	FaceLen int        // 面数量
+	Mat     *ObjMat     // 材质部分
+	V       []*gl.Vec3f // 顶点
+	VT      []gl.Vec3f  // UV
+	VN      []gl.Vec3f  // 法线
+	Face    []ObjFace   // 面信息
+	FaceLen int         // 面数量
 }
 
 func LoadObjModelByPath(path string) (*ObjModel, error) {
@@ -59,7 +59,7 @@ func LoadObjModelByPath(path string) (*ObjModel, error) {
 }
 
 func LoadObjModel(text string) *ObjModel {
-	var V = make([]gl.Vec3f, 0, 0)
+	var V = make([]*gl.Vec3f, 0, 0)
 	var VT = make([]gl.Vec3f, 0, 0)
 	var VN = make([]gl.Vec3f, 0, 0)
 	var Face = make([]ObjFace, 0, 0)
@@ -71,7 +71,7 @@ func LoadObjModel(text string) *ObjModel {
 	for _, line := range lines {
 		switch true {
 		case strings.HasPrefix(line, "v "):
-			V = append(V, toVec3f(line, "v"))
+			V = append(V, toVec3fAddr(line, "v"))
 		case strings.HasPrefix(line, "vt "):
 			VT = append(VT, toVec3f(line, "vt"))
 		case strings.HasPrefix(line, "vn "):

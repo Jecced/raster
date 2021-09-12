@@ -1,6 +1,10 @@
 package load
 
 import (
+	"github.com/Jecced/go-tools/src/fileutil"
+	"github.com/Jecced/go-tools/src/imgutil"
+	"image"
+	"image/color"
 	"raster-go/gl"
 	"strconv"
 	"strings"
@@ -16,6 +20,14 @@ type ObjMatMeta struct {
 	Kd    gl.Vec3f
 	Ks    gl.Vec3f
 	MapKd string
+
+	Diffuse image.Image
+	MaxX    int
+	MaxY    int
+}
+
+func (o *ObjMatMeta) At(x, y int) color.Color {
+	return (o.Diffuse).At(x, y)
 }
 
 // ObjMat Obj模型材质描述文件
@@ -32,6 +44,18 @@ func (o *ObjMat) SetMapKd(key, mapKey string) {
 		return
 	}
 	get.MapKd = mapKey
+	get.Diffuse, _ = imgutil.LoadImage(mapKey)
+
+	get.MaxX = (get.Diffuse).Bounds().Max.X
+	get.MaxY = (get.Diffuse).Bounds().Max.Y
+}
+
+func LoadMatByPath(path string) (*ObjMat, error) {
+	text, err := fileutil.ReadText(path)
+	if err != nil {
+		return nil, err
+	}
+	return LoadMat(text), nil
 }
 
 func LoadMat(text string) *ObjMat {
@@ -40,34 +64,36 @@ func LoadMat(text string) *ObjMat {
 
 	mat := make(ObjMat)
 
-	var meta ObjMatMeta
+	//var meta ObjMatMeta
+	var key string
 
 	for _, line := range lines {
 		if strings.HasPrefix(line, "newmtl") {
-			meta = ObjMatMeta{}
-			mat[line[7:]] = &meta
+			//meta =
+			key = line[7:]
+			mat[key] = &ObjMatMeta{}
 			continue
 		}
 		line = strings.TrimLeft(line, "\t")
 		switch true {
 		case strings.HasPrefix(line, "Ns"):
-			meta.Ns = toInt(line, "Ns")
+			mat[key].Ns = toInt(line, "Ns")
 		case strings.HasPrefix(line, "illum"):
-			meta.Illum = toInt(line, "illum")
+			mat[key].Illum = toInt(line, "illum")
 		case strings.HasPrefix(line, "Ni"):
-			meta.Ni = toFloat64(line, "Ni")
+			mat[key].Ni = toFloat64(line, "Ni")
 		case strings.HasPrefix(line, "d"):
-			meta.D = toFloat64(line, "d")
+			mat[key].D = toFloat64(line, "d")
 		case strings.HasPrefix(line, "map_Kd"):
-			meta.MapKd = toString(line, "map_Kd")
+			mat[key].MapKd = toString(line, "map_Kd")
 		case strings.HasPrefix(line, "Tf"):
-			meta.Tf = toVec3f(line, "Tf")
+			mat[key].Tf = toVec3f(line, "Tf")
 		case strings.HasPrefix(line, "Ka"):
-			meta.Ka = toVec3f(line, "Ka")
+			mat[key].Ka = toVec3f(line, "Ka")
 		case strings.HasPrefix(line, "Kd"):
-			meta.Kd = toVec3f(line, "Kd")
+			mat[key].Kd = toVec3f(line, "Kd")
 		case strings.HasPrefix(line, "Ks"):
-			meta.Ks = toVec3f(line, "Ks")
+			mat[key].Ks = toVec3f(line, "Ks")
 
 		}
 	}
@@ -96,6 +122,11 @@ func toVec3f(line, key string) gl.Vec3f {
 		z, _ = strconv.ParseFloat(split[2], 64)
 	}
 	return gl.Vec3f{X: x, Y: y, Z: z}
+}
+
+func toVec3fAddr(line, key string) *gl.Vec3f {
+	f := toVec3f(line, key)
+	return &f
 }
 
 func toString(line, key string) string {
