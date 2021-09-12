@@ -20,12 +20,14 @@ var mat *load.ObjMat
 var screen *Screen = NewScreen(1000, 1000)
 
 func init() {
-	obj, _ = load.LoadObjModelByPath("obj/Bulbasaur/Bulbasaur.obj")
+	obj, _ = load.LoadObjModelByPath("obj/diablo3_pose.obj")
 
-	mat, _ = load.LoadMatByPath("obj/Bulbasaur/Fushigidane.mtl")
+	//mat, _ = load.LoadMatByPath("obj/Bulbasaur/Fushigidane.mtl")
+	//
+	//mat.SetMapKd("mat1", "obj/FushigidaneDh.png")
+	//mat.SetMapKd("mat2", "obj/FushigidaneEyeDh.png")
 
-	mat.SetMapKd("mat1", "obj/FushigidaneDh.png")
-	mat.SetMapKd("mat2", "obj/FushigidaneEyeDh.png")
+	mat = load.CreatDefaultWithDiffuse("obj/diablo3_pose_diffuse.png")
 }
 
 func TestDrawDiablo360(t *testing.T) {
@@ -48,7 +50,7 @@ func TestDrawDiablo360(t *testing.T) {
 			}
 		}
 
-		out := "out/a/tri_diffuse_" + strconv.Itoa(i) + ".png"
+		out := "out/c/tri_diffuse_" + strconv.Itoa(i) + ".png"
 		// 写出文件
 		imgutil.SaveImage(out, png)
 		fmt.Println("write:", out)
@@ -131,5 +133,6 @@ func BarycentricDiabloDiffuseTest(v1, v2, v3 *gl.Vec3f, uv0, uv1, uv2 gl.Vec3f, 
 }
 
 func getXy1(x, y float64) (int, int) {
-	return int(x*100) + 500, -int(y*100) + 500 + 400
+	//return int(x*100) + 500, -int(y*100) + 500 + 400
+	return int(x*300) + 500, -int(y*300) + 500
 }
