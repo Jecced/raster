@@ -7,11 +7,11 @@ import (
 
 func TestCamera(t *testing.T) {
 	node := &Node{}
-	node.SetPosition(100.0, 200.0, 0.0)
+	node.SetPosition(0, 0, -100.0)
 
 	camera := NewCamera()
-	camera.SetPosition(0, 500, -400)
-	camera.LookAt(node)
+	camera.SetPosition(0, 100, 0)
+	camera.LookAt(node, *NewVec3f(0, 1, 0))
 	fmt.Println(camera.Direct.String())
 	fmt.Println(camera.Up.String())
 }
