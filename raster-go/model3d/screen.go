@@ -1,4 +1,4 @@
-package raster_go
+package model3d
 
 import (
 	"image/color"
