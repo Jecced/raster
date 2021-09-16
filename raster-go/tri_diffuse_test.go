@@ -98,15 +98,14 @@ func drawTri2(obj *load.ObjModel, i int) {
 	v3 := obj.V[face.V[2]-1]
 
 	// 从所有的顶点信息中, 找到索引的顶点位置信息
-	uv1 := obj.VT[face.VT[0]-1]
-	uv2 := obj.VT[face.VT[1]-1]
-	uv3 := obj.VT[face.VT[2]-1]
+	uv0 := obj.VT[face.VT[0]-1]
+	uv1 := obj.VT[face.VT[1]-1]
+	uv2 := obj.VT[face.VT[2]-1]
 
 	meta, _ := mat.Get(face.Key)
-	BarycentricDiabloDiffuseTest(v1, v2, v3, uv2, uv3, uv1, meta)
+	BarycentricDiabloDiffuseTest(v1, v2, v3, uv0, uv1, uv2, meta)
 }
 
-//func BarycentricDiabloDiffuseTest(x1, y1, x2, y2, x3, y3 int, u2, v2, u0, v0, u1, v1 float64, z1, z2, z3 float64) {
 func BarycentricDiabloDiffuseTest(v1, v2, v3 *gl.Vec3f, uv0, uv1, uv2 gl.Vec3f, meta *load.ObjMatMeta) {
 	x1, y1 := getXy1(v1.X(), v1.Y())
 	x2, y2 := getXy1(v2.X(), v2.Y())
@@ -122,8 +121,8 @@ func BarycentricDiabloDiffuseTest(v1, v2, v3 *gl.Vec3f, uv0, uv1, uv2 gl.Vec3f, 
 			}
 
 			// UV 坐标 0, 0 在左下角
-			ux := int((a*uv0.X() + b*uv1.X() + c*uv2.X()) * float64(meta.MaxX))
-			vy := meta.MaxY - int((a*uv0.Y()+b*uv1.Y()+c*uv2.Y())*float64(meta.MaxY))
+			ux := int((a*uv1.X() + b*uv2.X() + c*uv0.X()) * float64(meta.MaxX))
+			vy := meta.MaxY - int((a*uv1.Y()+b*uv2.Y()+c*uv0.Y())*float64(meta.MaxY))
 			z := a*v1.Z() + b*v2.Z() + c*v3.Z()
 
 			at := meta.At(ux, vy)
