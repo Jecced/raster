@@ -12,6 +12,8 @@ type Camera struct {
 	Distance float64 // 距离
 
 	perspective bool // 是否为透视
+
+	TR *gl.Mat4f // lookAt计算出来的矩阵信息
 }
 
 func NewCamera() *Camera {
@@ -36,26 +38,35 @@ func (c *Camera) LookAt(node NodeBase, up gl.Vec3f) {
 	x2, y2, z2 := c.Position()
 	c.Direct = gl.NewVec3f(x1-x2, y1-y2, z1-z2)
 	c.Direct.Normalize()
-	// 叉乘, up叉乘-z, 得到一个-y的向量, 取hat
-	parallel := gl.CrossVec3f(&up, c.Direct)
-	parallel.Normalize()
-	// 重新叉乘新的-y方向的parallel, 得到新的up方向, 取hat
-	newUp := gl.CrossVec3f(c.Direct, parallel)
+	//dir 叉乘up 得到x轴向量
+	xAxis := gl.CrossVec3f(c.Direct, &up)
+	xAxis.Normalize()
+	// x 轴叉乘dir, 得到向上的y轴向量
+	newUp := gl.CrossVec3f(xAxis, c.Direct)
 	newUp.Normalize()
 	c.Up = newUp
 
-	//TView := gl.NewMat4fIdentity()
-	//TView[3] = -c.position.X()
-	//TView[7] = -c.position.Y()
-	//TView[11] = -c.position.Z()
-	//
-	//RView := gl.NewMat4fIdentity()
-	//
-	//RView.Transpose()
-	//fmt.Println(TView)
-	//fmt.Println(RView)
-	//
-	//fmt.Println(gl.Mat4fMul(RView, TView))
+	TView := gl.NewMat4fIdentity()
+	TView[3] = -c.position.X()
+	TView[7] = -c.position.Y()
+	TView[11] = -c.position.Z()
+
+	RView := gl.NewMat4fIdentity()
+	RView[0] = xAxis.X()
+	RView[4] = xAxis.Y()
+	RView[8] = xAxis.Z()
+
+	RView[1] = c.Up.X()
+	RView[5] = c.Up.Y()
+	RView[9] = c.Up.Z()
+
+	RView[2] = -c.Direct.X()
+	RView[6] = -c.Direct.Y()
+	RView[10] = -c.Direct.Z()
+	// 转置
+	RView.Transpose()
+
+	c.TR = gl.Mat4fMul(RView, TView)
 }
 
 // UsePerspective 透视模式
