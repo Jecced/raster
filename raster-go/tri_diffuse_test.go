@@ -65,9 +65,9 @@ func TestDrawDiablo(t *testing.T) {
 	png := imgutil.CreatPng(screen.W, screen.H)
 
 	// 旋转40度
-	for _, vert := range obj.V {
-		vert.RotateY(-40)
-	}
+	//for _, vert := range obj.V {
+	//	vert.RotateY(-40)
+	//}
 
 	// 绘制三角形
 	for i, l := 0, obj.FaceLen; i < l; i++ {

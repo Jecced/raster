@@ -15,4 +15,9 @@ func TestCamera(t *testing.T) {
 	camera.LookAt(node, *gl.NewVec3f(0, 1, 0))
 	fmt.Println(camera.Direct.String())
 	fmt.Println(camera.Up.String())
+	fmt.Println(camera.TR)
+
+	vec3, f2 := gl.Mat4MulVec3(camera.TR, gl.NewVec3f(node.Position()), 1)
+	fmt.Println(vec3)
+	fmt.Println(f2)
 }
