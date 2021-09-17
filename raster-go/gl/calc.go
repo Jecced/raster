@@ -60,3 +60,12 @@ func Mat4fMul(a, b *Mat4f) *Mat4f {
 
 	return out
 }
+
+// Mat4MulVec3 mat4 x vec3, vec3的第四个值用w来代替, 一般是 0 or 1, 结果还是vec3, 带一个w
+func Mat4MulVec3(a *Mat4f, b *Vec3f, w float64) (*Vec3f, float64) {
+	x := a[0]*b[0] + a[1]*b[1] + a[2]*b[2] + a[3]*w
+	y := a[4]*b[0] + a[5]*b[1] + a[6]*b[2] + a[7]*w
+	z := a[8]*b[0] + a[9]*b[1] + a[10]*b[2] + a[11]*w
+	v := a[12]*b[0] + a[13]*b[1] + a[14]*b[2] + a[15]*w
+	return NewVec3f(x, y, z), v
+}
