@@ -14,6 +14,9 @@ type Camera struct {
 	perspective bool // 是否为透视
 
 	TR *gl.Mat4f // lookAt计算出来的矩阵信息
+
+	Nera float64 // 透视n举例
+
 }
 
 func NewCamera() *Camera {
@@ -33,7 +36,13 @@ func (c *Camera) Position() (float64, float64, float64) {
 	return c.position.X(), c.position.Y(), c.position.Z()
 }
 
-func (c *Camera) LookAt(node NodeBase, up gl.Vec3f) {
+func (c *Camera) SetNera(n float64) {
+	c.Nera = n
+}
+
+func (c *Camera) LookAt(node NodeBase) {
+	var up gl.Vec3f = *gl.NewVec3f(0, 1, 0)
+
 	x1, y1, z1 := node.Position()
 	x2, y2, z2 := c.Position()
 	c.Direct = gl.NewVec3f(x1-x2, y1-y2, z1-z2)
