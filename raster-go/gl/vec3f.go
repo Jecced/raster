@@ -128,6 +128,10 @@ func (v *Vec3f) Normalize() {
 	v[2] *= length
 }
 
+func (v *Vec3f) IsZero() bool {
+	return v.X() == 0 && v.Y() == 0 && v.Z() == 0
+}
+
 func CrossVec3f(a, b *Vec3f) *Vec3f {
 	return NewVec3f(
 		a.Y()*b.Z()-a.Z()*b.Y(),
@@ -141,5 +145,5 @@ func DotVec3f(a, b *Vec3f) float64 {
 }
 
 func (v *Vec3f) String() string {
-	return fmt.Sprintf("vec3(%f, %f, %f)", v.X(), v.Y(), v.Z())
+	return fmt.Sprintf("vec3(%.2f, %.2f, %.2f)", v.X(), v.Y(), v.Z())
 }
