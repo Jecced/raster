@@ -11,10 +11,11 @@ import (
 	"testing"
 )
 
-func Test2222(t *testing.T) {
+func TestAngle(t *testing.T) {
 	for i := 0; i < 360; i++ {
-		run(i)
+		go run(i)
 	}
+	select {}
 }
 
 func getNode() *model3d.Node {
@@ -25,15 +26,21 @@ func getNode() *model3d.Node {
 	return node1
 }
 
+func getNode1() *model3d.Node {
+	node1 := model3d.NewNode()
+	node1.SetPosition(0, 0, 0)
+	node1.SetObjModel("../obj/diablo3_pose.obj")
+	node1.SetObjDefaultMat("../obj/diablo3_pose_diffuse.png")
+	return node1
+}
+
 func getScene() *model3d.Scene {
 
 	scene := model3d.NewScene(1000, 1000)
 
-	node1 := getNode()
-
-	scene.AddChild(node1)
-
 	scene.AddChild(getNode())
+
+	scene.AddChild(getNode1())
 
 	//x, z := ma.CalcVec2ByAngleDist(float64(angle), 1)
 	//
@@ -48,7 +55,7 @@ func run(angle int) {
 	scene := getScene()
 	node := scene.Child[0]
 
-	node.SetPosition(.5, .5, 0)
+	node.SetPosition(0, 0, 0)
 	camera := scene.Camera
 
 	x, z := ma.CalcVec2ByAngleDist(float64(angle), 1)
@@ -72,16 +79,13 @@ func run(angle int) {
 	imgutil.SaveImage(path, png)
 }
 
-func Test1111(t *testing.T) {
+func TestCameraLookAt(t *testing.T) {
 	scene := getScene()
 	node0 := scene.Child[0]
-	node1 := scene.Child[1]
 	camera := scene.Camera
 
-	//node.SetPosition(0., 0., -10)
-	node0.SetPosition(-3, 0, -15)
-	node1.SetPosition(0, 0, 0)
-	camera.SetPosition(0, 0, 2)
+	node0.SetPosition(0, 0, 0)
+	camera.SetPosition(5, 3, 3)
 
 	camera.LookAt(node0)
 
@@ -101,6 +105,10 @@ func Test1111(t *testing.T) {
 	imgutil.SaveImage("../out/perspective/tri_diffuse_test.png", png)
 }
 
+func Test1111(t *testing.T) {
+	runTestPerspective(30)
+}
+
 func TestPerspective(t *testing.T) {
 	for i := 0; i < 360; i++ {
 		go runTestPerspective(i)
@@ -108,11 +116,11 @@ func TestPerspective(t *testing.T) {
 	select {}
 }
 
-func runTestPerspective(z int) {
+func runTestPerspective(angle int) {
 
-	zz := z
+	zz := angle
 	if zz > 180 {
-		zz = 360 - zz
+		zz = 360 - angle
 	}
 	scene := getScene()
 	node0 := scene.Child[0]
@@ -120,9 +128,13 @@ func runTestPerspective(z int) {
 	camera := scene.Camera
 
 	//node.SetPosition(0., 0., -10)
-	node0.SetPosition(-3, -1, -15)
-	node1.SetPosition(0, 0, 0)
-	camera.SetPosition(0, 0, 1+float64(zz*2)/10)
+	node0.SetPosition(0, 0, -15)
+	node1.SetPosition(0, 0.5, -13)
+
+	x, z := ma.CalcVec2ByAngleDist(float64(angle), 1+float64(zz*2)/10)
+
+	//camera.SetPosition(-4, 3, 1+float64(angle*2)/10)
+	camera.SetPosition(x, 3, z)
 
 	camera.LookAt(node0)
 
@@ -139,7 +151,7 @@ func runTestPerspective(z int) {
 			png.Set(x, y, scene.Screen.GetColor(x, y))
 		}
 	}
-	path := fmt.Sprintf("../out/perspective/tri_diffuse_%d.png", z)
+	path := fmt.Sprintf("../out/perspective/tri_diffuse_%d.png", angle)
 	fmt.Println(path)
 	imgutil.SaveImage(path, png)
 }
@@ -153,7 +165,7 @@ func drawScene(scene *model3d.Scene) {
 			vert.Add(*gl.NewVec3f(node.Position()))
 		}
 
-		// 正交投影
+		// 视窗变换
 		// 摄像机摆放到原点, 然后看做相对变换
 		for _, vert := range node.Obj.V {
 			vec3, _ := gl.Mat4MulVec3(camera.TR, vert, 1)
