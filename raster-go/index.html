@@ -3,20 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        html, body {
+            padding: 0;
+            margin: 0;
+        }
+    </style>
 </head>
 <body>
-<img id="dia" src="out/diablo3/0.png" width="50%" height="50%">
+<img id="dia" src="" width="100%" height="100%">
 </body>
 
 <script>
 
-    var i = 0;
-    setInterval(()=>{
-        i--;
-        if(i < 0) i = 359;
-        document.getElementById("dia").src = "out/perspective/tri_diffuse_"+i+".png"
+    let i = 0;
 
-    }, 16)
+    let run = ()=>{
+        i--;
+        if (i < 0) i = 359;
+        document.getElementById("dia").src = "out/angle/tri_diffuse_" + i + ".png"
+        requestAnimationFrame(run)
+    }
+
+    requestAnimationFrame(run)
 
     let dia = document.getElementById("dia")
     console.log(dia);
