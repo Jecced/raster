@@ -145,6 +145,11 @@ func toVec3fAddr(line, key string) *gl.Vec3f {
 	return &f
 }
 
+func toVec4fAddr(line, key string) *gl.Vec4f {
+	f := toVec3f(line, key)
+	return gl.NewVec4f(f.X(), f.Y(), f.Z(), 1)
+}
+
 func toString(line, key string) string {
 	return line[len(key)+1:]
 }

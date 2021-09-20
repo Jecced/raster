@@ -106,7 +106,7 @@ func drawTri2(obj *load.ObjModel, i int) {
 	BarycentricDiabloDiffuseTest(v1, v2, v3, uv0, uv1, uv2, meta)
 }
 
-func BarycentricDiabloDiffuseTest(v1, v2, v3 *gl.Vec3f, uv0, uv1, uv2 gl.Vec3f, meta *load.ObjMatMeta) {
+func BarycentricDiabloDiffuseTest(v1, v2, v3 *gl.Vec4f, uv0, uv1, uv2 gl.Vec3f, meta *load.ObjMatMeta) {
 	x1, y1 := getXy1(v1.X(), v1.Y())
 	x2, y2 := getXy1(v2.X(), v2.Y())
 	x3, y3 := getXy1(v3.X(), v3.Y())

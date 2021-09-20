@@ -160,38 +160,31 @@ func drawScene(scene *model3d.Scene) {
 	camera := scene.Camera
 
 	for _, node := range scene.Child {
-		// 模型移动
+		// 模型移动到Node位置
 		for _, vert := range node.Obj.V {
-			vert.Add(*gl.NewVec3f(node.Position()))
+			//vert.Add(*gl.NewVec4f(node.Position()))
+			x, y, z := node.Position()
+			vec4 := gl.NewVec4f(x, y, z, 1)
+			vert.Add(*vec4)
+			vert.SetW(1)
 		}
 
 		// 视窗变换
 		// 摄像机摆放到原点, 然后看做相对变换
 		for _, vert := range node.Obj.V {
-			vec3, _ := gl.Mat4MulVec3(camera.TR, vert, 1)
-			vert.Set(vec3.X(), vec3.Y(), vec3.Z())
-			//fmt.Println(vec3)
-			//fmt.Println(vert, vec3)
+			//vec3, _ := gl.Mat4MulVec3(camera.TR, vert, 1)
+			//vert.Set(vec3.X(), vec3.Y(), vec3.Z())
+			vec4 := gl.Mat4MulVec4(camera.TR, vert)
+			vert.Set(vec4.X(), vec4.Y(), vec4.Z(), vec4.W())
 		}
 
 		// 使用透视投影
 		if camera.IsPerspective() {
 			for _, vert := range node.Obj.V {
-				n := camera.Nera
-				f := vert.Z()
-
-				mat := gl.NewMat4fZero()
-				mat[0] = n
-				mat[5] = n
-				mat[10] = n + f
-				mat[11] = -n * f
-				mat[14] = 1
-
-				vec3, w := gl.Mat4MulVec3(mat, vert, 1)
-				vec3.Scale(1 / w)
-				vert.Set(vec3.X(), vec3.Y(), vec3.Z())
-
-				//fmt.Println(n, f, vec3, w)
+				mat := camera.GetPerspectiveMat4(vert.Z())
+				vec4 := gl.Mat4MulVec4(mat, vert)
+				vec4.Standardized()
+				vert.Set(vec4.X(), vec4.Y(), vec4.Z(), vec4.W())
 			}
 		}
 
@@ -219,7 +212,7 @@ func drawTri2(obj *load.ObjModel, mat *load.ObjMat, screen *model3d.Screen, i in
 	BarycentricDiabloDiffuseTest(v1, v2, v3, uv0, uv1, uv2, meta, screen)
 }
 
-func BarycentricDiabloDiffuseTest(v1, v2, v3 *gl.Vec3f, uv0, uv1, uv2 gl.Vec3f, meta *load.ObjMatMeta, screen *model3d.Screen) {
+func BarycentricDiabloDiffuseTest(v1, v2, v3 *gl.Vec4f, uv0, uv1, uv2 gl.Vec3f, meta *load.ObjMatMeta, screen *model3d.Screen) {
 	x1, y1 := getXy1(v1.X(), v1.Y())
 	x2, y2 := getXy1(v2.X(), v2.Y())
 	x3, y3 := getXy1(v3.X(), v3.Y())

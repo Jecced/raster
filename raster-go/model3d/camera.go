@@ -6,7 +6,7 @@ import (
 )
 
 type Camera struct {
-	position *gl.Vec3f // 位置
+	position *gl.Vec4f // 位置
 	Direct   *gl.Vec3f // 朝向
 	Up       *gl.Vec3f // 向上方向
 
@@ -22,7 +22,7 @@ type Camera struct {
 
 func NewCamera() *Camera {
 	camera := &Camera{
-		position: gl.NewVec3f(0, 0, 0),
+		position: gl.NewVec4f(0, 0, 0, 1),
 		Direct:   gl.NewVec3f(0, 0, -1),
 		Up:       gl.NewVec3f(0, 1, 0),
 	}
@@ -30,7 +30,7 @@ func NewCamera() *Camera {
 }
 
 func (c *Camera) SetPosition(x, y, z float64) {
-	c.position.Set(x, y, z)
+	c.position.Set(x, y, z, 1)
 }
 
 func (c *Camera) Position() (float64, float64, float64) {
