@@ -1,6 +1,9 @@
 package gl
 
-import "math"
+import (
+	"fmt"
+	"math"
+)
 
 type Vec4f [4]float64
 
@@ -125,6 +128,28 @@ func (v *Vec4f) Normalize() {
 	v[3] *= length
 }
 
-func DotVec4f(a, b *Vec4f) float64 {
-	return a.X()*b.X() + a.Y()*b.Y() + a.Z()*b.Z() + a.W()*b.W()
+func (v *Vec4f) ToPoint() {
+	v.Standardized()
+	v.SetW(1)
+}
+
+func (v *Vec4f) ToVec() {
+	v.Standardized()
+	v.SetW(0)
+}
+
+func (v *Vec4f) IsZero() bool {
+	return v.X() == 0 && v.Y() == 0 && v.Z() == 0
+}
+
+// Standardized 将 向量中所有数字都 / w (w != 0)
+func (v *Vec4f) Standardized() {
+	if v.W() == 0 {
+		return
+	}
+	v.Set(v.X()/v.W(), v.Y()/v.W(), v.Z()/v.W(), v.W()/v.W())
+}
+
+func (v *Vec4f) String() string {
+	return fmt.Sprintf("vec4(%.2f, %.2f, %.2f, %.2f)", v.X(), v.Y(), v.Z(), v.W())
 }
