@@ -212,15 +212,15 @@ func drawTri2(obj *load.ObjModel, mat *load.ObjMat, screen *model3d.Screen, i in
 	BarycentricDiabloDiffuseTest(v1, v2, v3, uv0, uv1, uv2, meta, screen)
 }
 
-func BarycentricDiabloDiffuseTest(v1, v2, v3 *gl.Vec4f, uv0, uv1, uv2 gl.Vec3f, meta *load.ObjMatMeta, screen *model3d.Screen) {
-	x1, y1 := getXy1(v1.X(), v1.Y())
-	x2, y2 := getXy1(v2.X(), v2.Y())
-	x3, y3 := getXy1(v3.X(), v3.Y())
+func BarycentricDiabloDiffuseTest(v0, v1, v2 *gl.Vec4f, uv0, uv1, uv2 gl.Vec3f, meta *load.ObjMatMeta, screen *model3d.Screen) {
+	x1, y1 := getXy1(v0.X(), v0.Y())
+	x2, y2 := getXy1(v1.X(), v1.Y())
+	x3, y3 := getXy1(v2.X(), v2.Y())
 
 	maxX, maxY, minX, minY := screen.Bound(x1, y1, x2, y2, x3, y3)
 	for x := minX; x < maxX; x++ {
 		for y := minY; y < maxY; y++ {
-			a, b, c := ma.Barycentric(x1, y1, x2, y2, x3, y3, x, y)
+			a, b, c := ma.Barycentric(x1, y1, x2, y2, x3, y3, float64(x), float64(y))
 			// 判断是否在三角形内
 			if a < 0 || b < 0 || c < 0 {
 				continue
@@ -229,7 +229,7 @@ func BarycentricDiabloDiffuseTest(v1, v2, v3 *gl.Vec4f, uv0, uv1, uv2 gl.Vec3f, 
 			// UV 坐标 0, 0 在左下角
 			ux := int((a*uv1.X() + b*uv2.X() + c*uv0.X()) * float64(meta.MaxX))
 			vy := meta.MaxY - int((a*uv1.Y()+b*uv2.Y()+c*uv0.Y())*float64(meta.MaxY))
-			z := a*v1.Z() + b*v2.Z() + c*v3.Z()
+			z := a*v0.Z() + b*v1.Z() + c*v2.Z()
 
 			at := meta.At(ux, vy)
 
