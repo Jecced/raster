@@ -12,12 +12,17 @@ func Inside(x1, y1, x2, y2, x3, y3 int, x, y float64) bool {
 
 // Barycentric 求一个点在三角形内的重心坐标
 func Barycentric(x1, y1, x2, y2, x3, y3 int, px, py float64) (alpha, beta, gamma float64) {
+	// 计算三角形面积
 	s := CrossInt(x2-x1, y2-y1, x3-x1, y3-y1) / 2
 
-	alpha = CrossFloat64(px-float64(x3), py-float64(y3), px-float64(x1), py-float64(y1)) / 2 / s
-	beta = CrossFloat64(px-float64(x1), py-float64(y1), px-float64(x2), py-float64(y2)) / 2 / s
-	gamma = 1 - beta - alpha
+	//alpha = CrossFloat64(px-float64(x3), py-float64(y3), px-float64(x1), py-float64(y1)) / 2 / s
+	//beta = CrossFloat64(px-float64(x1), py-float64(y1), px-float64(x2), py-float64(y2)) / 2 / s
+	//gamma = 1 - beta - alpha
+
+	alpha = CrossFloat64(px-float64(x2), py-float64(y2), px-float64(x3), py-float64(y3)) / 2 / s
+	beta = CrossFloat64(px-float64(x3), py-float64(y3), px-float64(x1), py-float64(y1)) / 2 / s
 	//c = CrossFloat64(px-float64(x2), py-float64(y2), px-float64(x3), py-float64(y3)) / 2 / s
+	gamma = 1 - alpha - beta
 	return
 }
 
