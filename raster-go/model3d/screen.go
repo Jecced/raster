@@ -51,7 +51,7 @@ type Screen struct {
 func NewScreen(w, h int) *Screen {
 	pixies := make([]*Pixi, 0, 0)
 	for i, l := 0, w*h; i < l; i++ {
-		pixies = append(pixies, &Pixi{})
+		pixies = append(pixies, &Pixi{color: &gl.Color{}})
 	}
 	s := &Screen{
 		W:      w,
