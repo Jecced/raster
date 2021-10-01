@@ -87,7 +87,15 @@ func (v *Vec4f) Mul(o Vec4f) {
 func (v *Vec4f) Div(o Vec4f) {
 	v[0] /= o[0]
 	v[1] /= o[1]
+	v[2] /= o[2]
 	v[3] /= o[3]
+}
+
+func (v *Vec4f) Scale(value float64) {
+	v[0] *= value
+	v[1] *= value
+	v[2] *= value
+	v[3] *= value
 }
 
 func (v *Vec4f) RotateX(rad float64) {
@@ -143,11 +151,12 @@ func (v *Vec4f) IsZero() bool {
 }
 
 // Standardized 将 向量中所有数字都 / w (w != 0)
-func (v *Vec4f) Standardized() {
+func (v *Vec4f) Standardized() *Vec4f {
 	if v.W() == 0 {
-		return
+		return v
 	}
 	v.Set(v.X()/v.W(), v.Y()/v.W(), v.Z()/v.W(), v.W()/v.W())
+	return v
 }
 
 func (v *Vec4f) String() string {
