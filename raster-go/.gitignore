@@ -1,6 +1,7 @@
 diablo3/*.png
 face/*.png
 out/*
+temp/*
 
 ### Go template
 # Binaries for programs and plugins
