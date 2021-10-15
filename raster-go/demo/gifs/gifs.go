@@ -38,7 +38,7 @@ func (g *Gif) Save(path string) error {
 	giff := &gif.GIF{
 		Image:     g.images,
 		Delay:     g.delays,
-		LoopCount: -1,
+		LoopCount: 0,
 		Disposal:  g.disposals,
 	}
 	f, err := os.Create(path)
