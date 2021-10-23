@@ -41,6 +41,23 @@ func GetNode2() *model3d.Node {
 	return node1
 }
 
+// GetNode3 芯片
+func GetNode3() *model3d.Node {
+	node1 := model3d.NewNode()
+	node1.SetPosition(0, 0, 0)
+
+	node1.SetObjModel("../../obj/camera/c.obj")
+
+	// 缩放一下
+	for _, v := range node1.Obj.V {
+		//v.Mul(*gl.NewVec4f(0.2, 0.2, 0.2, 1))
+		v.RotateX(90)
+	}
+	node1.SetObjMat("../../obj/camera/c.mtl")
+	node1.SetMatDiffuse("polySurface2SG", "../../obj/camera/Color.png")
+	return node1
+}
+
 // GetFloor 地板
 func GetFloor() *model3d.Node {
 	node := model3d.NewNode()
