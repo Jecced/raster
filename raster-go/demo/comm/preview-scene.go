@@ -51,6 +51,19 @@ func Scene05() *model3d.Scene {
 	return scene
 }
 
+func Scene07() *model3d.Scene {
+
+	scene := model3d.NewScene(300, 300)
+
+	node1 := GetNode3()
+	node2 := GetNode0()
+
+	scene.AddChild(node1)
+	scene.AddChild(node2)
+
+	return scene
+}
+
 func Scene06() *model3d.Scene {
 
 	scene := model3d.NewScene(300, 300)
