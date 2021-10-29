@@ -11,7 +11,7 @@ export class Vec4 {
 
     private _val: number = 0;
 
-    constructor(x = 0, y = 0, z = 0, w = 255) {
+    constructor(x = 0, y = 0, z = 0, w = 0) {
         this.set(x, y, z, w);
     }
 
