@@ -1,3 +1,4 @@
-import "../css/index.css"
+import "../css/index.css";
+import { Raster } from "./engine/raster";
 
-console.log(1)
+const raster = new Raster();
