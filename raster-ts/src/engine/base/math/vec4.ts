@@ -8,52 +8,20 @@
  * @param w [24-32) 位
  */
 export class Vec4 {
-
-    private _val: number = 0;
+    private x: number;
+    private y: number;
+    private z: number;
+    private w: number;
 
     constructor(x = 0, y = 0, z = 0, w = 0) {
         this.set(x, y, z, w);
     }
 
-    get x(): number {
-        return this._val & 0x000000ff;
-    }
-
-    set x(v: number) {
-        this._val = (this._val & 0xffffff00 | v & 255 << 0) >>> 0;
-    }
-
-    get y(): number {
-        return (this._val & 0x0000ff00) >> 8;
-    }
-
-    set y(v: number) {
-        this._val = (this._val & 0xffffff00 | v & 255 << 8) >>> 0;
-    }
-
-
-    get z(): number {
-        return (this._val & 0x00ff0000) >> 16;
-    }
-
-    set z(v: number) {
-        this._val = (this._val & 0xffffff00 | v & 255 << 16) >>> 0;
-    }
-
-    get w(): number {
-        return (this._val & 0xff000000) >>> 24;
-    }
-
-    set w(v: number) {
-        this._val = (this._val & 0xffffff00 | v & 255 << 24) >>> 0;
-    }
-
     public set(x: number, y: number, z: number, w: number): void {
-        x &= 0xff;
-        y &= 0xff;
-        z &= 0xff;
-        w &= 0xff;
-        this._val = (w << 24 | z << 16 | y << 8 | x) >>> 0;
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.w = w;
     }
 
     public add(vec4: Vec4, out?: Vec4): Vec4 {
@@ -165,7 +133,10 @@ export class Vec4 {
 
     public clone(): Vec4 {
         const out = new Vec4();
-        out._val = this._val;
+        out.x = this.x;
+        out.y = this.y;
+        out.z = this.z;
+        out.w = this.w;
         return out;
     }
 
