@@ -62,6 +62,12 @@ export class Color {
         this._val = (a << 24 | b << 16 | g << 8 | r) >>> 0;
     }
 
+    public clone(): Color {
+        const color = new Color();
+        color._val = this._val;
+        return color;
+    }
+
     public fromColor(color: Color): void {
         this._val = color._val;
     }
@@ -96,14 +102,14 @@ export class Color {
         return new Color(r, g, b, a);
     }
 
-    public toHEX(): string{
-        const prefix = '0';
+    public toHEX(): string {
+        const prefix = "0";
         // #rrggbb
         const hex = [
             "#",
-            (this.r < 16 ? prefix : '') + (this.r).toString(16),
-            (this.g < 16 ? prefix : '') + (this.g).toString(16),
-            (this.b < 16 ? prefix : '') + (this.b).toString(16),
+            (this.r < 16 ? prefix : "") + (this.r).toString(16),
+            (this.g < 16 ? prefix : "") + (this.g).toString(16),
+            (this.b < 16 ? prefix : "") + (this.b).toString(16),
         ];
         return hex.join("");
     }
