@@ -1,5 +1,9 @@
 export class Loader {
 
+    /**
+     * 读取某个纹理图片文件
+     * @param path
+     */
     public static async loadImg(path: string): Promise<ImageData> {
         return new Promise<ImageData>(resolve => {
             let img = new Image();
@@ -17,6 +21,27 @@ export class Loader {
                 resolve(imageData);
             };
             img.src = path;
+        });
+    }
+
+    /**
+     * 读取某个文本文件
+     * @param path
+     */
+    public static async loadText(path: string):Promise<string> {
+        return new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', path);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status >= 200 && xhr.status < 300) {
+                        resolve(xhr.responseText);
+                    } else {
+                        reject(`error with http code: ${xhr.status}`);
+                    }
+                }
+            }
+            xhr.send();
         });
     }
 }

@@ -44,7 +44,10 @@ export class LoadObjUtil {
     }
 
 
-
+    /**
+     * 将一段text文本解析成obj模型文件
+     * @param text
+     */
     public static loadObjModel(text: string): ObjModel {
         let matKey = "default";
 
