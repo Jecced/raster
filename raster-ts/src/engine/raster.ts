@@ -67,7 +67,7 @@ export class Raster {
 
         output.set(
             Math.round(input.x * this.size + this.hw),
-            Math.round(input.y * this.size + this.hh),
+            Math.round(-input.y * this.size + this.hh),
             0, 0);
     }
 
