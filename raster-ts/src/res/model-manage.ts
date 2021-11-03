@@ -34,7 +34,7 @@ export class ModelManage {
 
         // 缩放一下
         for (let i = 0; i < model.v.length; i++) {
-            model.v[i].scale(0.2)
+            model.v[i].scale(0.2);
         }
 
         return new Node(model);

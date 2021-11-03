@@ -64,14 +64,10 @@ export class Vec4 {
         return out;
     }
 
-    public scale(scale: number, out?: Vec4): Vec4 {
-        if (!out) {
-            out = new Vec4();
-        }
-        out.x = this.x * scale;
-        out.y = this.y * scale;
-        out.z = this.z * scale;
-        return out;
+    public scale(scale: number): void {
+        this.x *= scale;
+        this.y *= scale;
+        this.z *= scale;
     }
 
     public rotateX(rad: number): void {
