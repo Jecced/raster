@@ -26,7 +26,7 @@ export class Color {
     }
 
     set r(v: number) {
-        this._val = (this._val & 0xffffff00 | v & 255 << 0) >>> 0;
+        this._val = (this._val & 0xffffff00 | (v & 255) << 0) >>> 0;
     }
 
     get g(): number {
@@ -34,7 +34,7 @@ export class Color {
     }
 
     set g(v: number) {
-        this._val = (this._val & 0xffffff00 | v & 255 << 8) >>> 0;
+        this._val = (this._val & 0xffff00ff | (v & 255) << 8) >>> 0;
     }
 
 
@@ -43,7 +43,7 @@ export class Color {
     }
 
     set b(v: number) {
-        this._val = (this._val & 0xffffff00 | v & 255 << 16) >>> 0;
+        this._val = (this._val & 0xff00ffff | (v & 255) << 16) >>> 0;
     }
 
     get a(): number {
@@ -51,7 +51,7 @@ export class Color {
     }
 
     set a(v: number) {
-        this._val = (this._val & 0xffffff00 | v & 255 << 24) >>> 0;
+        this._val = (this._val & 0x00ffffff | (v & 255) << 24) >>> 0;
     }
 
     public set(r: number, g: number, b: number, a = 255): void {
