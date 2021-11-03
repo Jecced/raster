@@ -73,8 +73,7 @@ export class Calc {
      * @param b
      * @param mats
      */
-    public static mat4MulLinked(a: Mat4, b: Mat4, ...mats: Mat4[]): Mat4 {
-        mats.unshift(a, b);
+    public static mat4MulLinked(...mats: Mat4[]): Mat4 {
         // 取出最后一个矩阵
         let lastMat = mats[mats.length - 1];
 
