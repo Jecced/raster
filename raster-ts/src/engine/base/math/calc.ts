@@ -141,19 +141,14 @@ export class Calc {
         return out;
     }
 
-    public vec2ByAngleDist(angle: number, distance: number, out: Vec4): Vec4 {
+    public static vec2ByAngleDist(angle: number, distance: number, out?: Vec4): Vec4 {
+        if(!out){
+            out = new Vec4();
+        }
         angle = Math.PI / 180 * angle;
         out.x = distance * Math.cos(angle);
-        out.y = distance * Math.cos(angle);
+        out.y = distance * Math.sin(angle);
         return out
     }
-
-    // func CalcVec2ByAngleDist(angle, distance float64) (x, y float64) {
-    //
-    //     angle = math.Pi / 180 * angle
-    //     x = distance * math.Cos(angle)
-    //     y = distance * math.Sin(angle)
-    //     return
-    // }
 
 }
