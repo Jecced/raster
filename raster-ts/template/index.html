@@ -14,6 +14,15 @@
 
         <div class="ctl-bar">
             <div>
+                <label>模型</label>
+                <select onchange="ctl.scene(this.value)">
+                    <option value="0">非洲人</option>
+                    <option value="1">diablo</option>
+                    <option value="2">妙蛙种子</option>
+                </select>
+            </div>
+
+            <div>
                 <input id="msaa" type="checkbox" onchange="ctl.msaa(this.checked)" />
                 <label for="msaa">msaa抗锯齿</label>
             </div>
