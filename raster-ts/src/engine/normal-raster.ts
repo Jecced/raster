@@ -9,7 +9,7 @@ import { Scene } from "../scene/scene";
 import { Calc } from "./base/math/calc";
 import { Mat4 } from "./base/math/mat4";
 
-export class Raster {
+export class NormalRaster {
 
     private readonly ctx: CanvasRenderingContext2D = undefined;
 
