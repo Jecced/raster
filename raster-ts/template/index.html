@@ -9,8 +9,18 @@
 
     <div class="ctl-bar">
         <div>
-            <input id="msaa" type="checkbox" onchange="ctl.msaa(this)" />
+            <input id="msaa" type="checkbox" onchange="ctl.msaa(this.checked)" />
             <label for="msaa">msaa抗锯齿</label>
+        </div>
+        <div>
+            <input type="range" min="0" max="360" value="90" step="1" oninput="ctl.rx(this.value)">
+        </div>
+
+        <div>
+            <input id="per" type="radio" checked name="perspective" onclick="ctl.cameraUseOrt(false)">
+            <label for="per">透视</label>
+            <input id="ort" type="radio" name="perspective" onclick="ctl.cameraUseOrt(true)">
+            <label for="ort">正交</label>
         </div>
     </div>
 
