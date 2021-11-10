@@ -5,23 +5,63 @@
     <title>Software Rasterizer</title>
 </head>
 <body>
-    <canvas id="canvas" height="600px" width="800px"></canvas>
+    <div id="main">
+        <canvas id="canvas"
+                width="400px"
+                height="300px"
+                >
+        </canvas>
 
-    <div class="ctl-bar">
-        <div>
-            <input id="msaa" type="checkbox" onchange="ctl.msaa(this.checked)" />
-            <label for="msaa">msaa抗锯齿</label>
-        </div>
-        <div>
-            <input type="range" min="0" max="360" value="90" step="1" oninput="ctl.rx(this.value)">
+        <div class="ctl-bar">
+            <div>
+                <input id="msaa" type="checkbox" onchange="ctl.msaa(this.checked)" />
+                <label for="msaa">msaa抗锯齿</label>
+            </div>
+            <div>
+                <label>角度</label>
+                <input type="range"
+                       min="0"
+                       max="360"
+                       value="90"
+                       step="1"
+                       oninput="ctl.rx(this.value)">
+            </div>
+
+            <div>
+                <label>距离</label>
+                <input type="range"
+                       min="3"
+                       max="100"
+                       value="30"
+                       step="1"
+                       oninput="ctl.dist(this.value)">
+            </div>
+
+            <div style="height: 150px;display: flex;">
+                <div style="height: 150px; ">
+                    <label style="line-height: 150px;text-align: center">高度</label>
+                </div>
+                <input
+                    type="range"
+                    style="-webkit-appearance: slider-vertical;height: 150px"
+                    min="-40"
+                    max="40"
+                    value="2"
+                    step="1"
+                    oninput="ctl.cy(this.value)">
+            </div>
+
+            <div>
+                <input id="per" type="radio" checked name="perspective" onclick="ctl.cameraUseOrt(false)">
+                <label for="per">透视</label>
+                <input id="ort" type="radio" name="perspective" onclick="ctl.cameraUseOrt(true)">
+                <label for="ort">正交</label>
+            </div>
+
+
+
         </div>
 
-        <div>
-            <input id="per" type="radio" checked name="perspective" onclick="ctl.cameraUseOrt(false)">
-            <label for="per">透视</label>
-            <input id="ort" type="radio" name="perspective" onclick="ctl.cameraUseOrt(true)">
-            <label for="ort">正交</label>
-        </div>
     </div>
 
 
