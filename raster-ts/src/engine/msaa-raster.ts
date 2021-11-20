@@ -233,8 +233,8 @@ export class MsaaRaster {
 
                     msaa++;
                 }
-                if(msaa > 0){
-                    buffer.applyMSAAFilter(x, y)
+                if (msaa > 0) {
+                    buffer.applyMSAAFilter(x, y);
                 }
             }
         }

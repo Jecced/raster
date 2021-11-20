@@ -31,7 +31,7 @@ export class NormalRaster {
 
     }
 
-    public getFrameBuffer():Uint8ClampedArray{
+    public getFrameBuffer(): Uint8ClampedArray {
         return this.imgData.data;
     }
 
@@ -103,7 +103,7 @@ export class NormalRaster {
             // 视窗变换
             list.push(camera.tr);
             // 使用透视
-            if(camera.isPerspective()){
+            if (camera.isPerspective()) {
                 list.push(camera.getPerspectiveMat4());
             }
             const mat = Calc.mat4MulLinked(...list);
@@ -128,7 +128,7 @@ export class NormalRaster {
     private vertexTransform(vertex: Vertices, mat: Mat4): void {
         const vert = vertex.vec;
         Calc.mat4MulVec4(mat, vert, vert);
-        if(vert.w !== 1){
+        if (vert.w !== 1) {
             const z = vert.w;
             vert.standardized();
             vert.z = z;
@@ -190,7 +190,7 @@ export class NormalRaster {
                     1 / v2.vec.z * this.tempBarycentricOut.z;
                 z = 1 / z;
 
-                if(!buffer.zTest(x, y, z)){
+                if (!buffer.zTest(x, y, z)) {
                     continue;
                 }
                 buffer.setZ(x, y, z);

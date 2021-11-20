@@ -142,13 +142,13 @@ export class Calc {
     }
 
     public static vec2ByAngleDist(angle: number, distance: number, out?: Vec4): Vec4 {
-        if(!out){
+        if (!out) {
             out = new Vec4();
         }
         angle = Math.PI / 180 * angle;
         out.x = distance * Math.cos(angle);
         out.y = distance * Math.sin(angle);
-        return out
+        return out;
     }
 
 }

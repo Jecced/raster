@@ -40,7 +40,7 @@ export class Camera implements Base {
         return this;
     }
 
-    public setFar(f: number): this{
+    public setFar(f: number): this {
         this.far = f;
         return this;
     }

@@ -105,10 +105,10 @@ export class MsaaZBuffer implements ZBuffer {
         for (let i = 0, len = this.msaaSize; i < len; i++) {
             const ii = i + index;
             const c = this.colors[ii];
-            r += c.r ;
-            g += c.g ;
-            b += c.b ;
-            a += c.a ;
+            r += c.r;
+            g += c.g;
+            b += c.b;
+            a += c.a;
         }
         r /= this.msaaSize;
         g /= this.msaaSize;

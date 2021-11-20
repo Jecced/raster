@@ -17,8 +17,8 @@ export class Barycentric {
      * @param y
      * @param out
      */
-    public static test(x1: number, y1: number, x2: number, y2: number, x3: number, y3: number, x: number, y: number, out:Vec4): void {
-        if(!out){
+    public static test(x1: number, y1: number, x2: number, y2: number, x3: number, y3: number, x: number, y: number, out: Vec4): void {
+        if (!out) {
             out = new Vec4();
         }
 
@@ -29,7 +29,7 @@ export class Barycentric {
             out.x = -1;
             out.y = -1;
             out.z = -1;
-            return ;
+            return;
         }
 
         const alpha = this.cross(x - x2, y - y2, x - x3, y - y3) / 2 / s;
@@ -38,7 +38,7 @@ export class Barycentric {
 
 
         out.set(alpha, beta, gamma, 0);
-        return ;
+        return;
     }
 
     /**
