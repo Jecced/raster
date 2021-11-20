@@ -192,7 +192,7 @@ export class MsaaRaster {
                         this.tempVecOutV0.x, this.tempVecOutV0.y,
                         this.tempVecOutV1.x, this.tempVecOutV1.y,
                         this.tempVecOutV2.x, this.tempVecOutV2.y,
-                        x + point.x + 0.5, y + point.y + 0.5,
+                        x + point.x, y + point.y,
                         this.tempBarycentricOut,
                     );
 
