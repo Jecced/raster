@@ -204,6 +204,11 @@ export class NormalRaster {
                     1 / v2.vec.z * this.tempBarycentricOut.z;
                 z = 1 / z;
 
+                if(!buffer.zTest(x, y, z)){
+                    continue;
+                }
+                buffer.setZ(x, y, z);
+
                 this.tempBarycentricOut.x = this.tempBarycentricOut.x / v0.vec.z * z;
                 this.tempBarycentricOut.y = this.tempBarycentricOut.y / v1.vec.z * z;
                 this.tempBarycentricOut.z = this.tempBarycentricOut.z / v2.vec.z * z;
@@ -217,7 +222,7 @@ export class NormalRaster {
 
                 texture.getColorByUV(u, v, this.tempColor);
 
-                buffer.setColor(x, y, z, this.tempColor);
+                buffer.setColor(x, y, this.tempColor);
 
             }
         }

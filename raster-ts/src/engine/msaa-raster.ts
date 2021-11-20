@@ -213,6 +213,7 @@ export class MsaaRaster {
                     if (!buffer.zTest(x, y, z, i)) {
                         continue;
                     }
+                    buffer.setZ(x, y, z, i);
 
                     this.tempBarycentricOut.x = this.tempBarycentricOut.x / v0.vec.z * z;
                     this.tempBarycentricOut.y = this.tempBarycentricOut.y / v1.vec.z * z;
@@ -228,19 +229,11 @@ export class MsaaRaster {
 
                     texture.getColorByUV(u, v, this.tempColor);
 
-                    buffer.setMsaaColor(x, y, z, this.tempColor, i);
-                    buffer.setZ(x, y, z, i);
+                    buffer.setColor(x, y, this.tempColor, i);
+
                     msaa++;
                 }
-
-                if (msaa === 0) {
-                    continue;
-                }
-
-
                 // buffer.applyMSAAFilter(x, y)
-
-
             }
         }
     }
