@@ -16,13 +16,6 @@ export interface ZBuffer {
     setColor(x: number, y: number, color: Color, i?: number): void;
 
     /**
-     * 获取颜色
-     * @param x
-     * @param y
-     */
-    getColor(x: number, y: number): Color;
-
-    /**
      * 判断一个像素是否需要被填充
      * @param x
      * @param y
