@@ -87,25 +87,28 @@ export class MsaaZBuffer implements ZBuffer {
 
         const index = this.getZPosition(x, y, 0);
 
-        const color = new Color();
+        let r = 0, g = 0, b = 0, a = 0;
         for (let i = 0, len = this.msaaSize; i < len; i++) {
-            color.r += this.colors[i + index].r / this.msaa;
-            color.g += this.colors[i + index].g / this.msaa;
-            color.b += this.colors[i + index].b / this.msaa;
-            // color.a += this.colors[i + index].a / len;
+            const ii = i + index;
+            const c = this.colors[ii];
+            r += c.r ;
+            g += c.g ;
+            b += c.b ;
+            a += c.a ;
         }
-        return color;
+        r /= this.msaaSize;
+        g /= this.msaaSize;
+        b /= this.msaaSize;
+        a /= this.msaaSize;
+
+        return new Color(r, g, b, a);
     }
 
     public setColor(x: number, y: number, color: Color, i: number): void {
         x >>= 0;
         y >>= 0;
         const index = this.getZPosition(x, y, i);
-        const tempColor = this.colors[index + i];
-        if (!tempColor) {
-            return;
-        }
-        tempColor.fromColor(color);
+        this.colors[index].fromColor(color);
     }
 
     public getPoints(): Array<Vec4> {
