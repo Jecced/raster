@@ -103,6 +103,16 @@ export class Vec4 {
         this.w *= len;
     }
 
+    public normalize3(): void {
+        let len = this.x * this.x + this.y * this.y + this.z * this.z;
+        if (len > 0) {
+            len = 1 / Math.sqrt(len);
+        }
+        this.x *= len;
+        this.y *= len;
+        this.z *= len;
+    }
+
     public standardized(): void {
         if (this.w === 0) {
             return;
