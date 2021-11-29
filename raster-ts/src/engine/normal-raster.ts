@@ -136,21 +136,6 @@ export class NormalRaster {
         }
     }
 
-    public renderModel(model: ObjModel, buffer: ZBuffer): void {
-        for (let i = 0, len = model.face.length; i < len; i++) {
-            const face = model.face[i];
-            let key = face.key;
-            if (key === "") {
-                key = "default";
-            }
-            const texture = model.mat.get(key);
-            model.faceToVertices(i, this.v1, this.v2, this.v3);
-
-            this.renderFace(texture, this.v1, this.v2, this.v3, buffer);
-        }
-    }
-
-
     private tempVecOutV0: Vec4 = new Vec4();
     private tempVecOutV1: Vec4 = new Vec4();
     private tempVecOutV2: Vec4 = new Vec4();
