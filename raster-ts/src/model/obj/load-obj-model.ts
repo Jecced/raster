@@ -36,6 +36,17 @@ export class ObjModel {
         // uv信息
         const uv0 = this.t[face.t[index] - 1];
 
+        // 法线
+        const normal = this.n[face.t[index] - 1];
+
+        if (normal) {
+            if (vert.normal) {
+                vert.normal.set(normal.x, normal.y, normal.z, normal.w);
+            } else {
+                vert.normal = normal.clone();
+            }
+        }
+
         vert.u = uv0.x;
         vert.v = uv0.y;
 
