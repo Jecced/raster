@@ -1,0 +1,15 @@
+body {
+    padding: 0;
+    margin: 0;
+    border-width: 0;
+}
+
+#main{
+    display: flex;
+}
+
+#canvas {
+    /*margin: 0 auto;*/
+    display: flex;
+    justify-content: center;
+}
