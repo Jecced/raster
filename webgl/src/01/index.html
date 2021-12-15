@@ -1,0 +1,30 @@
+<!DOCUMENT>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>Clear Canvas</title>
+</head>
+<body onload="main()">
+<canvas id="webgl" width="400" height="400">
+    Please use the browser supporting "canvas"
+</canvas>
+<script src="../lib/webgl-utils.js"></script>
+<script src="../lib/webgl-debug.js"></script>
+<script src="../lib/cuon-utils.js"></script>
+
+<script>
+    function main() {
+        let canvas = document.getElementById("webgl");
+        let gl = getWebGLContext(canvas);// gl: WebGLRenderingContext
+        if (!gl) {
+            console.log("Failed to get the rendering context for WebGL");
+            return;
+        }
+        // 指定清空的webgl的颜色
+        gl.clearColor(0.0, 0.0, 0.0, 1.0);
+        // 清空canvas
+        gl.clear(gl.COLOR_BUFFER_BIT);
+    }
+</script>
+</body>
+</html>
