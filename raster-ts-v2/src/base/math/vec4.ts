@@ -152,4 +152,22 @@ export class Vec4 {
         return this.toString();
     }
 
+
+    public static fromArray(array: number[]): Vec4 {
+        const len = array.length;
+        const out = new Vec4();
+        if (len > 0) {
+            out.x = array[0];
+        }
+        if (len > 1) {
+            out.y = array[1];
+        }
+        if (len > 2) {
+            out.z = array[2];
+        }
+        if (len > 3) {
+            out.w = array[3];
+        }
+        return out;
+    }
 }
