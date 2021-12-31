@@ -1,10 +1,14 @@
 import { Color } from "../../base/color";
+import { Vec4 } from "../../base/math/vec4";
 
 /**
  * frame buffer
  */
 export interface FrameBuffer {
-    getFrameBuffer(): Float32Array;
+    /**
+     * 给buffer设置一个位置颜色
+     */
+    setColor(x: number, y: number, rgba: Vec4, extra?: any): void;
 
     /**
      * 设置清除颜色
