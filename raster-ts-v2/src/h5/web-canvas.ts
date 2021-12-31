@@ -13,7 +13,7 @@ export class WebCanvas {
 
 
     public constructor(elementId: string = "canvas") {
-        if (!document) {
+        if (!window["document"]) {
             return;
         }
         const canvas: HTMLCanvasElement = document.getElementById(elementId) as HTMLCanvasElement;
