@@ -4,5 +4,5 @@ import { GlData } from "../../data/gl-data";
 import { ShaderVariable } from "../../data/shader-variable";
 
 export interface VertexShader {
-    main(glData: GlData, input: VAO, output: ShaderVariable): Vec4;
+    main(glData: GlData, input: VAO, v: ShaderVariable): Vec4;
 }

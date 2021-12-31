@@ -6,7 +6,7 @@ import { Calc } from "../../../base/math/calc";
 import { ShaderVariable } from "../../data/shader-variable";
 
 export class SimpleVertex implements VertexShader {
-    main(glData: GlData, input: VAO, output: ShaderVariable): Vec4 {
+    main(glData: GlData, input: VAO, v: ShaderVariable): Vec4 {
         // return cc_matProj * (cc_matView * matWorld) * In.position;
 
         const position = Vec4.fromArray(input.position);
@@ -15,17 +15,17 @@ export class SimpleVertex implements VertexShader {
          * 局部坐标转世界坐标
          * 只需要使用xyz
          */
-        output.v_position = Calc.mat4MulVec4(glData.matWorld, position);
+        v.position = Calc.mat4MulVec4(glData.matWorld, position);
 
         /**
          * 计算法线
          */
-        output.v_normal = Calc.mat4MulVec4(glData.matWorldIT, Vec4.fromArray(input.normal));
-        output.v_normal.normalize3();
+        v.normal = Calc.mat4MulVec4(glData.matWorldIT, Vec4.fromArray(input.normal));
+        v.normal.normalize3();
 
-        output.v_uv = Vec4.fromArray(input.uv);
+        v.uv = Vec4.fromArray(input.uv);
 
-        output.v_color = Vec4.fromArray(input.color);
+        v.color = Vec4.fromArray(input.color);
 
         const mat = Calc.mat4Mul(glData.matView, glData.matWorld);
         Calc.mat4Mul(glData.matProjection, mat, mat);
