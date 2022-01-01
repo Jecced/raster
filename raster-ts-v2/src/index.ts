@@ -85,9 +85,11 @@ function run() {
     glData.matScreen = camera.getScreenMat();
 
     pipeline.clear();
+    console.time("render");
     pipeline.run(node.getVBO(), node.getIndices(), glData);
     const frameBuffer = pipeline.getFrameBuffer();
     canvas.render(frameBuffer);
+    console.timeEnd("render");
 }
 
 run();
