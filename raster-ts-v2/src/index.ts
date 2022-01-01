@@ -77,7 +77,8 @@ function run() {
     glData.screenSize = new Vec4(width, height, 1 / width, 1 / height);
 
     pipeline.clear();
-    const frameBuffer = pipeline.run(node.getVBO(), node.getIndices(), glData);
+    pipeline.run(node.getVBO(), node.getIndices(), glData);
+    const frameBuffer = pipeline.getFrameBuffer();
     canvas.render(frameBuffer);
 }
 
