@@ -34,7 +34,7 @@ function run() {
     };
 
     const scene = new Scene();
-    const camera = new Camera(400, 300, -1, -10, 45);
+    const camera = new Camera(width, height, -1, -10, 45);
     scene.setCamera(camera);
     const node = new Node();
     node.setVBO(vao, 3, 0, 3, 0, 0);
