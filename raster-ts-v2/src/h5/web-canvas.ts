@@ -8,8 +8,8 @@ export class WebCanvas {
      * 默认屏幕宽高为400*300
      * 实际为真实初始化环境的canvas大小
      */
-    readonly height: number = 400;
-    readonly width: number = 300;
+    readonly width: number = 400;
+    readonly height: number = 300;
 
 
     public constructor(elementId: string = "canvas") {
