@@ -69,10 +69,10 @@ export class VertexUtil {
         if (!out) {
             out = new ShaderVariable();
         }
-        this.barycentricVec4(v0.position, v1.position, v2.position, alpha, beta, gamma, out.position);
-        this.barycentricVec4(v0.normal, v1.normal, v2.normal, alpha, beta, gamma, out.normal);
-        this.barycentricVec4(v0.uv, v1.uv, v2.uv, alpha, beta, gamma, out.uv);
-        this.barycentricVec4(v0.color, v1.color, v2.color, alpha, beta, gamma, out.color);
+        out.position = this.barycentricVec4(v0.position, v1.position, v2.position, alpha, beta, gamma, out.position);
+        out.normal = this.barycentricVec4(v0.normal, v1.normal, v2.normal, alpha, beta, gamma, out.normal);
+        out.uv = this.barycentricVec4(v0.uv, v1.uv, v2.uv, alpha, beta, gamma, out.uv);
+        out.color = this.barycentricVec4(v0.color, v1.color, v2.color, alpha, beta, gamma, out.color);
         return out;
     }
 
