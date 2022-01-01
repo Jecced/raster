@@ -96,4 +96,8 @@ export class RenderingPipeline {
 
         return this.rasterizer.getFrameBuffer();
     }
+
+    public clear(): void {
+        this.rasterizer.clear();
+    }
 }

@@ -76,9 +76,9 @@ function run() {
     // 只设置一次
     glData.screenSize = new Vec4(width, height, 1 / width, 1 / height);
 
-    pipeline.run(node.getVBO(), node.getIndices(), glData);
-
-
+    pipeline.clear();
+    const frameBuffer = pipeline.run(node.getVBO(), node.getIndices(), glData);
+    canvas.render(frameBuffer);
 }
 
 run();
