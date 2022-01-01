@@ -1,12 +1,11 @@
 import { VertexShader } from "../shader/vertex/vertex-shader";
 import { FragmentShader } from "../shader/fragment/fragment-shader";
 import { VBO } from "../data/vbo";
-import { FrameBuffer } from "../buffer/frame-buffer";
-import { ZBuffer } from "../buffer/z-buffer";
 import { GlData } from "../data/gl-data";
 import { ShaderVariable } from "../data/shader-variable";
 import { Vec4 } from "../../base/math/vec4";
 import { Calc } from "../../base/math/calc";
+import { Rasterizer } from "../rasterizer/rasterizer";
 
 /**
  * 渲染管线
@@ -49,14 +48,9 @@ export class RenderingPipeline {
      */
 
     /**
-     * FrameBuffer
+     * Rasterizer
      */
-    public frameBuffer: FrameBuffer;
-
-    /**
-     * ZBuffer
-     */
-    public zBuffer: ZBuffer;
+    public rasterizer: Rasterizer;
 
     /**
      * 渲染一个模型信息, 返回frame buffer
@@ -85,10 +79,21 @@ export class RenderingPipeline {
             const p0 = positions[i0];
             const p1 = positions[i1];
             const p2 = positions[i2];
-            console.log(p0.toString());
-            console.log(p1.toString());
-            console.log(p2.toString());
+
+            const v0 = variable[i0];
+            const v1 = variable[i1];
+            const v2 = variable[i2];
+
+            // TODO 背面剔除
+
+            // 光栅化
+            this.rasterizer.run(
+                p0, p1, p2,
+                v0, v1, v2,
+                this.fs, glData,
+            );
         }
-        return undefined;
+
+        return this.rasterizer.getFrameBuffer();
     }
 }
