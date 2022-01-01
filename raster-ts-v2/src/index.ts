@@ -74,8 +74,10 @@ function run() {
     // 每个模型设置一次
     glData.matWorld = node.getMatWorld();
     glData.matWorldIT = node.getMatWorldIT();
-    const matMVP = Calc.mat4Mul(glData.matView, glData.matWorld);
-    Calc.mat4Mul(glData.matProjection, matMVP, matMVP);
+    // const matMVP = Calc.mat4Mul(glData.matView, glData.matWorld);
+    // Calc.mat4Mul(glData.matProjection, matMVP, matMVP);
+    const matMVP = Calc.mat4Mul(glData.matView, glData.matProjection);
+    Calc.mat4Mul(glData.matWorld, matMVP, matMVP);
     glData.matMVP = matMVP;
 
     // 只设置一次
