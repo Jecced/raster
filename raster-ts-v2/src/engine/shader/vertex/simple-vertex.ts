@@ -27,11 +27,8 @@ export class SimpleVertex implements VertexShader {
 
         v.color = Vec4.fromArray(input.color);
 
-        const mat = Calc.mat4Mul(glData.matView, glData.matWorld);
-        Calc.mat4Mul(glData.matProjection, mat, mat);
 
-
-        return Calc.mat4MulVec4(mat, position);
+        return Calc.mat4MulVec4(glData.matMVP, position);
     }
 
 }

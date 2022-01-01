@@ -10,6 +10,7 @@ import { WebCanvas } from "./h5/web-canvas";
 import { GlData } from "./engine/data/gl-data";
 import { Vec4 } from "./base/math/vec4";
 import { NormalRasterizer } from "./engine/rasterizer/normal-rasterizer";
+import { Calc } from "./base/math/calc";
 
 function run() {
 
@@ -62,9 +63,6 @@ function run() {
 
     //glData
     const glData = new GlData();
-    // 每个模型设置一次
-    glData.matWorld = node.getMatWorld();
-    glData.matWorldIT = node.getMatWorldIT();
 
     // 每次渲染设置一次
     glData.matView = camera.getViewMat();
@@ -72,6 +70,13 @@ function run() {
     glData.matOrthographic = camera.getOrthographicMat();
     glData.time = ~~(Date.now() / 1000);
     glData.cameraPos = camera.getPosition();
+
+    // 每个模型设置一次
+    glData.matWorld = node.getMatWorld();
+    glData.matWorldIT = node.getMatWorldIT();
+    const matMVP = Calc.mat4Mul(glData.matView, glData.matWorld);
+    Calc.mat4Mul(glData.matProjection, matMVP, matMVP);
+    glData.matMVP = matMVP;
 
     // 只设置一次
     glData.screenSize = new Vec4(width, height, 1 / width, 1 / height);
