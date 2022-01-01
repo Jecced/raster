@@ -191,7 +191,7 @@ export class Camera implements Base {
         /**
          * tan(fov/2) = t / n
          */
-        const t = Math.tan(this.fov / 2) * Math.abs(this.near);
+        const t = Math.tan(this.fov / 360 * 2 * Math.PI / 2) * Math.abs(this.near);
         const b = -t;
         /**
          *  nx     r
