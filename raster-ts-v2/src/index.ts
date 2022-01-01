@@ -80,6 +80,7 @@ function run() {
 
     // 只设置一次
     glData.screenSize = new Vec4(width, height, 1 / width, 1 / height);
+    glData.matScreen = camera.getScreenMat();
 
     pipeline.clear();
     pipeline.run(node.getVBO(), node.getIndices(), glData);
