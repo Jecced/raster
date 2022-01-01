@@ -12,14 +12,10 @@ import { NormalRasterizer } from "./engine/rasterizer/normal-rasterizer";
 import { Calc } from "./base/math/calc";
 import { VertexColorFragment } from "./engine/shader/fragment/vertex-color-fragment";
 
-function run() {
 
-    const canvas = new WebCanvas("canvas");
-    const width = canvas.width;
-    const height = canvas.height;
-
-    // 定义一个三角形
-    let vao: VAO = {
+// 三角形的VAO
+function getTriangleVAO(): VAO {
+    return {
         position: [
             -0.5, -0.5, 0.0,
             0.5, -0.5, 0.0,
@@ -33,6 +29,80 @@ function run() {
         normal: [],
         indices: [0, 1, 2],
     };
+}
+
+// 正方体的VAO
+function getCubeVAO(): VAO {
+    return {
+        position: [
+            // front
+            -0.5, -0.5, 0.5,
+            -0.5, 0.5, 0.5,
+            0.5, 0.5, 0.5,
+            0.5, -0.5, 0.5,
+            // back
+            -0.5, -0.5, -0.5,
+            -0.5, 0.5, -0.5,
+            0.5, 0.5, -0.5,
+            0.5, -0.5, -0.5,
+        ],
+        color: [
+            1.0, 0.0, 0.0,
+            0.0, 1.0, 0.0,
+            0.0, 0.0, 1.0,
+            1.0, 1.0, 0.0,
+            1.0, 0.0, 0.0,
+            0.0, 1.0, 0.0,
+            0.0, 0.0, 1.0,
+            1.0, 1.0, 0.0,
+        ],
+        uv: [],
+        tangent: [],
+        normal: [],
+        indices: [
+            0, 1, 2, 2, 3, 0, // front
+            4, 5, 6, 6, 7, 4, // back
+            3, 2, 6, 6, 7, 3, // right
+            0, 1, 5, 5, 4, 0, // left
+            1, 5, 6, 6, 2, 1, // top
+            0, 4, 7, 7, 3, 0, // bottom
+        ],
+    };
+}
+
+// 正方形面
+function getQuadVAO(): VAO {
+    return {
+        position: [
+            // front
+            -0.5, -0.5, 0.,
+            -0.5, 0.5, 0.,
+            0.5, 0.5, 0.,
+            0.5, -0.5, 0.,
+        ],
+        color: [
+            1.0, 0.0, 0.0,
+            0.0, 1.0, 0.0,
+            0.0, 0.0, 1.0,
+            1.0, 1.0, 0.0,
+        ],
+        uv: [],
+        tangent: [],
+        normal: [],
+        indices: [
+            0, 1, 2, 2, 3, 0,
+        ],
+    };
+}
+
+
+function run() {
+
+    const canvas = new WebCanvas("canvas");
+    const width = canvas.width;
+    const height = canvas.height;
+
+    let vao: VAO = getCubeVAO();
 
     const scene = new Scene();
     const camera = new Camera(width, height, -1, -10, 90);
