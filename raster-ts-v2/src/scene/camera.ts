@@ -209,8 +209,8 @@ export class Camera implements Base {
          */
         const matOrt = Mat4.fromData(
             2 / (r - l), 0, 0, -(r + l) / (r - l),
-            0, 2 / (t - b), 0, -(t + b) / t - b,
-            0, 0, 2 / (n - f), -(n + f) / n - f,
+            0, 2 / (t - b), 0, -(t + b) / (t - b),
+            0, 0, 2 / (n - f), -(n + f) / (n - f),
             0, 0, 0, 1,
         );
 
