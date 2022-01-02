@@ -47,14 +47,14 @@ function getCubeVAO(): VAO {
             0.5, -0.5, -0.5,
         ],
         color: [
-            1.0, 0.0, 0.0,
+            0.0, 0.0, 0.0,
             0.0, 1.0, 0.0,
-            0.0, 0.0, 1.0,
             1.0, 1.0, 0.0,
             1.0, 0.0, 0.0,
-            0.0, 1.0, 0.0,
             0.0, 0.0, 1.0,
-            1.0, 1.0, 0.0,
+            0.0, 1.0, 1.0,
+            1.0, 1.0, 1.0,
+            1.0, 0.0, 1.0,
         ],
         uv: [],
         tangent: [],
@@ -105,12 +105,13 @@ function run() {
     let vao: VAO = getCubeVAO();
 
     const scene = new Scene();
-    const camera = new Camera(width, height, -1, -10, 90);
+    const camera = new Camera(width, height, -2, -50, 90);
+    camera.usePerspective();
     scene.setCamera(camera);
     const node = new Node();
     node.setVBO(vao, 3, 0, 3, 0, 0);
 
-    camera.setPosition(0, 0, 1);
+    camera.setPosition(2, 1, 1);
     node.setPosition(0, 0, -2);
     /**
      * 设置简易顶点着色器和随机颜色片元着色器
