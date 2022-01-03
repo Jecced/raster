@@ -4,7 +4,6 @@ import { Scene } from "./scene/scene";
 import { Camera } from "./scene/camera";
 import { Node } from "./scene/node";
 import { RenderingPipeline } from "./engine/pipeline/rendering-pipeline";
-import { SimpleVertex } from "./engine/shader/vertex/simple-vertex";
 import { WebCanvas } from "./h5/web-canvas";
 import { GlData } from "./engine/data/gl-data";
 import { Vec4 } from "./base/math/vec4";
@@ -13,6 +12,8 @@ import { Calc } from "./base/math/calc";
 import { VertexColorFragment } from "./engine/shader/fragment/vertex-color-fragment";
 import { RenderingScheduler } from "./scene/scheduler/rendering-scheduler";
 import { RotationVertex } from "./engine/shader/vertex/rotation-vertex";
+import { TimeEvent, TimeEventEnum } from "./event/time-event";
+import { DomText } from "./event/dom-text";
 
 
 // 三角形的VAO
@@ -100,6 +101,9 @@ function getQuadVAO(): VAO {
 
 function run() {
 
+    // dom 调试文本初始化
+    new DomText();
+
     const canvas = new WebCanvas("canvas");
     const width = canvas.width;
     const height = canvas.height;
@@ -136,13 +140,14 @@ function run() {
     glData.matScreen = camera.getScreenMat();
 
     const renderOnce = function() {
-        console.time("render");
+        const renderTime = Date.now();
         pipeline.clear();
         RenderingScheduler.go();
         render(scene, glData, pipeline);
         const frameBuffer = pipeline.getFrameBuffer();
         canvas.render(frameBuffer);
-        console.timeEnd("render");
+        const renderTimeDelay = Date.now() - renderTime;
+        TimeEvent.dispatch(TimeEventEnum.Rendering, renderTimeDelay);
         requestAnimationFrame(renderOnce);
     };
 
