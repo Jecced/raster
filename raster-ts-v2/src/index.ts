@@ -140,14 +140,18 @@ function run() {
     glData.matScreen = camera.getScreenMat();
 
     const renderOnce = function() {
+        // 记录开始渲染的时间
         const renderTime = Date.now();
+        // 清空pipeline中的FrameBuffer和zBuffer信息
         pipeline.clear();
+        // 执行所有调度器
         RenderingScheduler.go();
+        // 渲染整个scene到pipeline中
         render(scene, glData, pipeline);
+        // 获取更新后的frameBuffer绘制到canvas中
         const frameBuffer = pipeline.getFrameBuffer();
         canvas.render(frameBuffer);
-        const renderTimeDelay = Date.now() - renderTime;
-        TimeEvent.dispatch(TimeEventEnum.Rendering, renderTimeDelay);
+        TimeEvent.dispatch(TimeEventEnum.Rendering, Date.now() - renderTime);
         requestAnimationFrame(renderOnce);
     };
 
