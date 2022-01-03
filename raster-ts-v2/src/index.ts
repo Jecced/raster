@@ -116,7 +116,7 @@ function run() {
     node.setVBO(getCubeVAO(), 3, 0, 3, 0, 0);
     scene.addChild(node);
 
-    camera.setPosition(2, 1, 1);
+    camera.setPosition(0, 1, 1);
     node.setPosition(0, 0, -2);
     /**
      * 设置简易顶点着色器和随机颜色片元着色器
