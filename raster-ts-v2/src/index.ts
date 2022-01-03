@@ -102,7 +102,7 @@ function getQuadVAO(): VAO {
 function run() {
 
     // dom 调试文本初始化
-    new DomText();
+    DomText.init();
 
     const canvas = new WebCanvas("canvas");
     const width = canvas.width;
