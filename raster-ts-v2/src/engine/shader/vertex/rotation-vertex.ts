@@ -16,9 +16,9 @@ export class RotationVertex implements VertexShader {
         // position.rotateX(20);
         const c = glData.time;// / 360 * 2 * Math.PI;
         const rotationMat = Mat4.fromData(
-            Math.cos(c), -Math.sin(c), 0, 0,
-            Math.sin(c), Math.cos(c), 0, 0,
-            0, 0, 1, 0,
+            Math.cos(c), 0, -Math.sin(c), 0,
+            0, 1, 0, 0,
+            Math.sin(c), 0, Math.cos(c), 0,
             0, 0, 0, 1,
         );
         Calc.mat4MulVec4(rotationMat, position, position);
