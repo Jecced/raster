@@ -1,3 +1,3 @@
-export class Scheduler {
-    
+export interface Scheduler {
+    update(dt?: number): void;
 }
