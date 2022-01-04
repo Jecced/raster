@@ -9,7 +9,7 @@ export class ZBuffer1x implements ZBuffer {
     public constructor(width: number, height: number) {
         this.width = width;
         this.height = height;
-        this.z = new Float32Array(width * height * 4);
+        this.z = new Float32Array(width * height);
     }
 
 
