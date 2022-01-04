@@ -5,7 +5,7 @@ import { GlData } from "../../data/gl-data";
 import { Calc } from "../../../base/math/calc";
 import { ShaderVariable } from "../../data/shader-variable";
 
-export class SimpleVertex implements VertexShader {
+export class VertSimple implements VertexShader {
     main(glData: GlData, input: VAO, v: ShaderVariable): Vec4 {
         // return cc_matProj * (cc_matView * matWorld) * In.position;
 
