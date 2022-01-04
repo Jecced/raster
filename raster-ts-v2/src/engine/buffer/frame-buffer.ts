@@ -23,5 +23,5 @@ export interface FrameBuffer {
     /**
      * 转为1倍的buffer
      */
-    coverToNormalBuffer(): Float32Array;
+    getFrameBuffer(): Float32Array;
 }

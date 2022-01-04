@@ -52,7 +52,7 @@ export class FrameBuffer1x implements FrameBuffer {
     /**
      * 转为1倍的buffer
      */
-    public coverToNormalBuffer(): Float32Array {
+    public getFrameBuffer(): Float32Array {
         return this.buffer;
     }
 }
