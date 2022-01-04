@@ -10,7 +10,7 @@ import { VertexUtil } from "../data/vertex-util";
 import { GlData } from "../data/gl-data";
 import { Calc } from "../../base/math/calc";
 
-export class NormalRasterizer implements Rasterizer {
+export class RasterizerNormal implements Rasterizer {
     private zBuffer: ZBuffer;
 
     private frameBuffer: FrameBuffer;
