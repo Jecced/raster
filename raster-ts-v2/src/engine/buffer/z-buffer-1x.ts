@@ -32,4 +32,8 @@ export class ZBuffer1x implements ZBuffer {
             this.z[i] = -1;
         }
     }
+
+    getZBuffer(): Float32Array {
+        return this.z;
+    }
 }

@@ -104,6 +104,10 @@ export class RenderingPipeline {
         return this.rasterizer.getFrameBuffer();
     }
 
+    public getZBuffer(): Float32Array {
+        return this.rasterizer.getZBuffer();
+    }
+
     public clear(): void {
         this.rasterizer.clear();
     }

@@ -22,4 +22,9 @@ export interface ZBuffer {
      * 清空所有深度
      */
     clear(): void;
+
+    /**
+     * 获取ZBuffer信息
+     */
+    getZBuffer(): Float32Array;
 }
