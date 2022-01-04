@@ -14,9 +14,12 @@ export class ZBuffer1x implements ZBuffer {
 
 
     public zTest(x: number, y: number, z: number): boolean {
+        if (z > 1 || z < -1) {
+            return false;
+        }
         const index = x + y * this.width;
         const nz = this.z[index];
-        return isNaN(nz) || z > nz;
+        return z > nz;
     }
 
     public setZ(x: number, y: number, z: number): void {
@@ -26,7 +29,7 @@ export class ZBuffer1x implements ZBuffer {
 
     public clear(): void {
         for (let i = 0, len = this.z.length; i < len; i++) {
-            this.z[i] = NaN;
+            this.z[i] = -1;
         }
     }
 }
