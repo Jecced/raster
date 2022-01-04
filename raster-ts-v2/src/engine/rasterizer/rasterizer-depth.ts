@@ -29,6 +29,9 @@ export class RasterizerDepth implements Rasterizer {
         v0: ShaderVariable, v1: ShaderVariable, v2: ShaderVariable,
         fs: FragmentShader, glData: GlData,
     ): void {
+        p0.standardized();
+        p1.standardized();
+        p2.standardized();
 
         // 计算三角形面积
         const s = Calc.cross(p1.x - p0.x, p1.y - p0.y, p2.x - p0.x, p2.y - p0.y) / 2;

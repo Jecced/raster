@@ -36,6 +36,13 @@ export class RasterizerNormal implements Rasterizer {
         fs: FragmentShader, glData: GlData,
     ): void {
 
+        const z0 = p0.w;
+        const z1 = p1.w;
+        const z2 = p2.w;
+
+        p0.standardized();
+        p1.standardized();
+        p2.standardized();
         // 计算三角形面积
         const s = Calc.cross(p1.x - p0.x, p1.y - p0.y, p2.x - p0.x, p2.y - p0.y) / 2;
         if (s === 0) {
@@ -66,18 +73,21 @@ export class RasterizerNormal implements Rasterizer {
                     continue;
                 }
 
-                let z = 1 / p0.z * alpha + 1 / p1.z * beta + 1 / p2.z * gamma;
-                z = 1 / z;
+                const rz = p0.z * alpha + p1.z * beta + p2.z * gamma;
 
                 // 深度测试
-                if (!this.zBuffer.zTest(x, y, z)) {
+                if (!this.zBuffer.zTest(x, y, rz)) {
                     continue;
                 }
-                this.zBuffer.setZ(x, y, z);
+                this.zBuffer.setZ(x, y, rz);
 
-                alpha = alpha / p0.z * z;
-                beta = beta / p1.z * z;
-                gamma = gamma / p2.z * z;
+
+                let z = 1 / z0 * alpha + 1 / z1 * beta + 1 / z2 * gamma;
+                z = 1 / z;
+
+                alpha = alpha / z0 * z;
+                beta = beta / z1 * z;
+                gamma = gamma / z2 * z;
 
                 // 顶点数据variable插值
                 VertexUtil.barycentric(v0, v1, v2, alpha, beta, gamma, this.variable);

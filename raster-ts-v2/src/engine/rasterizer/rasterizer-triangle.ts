@@ -26,6 +26,9 @@ export class RasterizerTriangle implements Rasterizer {
         v0: ShaderVariable, v1: ShaderVariable, v2: ShaderVariable,
         fs: FragmentShader, glData: GlData,
     ): void {
+        p0.standardized();
+        p1.standardized();
+        p2.standardized();
         this.line(p0.x, p0.y, p1.x, p1.y);
         this.line(p2.x, p2.y, p1.x, p1.y);
         this.line(p0.x, p0.y, p2.x, p2.y);
