@@ -11,7 +11,6 @@ import { RenderingScheduler } from "./scene/scheduler/rendering-scheduler";
 import { TimeEvent, TimeEventEnum } from "./event/time-event";
 import { DomText } from "./event/dom-text";
 import { FragTexture } from "./engine/shader/fragment/frag-texture";
-import { ResourcePng } from "./res/res";
 import { Loader } from "./util/loader";
 import { Texture } from "./base/texture";
 import { VertRotationY } from "./engine/shader/vertex/vert-rotation-y";
@@ -22,33 +21,50 @@ import { RasterizerNormal } from "./engine/rasterizer/rasterizer-normal";
 import { CanvasRasterizerMapping } from "./h5/canvas-rasterizer-mapping";
 import { RasterizerDepth } from "./engine/rasterizer/rasterizer-depth";
 import { RasterizerTriangle } from "./engine/rasterizer/rasterizer-triangle";
+import { ObjParser } from "./util/obj-parser";
+import { ResourceObj, ResourcePng } from "./resources/resources";
 
 
 async function initScene(width: number, height: number): Promise<Scene> {
     const scene = new Scene();
     const camera = new Camera(width, height, -1, -100, 90);
     camera.usePerspective();
-    camera.setPosition(0, 1, 1);
+    camera.setPosition(0, 1, 2);
     scene.setCamera(camera);
 
     const cube = new Node();
     cube.setVBO(Primitives.cube(), 3, 0, 3, 0, 0);
-    cube.setPosition(0, 0, -3);
+    cube.setPosition(0, 0, -1);
     cube.vs = new VertRotationY();
     cube.fs = new FragVertexColor();
     scene.addChild(cube);
 
     const floor = new Node();
     floor.setVBO(Primitives.plane(), 3, 2, 3, 0, 0);
-    floor.setPosition(0, -1, -4);
-    floor.setScale(5, 5, 5);
+    floor.setPosition(0, -1, -1);
+    floor.setScaleFull(5);
     floor.vs = new VertSimple();
     floor.fs = new FragTexture();
     floor.texture0 = new Texture(await Loader.loadImg(ResourcePng.Grid));
     scene.addChild(floor);
 
+    const african = new Node();
+    african.setVBO(ObjParser.coverToVAO(await Loader.loadText(ResourceObj.African)), 3, 2, 0, 3, 0);
+    african.setPosition(1.5, 0, -1);
+    african.vs = new VertRotationY();
+    african.fs = new FragTexture();
+    african.texture0 = new Texture(await Loader.loadImg(ResourcePng.AfricanDiffuse));
+    scene.addChild(african);
 
-    camera.lookAt(cube.getPosition());
+    const diablo = new Node();
+    diablo.setVBO(ObjParser.coverToVAO(await Loader.loadText(ResourceObj.Diablo)), 3, 2, 0, 3, 0);
+    diablo.setPosition(-1.5, 0, -1);
+    diablo.vs = new VertRotationY();
+    diablo.fs = new FragTexture();
+    diablo.texture0 = new Texture(await Loader.loadImg(ResourcePng.DiabloDiffuse));
+    scene.addChild(diablo);
+
+    camera.lookAt(new Vec4(0, 0, -3));
 
     return scene;
 }
