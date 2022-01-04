@@ -17,5 +17,4 @@ export interface Rasterizer {
 
     clear(): void;
 
-    getZBuffer(): Float32Array;
 }

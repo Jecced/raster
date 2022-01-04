@@ -33,11 +33,6 @@ export class RenderingPipeline {
      */
 
     /**
-     * TODO
-     * Rasterization
-     */
-
-    /**
      * Fragment Shader
      */
     public fs: FragmentShader;
@@ -50,7 +45,7 @@ export class RenderingPipeline {
     /**
      * Rasterizer
      */
-    public rasterizer: Rasterizer;
+    public rasterizer: Rasterizer[] = [];
 
     /**
      * 渲染一个模型信息, 返回frame buffer
@@ -91,24 +86,20 @@ export class RenderingPipeline {
             // TODO 背面剔除
 
             // 光栅化
-            this.rasterizer.run(
-                p0, p1, p2,
-                v0, v1, v2,
-                this.fs, glData,
-            );
+            for (let i = 0, len = this.rasterizer.length; i < len; i++) {
+                this.rasterizer[i].run(
+                    p0, p1, p2,
+                    v0, v1, v2,
+                    this.fs, glData,
+                );
+            }
         }
 
     }
 
-    public getFrameBuffer(): Float32Array {
-        return this.rasterizer.getFrameBuffer();
-    }
-
-    public getZBuffer(): Float32Array {
-        return this.rasterizer.getZBuffer();
-    }
-
     public clear(): void {
-        this.rasterizer.clear();
+        for (let i = 0, len = this.rasterizer.length; i < len; i++) {
+            this.rasterizer[i].clear();
+        }
     }
 }
