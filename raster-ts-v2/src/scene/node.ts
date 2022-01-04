@@ -6,6 +6,7 @@ import { FragmentShader } from "../engine/shader/fragment/fragment-shader";
 import { VAO } from "../engine/data/vao";
 import { VBO } from "../engine/data/vbo";
 import { VertexUtil } from "../engine/data/vertex-util";
+import { Texture } from "../base/texture";
 
 export class Node implements Base {
     private position: Vec4;
@@ -15,6 +16,17 @@ export class Node implements Base {
 
     public vs: VertexShader;
     public fs: FragmentShader;
+
+    public texture0: Texture;
+    public texture1: Texture;
+    public texture2: Texture;
+    public texture3: Texture;
+    public texture4: Texture;
+    public texture5: Texture;
+    public texture6: Texture;
+    public texture7: Texture;
+    public texture8: Texture;
+    public texture9: Texture;
 
     constructor() {
         this.position = new Vec4(0, 0, 0, 1);

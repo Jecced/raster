@@ -3,6 +3,7 @@
  */
 import { Mat4 } from "../../base/math/mat4";
 import { Vec4 } from "../../base/math/vec4";
+import { Texture } from "../../base/texture";
 
 export class GlData {
     /**
@@ -51,4 +52,18 @@ export class GlData {
      * 当前时间(s)
      */
     time: number;
+
+    /**
+     * 纹理
+     */
+    texture0: Texture;
+    texture1: Texture;
+    texture2: Texture;
+    texture3: Texture;
+    texture4: Texture;
+    texture5: Texture;
+    texture6: Texture;
+    texture7: Texture;
+    texture8: Texture;
+    texture9: Texture;
 }
