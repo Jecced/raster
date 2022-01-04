@@ -74,6 +74,10 @@ export class NormalRasterizer implements Rasterizer {
                 }
                 this.zBuffer.setZ(x, y, z);
 
+                alpha = alpha / p0.z * z;
+                beta = beta / p1.z * z;
+                gamma = gamma / p2.z * z;
+
                 // 顶点数据variable插值
                 VertexUtil.barycentric(v0, v1, v2, alpha, beta, gamma, this.variable);
 
