@@ -1,7 +1,7 @@
-import { VAO } from "./vao";
-import { VBO } from "./vbo";
-import { ShaderVariable } from "./shader-variable";
-import { Vec4 } from "../../base/math/vec4";
+import { VAO } from "../engine/data/vao";
+import { VBO } from "../engine/data/vbo";
+import { ShaderVariable } from "../engine/data/shader-variable";
+import { Vec4 } from "../base/math/vec4";
 
 export class VertexUtil {
 
