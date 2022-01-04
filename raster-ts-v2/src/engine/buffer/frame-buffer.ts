@@ -1,4 +1,3 @@
-import { Color } from "../../base/color";
 import { Vec4 } from "../../base/math/vec4";
 
 /**
@@ -14,7 +13,7 @@ export interface FrameBuffer {
      * 设置清除颜色
      * @param color
      */
-    setClearColor(color: Color): void;
+    setClearColor(color: Vec4): void;
 
     /**
      * 将buffer所有颜色设置回背景色

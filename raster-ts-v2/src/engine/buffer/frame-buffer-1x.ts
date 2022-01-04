@@ -1,14 +1,13 @@
 /**
  * 1倍的frame buffer
  */
-import { Color } from "../../base/color";
 import { FrameBuffer } from "./frame-buffer";
 import { Vec4 } from "../../base/math/vec4";
 
 export class FrameBuffer1x implements FrameBuffer {
     private readonly buffer: Float32Array;
 
-    private clearColor = Color.BLACK;
+    private clearColor: Vec4 = new Vec4(0, 0, 0, 1);
 
     private readonly width: number;
     private readonly height: number;
@@ -32,16 +31,16 @@ export class FrameBuffer1x implements FrameBuffer {
      * 设置清除颜色
      * @param color
      */
-    public setClearColor(color: Color): void {
-        this.clearColor.fromColor(color);
+    public setClearColor(color: Vec4): void {
+        this.clearColor.fromVec4(color);
     }
 
     /**
      * 将buffer所有颜色设置回背景色
      */
     public clearBuffer(): void {
-        const r = this.clearColor.r / 255, g = this.clearColor.g / 255, b = this.clearColor.b / 255,
-            a = this.clearColor.a / 255;
+        const r = this.clearColor.x, g = this.clearColor.y, b = this.clearColor.z,
+            a = this.clearColor.w;
         for (let i = 0, len = this.buffer.length / 4; i < len; i++) {
             this.buffer[4 * i] = r;
             this.buffer[4 * i + 1] = g;
