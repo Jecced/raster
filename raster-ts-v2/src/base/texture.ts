@@ -1,11 +1,11 @@
-import { Color } from "./color";
+import { Vec4 } from "./math/vec4";
 
 export class Texture {
     private img: ImageData = undefined;
 
     constructor(data?: ImageData) {
         if (data) {
-            this.img = data;
+            this.setImageData(data);
         }
     }
 
@@ -31,13 +31,13 @@ export class Texture {
         return this.img.height;
     }
 
-    public getColorByUV(u: number, v: number, out?: Color): Color {
+    public getColorByUV(u: number, v: number, out?: Vec4): Vec4 {
         if (!this.img) {
-            return Color.BLACK;
+            return new Vec4(0, 0, 0, 1);
         }
-        if (u < 0 || u > 1 || v < 0 || v > 1) {
-            return Color.BLACK;
-        }
+
+        u = u - Math.floor(u);
+        v = v - Math.floor(v);
 
         const w = this.getWidth(), h = this.getHeight();
         const x = Math.round(w * u);
@@ -46,9 +46,9 @@ export class Texture {
         const data = this.img.data;
 
         if (!out) {
-            out = new Color();
+            out = new Vec4();
         }
-        out.set(data[i], data[i + 1], data[i + 2], data[i + 3]);
+        out.set(data[i] / 255, data[i + 1] / 255, data[i + 2] / 255, data[i + 3] / 255);
         return out;
     }
 }
