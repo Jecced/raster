@@ -21,6 +21,7 @@ import { Primitives } from "./engine/geometry/primitives";
 import { RasterizerNormal } from "./engine/rasterizer/rasterizer-normal";
 import { CanvasRasterizerMapping } from "./h5/canvas-rasterizer-mapping";
 import { RasterizerDepth } from "./engine/rasterizer/rasterizer-depth";
+import { RasterizerTriangle } from "./engine/rasterizer/rasterizer-triangle";
 
 
 async function initScene(width: number, height: number): Promise<Scene> {
@@ -68,6 +69,10 @@ async function run() {
     const rasterizerDepth = new RasterizerDepth(width, height);
     CanvasRasterizerMapping.bind(depth, rasterizerDepth);
 
+    const triangle = new WebCanvas("triangle");
+    const rasterizerTriangle = new RasterizerTriangle(width, height);
+    CanvasRasterizerMapping.bind(triangle, rasterizerTriangle);
+
 
     const scene = await initScene(width, height);
     const camera = scene.getCamera();
@@ -80,6 +85,7 @@ async function run() {
     //将普通光栅器加入管线
     pipeline.rasterizer.push(rasterizerNormal);
     pipeline.rasterizer.push(rasterizerDepth);
+    pipeline.rasterizer.push(rasterizerTriangle);
 
     //glData
     const glData = new GlData();
