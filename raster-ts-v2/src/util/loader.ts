@@ -1,4 +1,4 @@
-import { ResourcePng } from "../res/res";
+import { ResourceObj, ResourcePng } from "../res/res";
 
 export class Loader {
 
@@ -6,7 +6,7 @@ export class Loader {
      * 读取某个纹理图片文件
      * @param path
      */
-    public static async loadImg(path: ResourcePng): Promise<ImageData> {
+    public static async loadImg(path: string | ResourcePng): Promise<ImageData> {
         return new Promise<ImageData>(resolve => {
             let img = new Image();
             img.crossOrigin = "*";
@@ -30,10 +30,10 @@ export class Loader {
      * 读取某个文本文件
      * @param path
      */
-    public static async loadText(path: string): Promise<string> {
+    public static async loadText(path: string | ResourceObj): Promise<string> {
         return new Promise((resolve, reject) => {
             const xhr = new XMLHttpRequest();
-            xhr.open("GET", path);
+            xhr.open("GET", path as unknown as string);
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4) {
                     if (xhr.status >= 200 && xhr.status < 300) {
