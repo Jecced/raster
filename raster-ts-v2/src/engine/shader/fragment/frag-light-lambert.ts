@@ -2,13 +2,14 @@ import { FragmentShader } from "./fragment-shader";
 import { GlData } from "../../data/gl-data";
 import { Vec4 } from "../../../base/math/vec4";
 import { ShaderVariable } from "../../data/shader-variable";
-import { texture2D } from "../glsl-grammar/glsl";
 
 /**
- * 直接返回texture2d0的颜色
+ * 不做任何运算, 随机返回一个颜色的着色器
  */
-export class FragTexture implements FragmentShader {
+export class FragLightLambert implements FragmentShader {
     main(glData: GlData, input: ShaderVariable): Vec4 {
-        return texture2D(glData.texture0, input.uv);
+        return new Vec4(1, 1, 1, 1);
     }
+
+
 }
