@@ -3,7 +3,7 @@ import { Vec3 } from "../../../base/math/vec3";
 import { Vec2 } from "../../../base/math/vec2";
 import { Tools } from "./tools";
 
-export function vec4(x: number | Vec2 | Vec3 | Vec4, y?: number | Vec2 | Vec3, z?: number | Vec2, w?: number): Vec4 {
+export function vec4(x: number | Vec2 | Vec3 | Vec4 | number[], y?: number | Vec2 | Vec3 | number[], z?: number | Vec2 | number[], w?: number | number[]): Vec4 {
     const arr: number[] = Tools.VecTypedToArray(x);
     arr.push(...Tools.VecTypedToArray(y));
     arr.push(...Tools.VecTypedToArray(z));
@@ -15,7 +15,7 @@ export function vec4(x: number | Vec2 | Vec3 | Vec4, y?: number | Vec2 | Vec3, z
 }
 
 
-export function vec3(x: number | Vec2 | Vec3, y?: number | Vec2, z?: number): Vec3 {
+export function vec3(x: number | Vec2 | Vec3 | number[], y?: number | Vec2 | number[], z?: number | number[]): Vec3 {
     const arr: number[] = Tools.VecTypedToArray(x);
     arr.push(...Tools.VecTypedToArray(y));
     arr.push(...Tools.VecTypedToArray(z));
@@ -25,7 +25,7 @@ export function vec3(x: number | Vec2 | Vec3, y?: number | Vec2, z?: number): Ve
     return Vec3.fromArray(arr);
 }
 
-export function vec2(x: number | Vec2, y?: number): Vec2 {
+export function vec2(x: number | Vec2 | number[], y?: number | number[]): Vec2 {
     const arr: number[] = Tools.VecTypedToArray(x);
     arr.push(...Tools.VecTypedToArray(y));
     if (arr.length === 1) {

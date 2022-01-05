@@ -1,5 +1,6 @@
 import { Texture } from "../../../base/texture";
 import { Vec4 } from "../../../base/math/vec4";
+import { Vec2 } from "../../../base/math/vec2";
 
 /**
  * glsl 语法模拟, 纹理系列
@@ -10,7 +11,7 @@ import { Vec4 } from "../../../base/math/vec4";
  * @param sampler2d
  * @param uv
  */
-export function texture2D(sampler2d: Texture, uv: Vec4): Vec4 {
+export function texture2D(sampler2d: Texture, uv: Vec2): Vec4 {
     /**
      * 纹理图片不存在, 直接返回一个默认颜色1, 0, 0 纯黄色用于判断错误
      */
