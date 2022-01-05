@@ -78,6 +78,11 @@ export class Vec2 {
         return out;
     }
 
+
+    public reverse(): Vec2 {
+        return new Vec2(-this.x, -this.y);
+    }
+
     public toString(): string {
         return `vec2(${this.x.toFixed(2)}, ${this.y.toFixed(2)}}})`;
     }

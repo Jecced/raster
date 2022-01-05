@@ -159,6 +159,10 @@ export class Vec4 {
         return out;
     }
 
+    public reverse(): Vec4 {
+        return new Vec4(-this.x, -this.y, -this.z, -this.w);
+    }
+
     public toString(): string {
         return `vec4(${this.x.toFixed(2)}, ${this.y.toFixed(2)}, ${this.z.toFixed(2)}, ${this.w.toFixed(2)})`;
     }
