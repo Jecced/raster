@@ -7,6 +7,7 @@ import { VAO } from "../engine/data/vao";
 import { VBO } from "../engine/data/vbo";
 import { VertexUtil } from "../util/vertex-util";
 import { Texture } from "../base/texture";
+import { Calc } from "../base/math/calc";
 
 export class Node implements Base {
     private position: Vec4;
@@ -102,21 +103,47 @@ export class Node implements Base {
     }
 
     public getMatWorld(): Mat4 {
-        return Mat4.fromData(
-            this.scale.x, 0, 0, this.position.x,
-            0, this.scale.y, 0, this.position.y,
-            0, 0, this.scale.z, this.position.z,
+
+        const scale = Mat4.fromData(
+            this.scale.x, 0, 0, 0,
+            0, this.scale.y, 0, 0,
+            0, 0, this.scale.z, 0,
             0, 0, 0, 1,
         );
+        const move = Mat4.fromData(
+            1, 0, 0, this.position.x,
+            0, 1, 0, this.position.y,
+            0, 0, 1, this.position.z,
+            0, 0, 0, 1,
+        );
+        /**
+         * 先缩放, 再移动
+         * move为横向, scale为纵向
+         * move为右矩阵, scale为左矩阵
+         *
+         */
+        return Calc.mat4Mul(scale, move);
     }
 
     public getMatWorldIT(): Mat4 {
-        return Mat4.fromData(
-            1 / this.scale.x, 0, 0, -this.position.x,
-            0, 1 / this.scale.y, 0, -this.position.y,
-            0, 0, 1 / this.scale.z, -this.position.z,
+        const scale = Mat4.fromData(
+            1 / this.scale.x, 0, 0, 0,
+            0, 1 / this.scale.y, 0, 0,
+            0, 0, 1 / this.scale.z, 0,
             0, 0, 0, 1,
         );
+        const move = Mat4.fromData(
+            1, 0, 0, -this.position.x,
+            0, 1, 0, -this.position.y,
+            0, 0, 1, -this.position.z,
+            0, 0, 0, 1,
+        );
+        /**
+         * 先移动回来, 然后再缩放回来
+         * move为纵向, scale为横向
+         * move为左矩阵, scale为右矩阵
+         */
+        return Calc.mat4Mul(move, scale);
     }
 
 
