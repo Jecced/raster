@@ -33,27 +33,3 @@ export function vec2(x: number | Vec2 | number[], y?: number | number[]): Vec2 {
     }
     return Vec2.fromArray(arr);
 }
-
-export function normalize(value: Vec2): Vec2;
-export function normalize(value: Vec3): Vec3;
-export function normalize(value: Vec4): Vec4;
-export function normalize(value: Vec2 | Vec3 | Vec4): Vec2 | Vec3 | Vec4 {
-    const copy = value.clone();
-    copy.normalize();
-    return copy;
-}
-
-export function dot(a: Vec2, b: Vec2): number;
-export function dot(a: Vec3, b: Vec3): number;
-export function dot(a: Vec4, b: Vec4): number;
-export function dot(a: Vec2 | Vec3 | Vec4, b: Vec2 | Vec3 | Vec4): number {
-    if (a instanceof Vec4 && b instanceof Vec4) {
-        return a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w;
-    } else if (a instanceof Vec3 && b instanceof Vec3) {
-        return a.x * b.x + a.y * b.y + a.z * b.z;
-    } else if (a instanceof Vec2 && b instanceof Vec2) {
-        return a.x * b.x + a.y * b.y;
-    }
-    console.error("glsl dot param error");
-    return 0;
-}
