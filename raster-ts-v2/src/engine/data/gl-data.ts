@@ -44,6 +44,10 @@ export class GlData {
      */
     mainLitDir: Vec4;
     /**
+     * 光源颜色
+     */
+    mainLitColor: Vec4;
+    /**
      * xy：屏幕尺寸
      * zw：屏幕尺寸倒数
      */
