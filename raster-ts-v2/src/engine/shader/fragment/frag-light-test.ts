@@ -2,18 +2,48 @@ import { FragmentShader } from "./fragment-shader";
 import { GlData } from "../../data/gl-data";
 import { Vec4 } from "../../../base/math/vec4";
 import { ShaderVariable } from "../../data/shader-variable";
-import { mul, vec3, vec4 } from "../glsl-grammar/glsl";
+import { dot, max, mul, normalize, pow, reflect, sub, texture2D, vec3, vec4 } from "../glsl-grammar/glsl";
+import { Vec3 } from "../../../base/math/vec3";
 
-/**
- * 不做任何运算, 随机返回一个颜色的着色器
- */
-const u_objectColor = vec3(1, 0.5, 0.31);
-const u_lightColor = vec3(1);
 
 export class FragLightTest implements FragmentShader {
 
-    main(glData: GlData, input: ShaderVariable): Vec4 {
-        return vec4(mul(u_objectColor, u_lightColor), 1);
+    main(glData: GlData, v: ShaderVariable): Vec4 {
+        /**
+         * 环境光照阶段
+         */
+        const ambientStrength = 0.1;// 环境光强度
+        const ambient = mul(ambientStrength, glData.mainLitColor.xyz);
+
+        /**
+         * 漫反射阶段
+         */
+        const normal: Vec3 = v.normal;
+        // const lightDir: Vec3 = normalize(sub(u_lightPos, v.position));
+        const lightDir: Vec3 = glData.mainLitDir;
+
+        const diff = max(dot(normal, lightDir.reverse()), 0.0);
+        const diffuse = mul(diff, glData.mainLitColor.xyz);
+
+        /**
+         * 镜面高光
+         */
+        const specularStrength = 1.;
+        const viewDir: Vec3 = normalize(sub(glData.cameraPos, v.position));
+        const reflectDir = reflect(lightDir, normal);
+        const spec = pow(max(dot(viewDir, reflectDir), 0.0), 2);
+        const specular: Vec3 = mul(specularStrength * spec, glData.mainLitColor.xyz);
+
+
+        const baseColor = texture2D(glData.texture0, v.uv);
+
+        /**
+         * 环境光 + 漫反射
+         */
+            // const result = mul(diffuse, baseColor.xyz);
+        const result = mul(ambient.add(diffuse).add(specular), baseColor.xyz);
+
+        return vec4(result, 1);
     }
 
 
