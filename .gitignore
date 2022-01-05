@@ -5,4 +5,3 @@ dist
 package-lock.json
 
 .idea
-yarn.lock
