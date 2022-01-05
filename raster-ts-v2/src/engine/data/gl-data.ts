@@ -4,6 +4,7 @@
 import { Mat4 } from "../../base/math/mat4";
 import { Vec4 } from "../../base/math/vec4";
 import { Texture } from "../../base/texture";
+import { Vec3 } from "../../base/math/vec3";
 
 export class GlData {
     /**
@@ -38,11 +39,11 @@ export class GlData {
      * 摄像机世界坐标
      * xyz
      */
-    cameraPos: Vec4;
+    cameraPos: Vec3;
     /**
      * 光源方向
      */
-    mainLitDir: Vec4;
+    mainLitDir: Vec3;
     /**
      * 光源颜色
      */
