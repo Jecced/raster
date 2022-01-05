@@ -87,7 +87,7 @@ export class Vec3 {
         const y = this.x * Math.sin(rad) + this.y * Math.cos(rad);
     }
 
-    public normalize(): void {
+    public normalize(): this {
         let len = this.x * this.x + this.y * this.y + this.z * this.z;
         if (len > 0) {
             len = 1 / Math.sqrt(len);
@@ -95,6 +95,7 @@ export class Vec3 {
         this.x *= len;
         this.y *= len;
         this.z *= len;
+        return this;
     }
 
     public isZero(): boolean {

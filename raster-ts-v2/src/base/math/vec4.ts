@@ -105,7 +105,7 @@ export class Vec4 {
         const y = this.x * Math.sin(rad) + this.y * Math.cos(rad);
     }
 
-    public normalize(): void {
+    public normalize(): this {
         let len = this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w;
         if (len > 0) {
             len = 1 / Math.sqrt(len);
@@ -114,9 +114,10 @@ export class Vec4 {
         this.y *= len;
         this.z *= len;
         this.w *= len;
+        return this;
     }
 
-    public normalize3(): void {
+    public normalize3(): this {
         let len = this.x * this.x + this.y * this.y + this.z * this.z;
         if (len > 0) {
             len = 1 / Math.sqrt(len);
@@ -124,6 +125,7 @@ export class Vec4 {
         this.x *= len;
         this.y *= len;
         this.z *= len;
+        return this;
     }
 
     public standardized(): void {
