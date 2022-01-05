@@ -4,7 +4,7 @@ import { Vec4 } from "./vec4";
 export class Calc {
 
     /**
-     * 矩阵乘法, 左矩阵横向, 右矩阵纵向
+     * 矩阵乘法, 左矩阵纵向, 右矩阵横向
      * @param a 左矩阵
      * @param b 右矩阵
      * @param out
