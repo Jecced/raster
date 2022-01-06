@@ -134,6 +134,9 @@ export class Camera implements Base {
 
         const u = Calc.crossVec3(this.up, w);
         u.normalize();
+        if (u.isZero()) {
+            u.set(0, 0, 1);
+        }
 
         const v = Calc.crossVec3(w, u);
 
@@ -151,7 +154,8 @@ export class Camera implements Base {
             0, 0, 0, 1,
         );
 
-        return Calc.mat4Mul(matAngle, matMove);
+        return Calc.mat4Mul(matMove, matAngle);
+        // return Calc.mat4Mul(matAngle, matMove);
     }
 
     /**
@@ -163,6 +167,9 @@ export class Camera implements Base {
 
         const u = Calc.crossVec3(this.up, w);
         u.normalize();
+        if (u.isZero()) {
+            u.set(0, 0, 1);
+        }
 
         const v = Calc.crossVec3(w, u);
 
