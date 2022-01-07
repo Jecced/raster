@@ -86,11 +86,12 @@ async function initScene(width: number, height: number): Promise<Scene> {
     // scene.addChild(african);
 
     const sphere = new LoopMoveNode(5, 0, 0, 1);
-    sphere.setVBO(Primitives.sphere(3), 3, 0, 3, 3, 0);
+    sphere.setVBO(Primitives.sphere(3), 3, 2, 3, 3, 0);
     sphere.setPosition(0, 1, 0);
     sphere.setScaleFull(2);
     sphere.vs = new VertSimple();
     sphere.fs = new FragLightSphere(0.5, 64);
+    sphere.texture0 = new Texture(await Loader.loadImg(ResourcePng.EarthMap));
 
     scene.addChild(sphere);
 
