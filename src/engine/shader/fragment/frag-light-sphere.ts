@@ -52,7 +52,12 @@ export class FragLightSphere implements FragmentShader {
         const specular: Vec3 = mul(specularStrength * spec, glData.sphereLitColor.xyz);
 
 
-        const baseColor = texture2D(glData.texture0, v.uv);
+        let baseColor: Vec4;
+        if (glData.texture0) {
+            baseColor = texture2D(glData.texture0, v.uv);
+        } else {
+            baseColor = v.color;
+        }
 
         /**
          * 环境光 + 漫反射
