@@ -7,6 +7,17 @@ interface SphereStruct {
 
 export class IcoSphere {
 
+    public static calcUV(x: number, y: number, z: number, out?: number[]): number[] {
+        if (!out) {
+            out = [0, 0];
+        }
+        const theta = Math.acos(-y);
+        const phi = Math.atan2(-z, x) + Math.PI;
+        out[0] = phi / (2 * Math.PI);
+        out[1] = theta / Math.PI;
+        return out;
+    }
+
 
     private static normalize(point: number[]): void {
         let len = point[0] * point[0] + point[1] * point[1] + point[2] * point[2];

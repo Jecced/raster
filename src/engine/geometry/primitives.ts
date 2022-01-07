@@ -16,14 +16,19 @@ export class Primitives {
             return a.concat(b)
         });
         const color = [];
-        for (let i = 0, len = position.length; i < len; i++) {
-            color.push(1);
+        const uv = [];
+        const uvOut = [0, 0];
+        for (let i = 0, len = position.length / 2; i < len; i++) {
+            color.push(1, 1, 1);
+            IcoSphere.calcUV(position[i * 3], position[i * 3 + 1], position[i * 3 + 2], uvOut);
+            uv.push(uvOut[0]);
+            uv.push(uvOut[1]);
         }
         return {
             position,
             indices,
             color,
-            uv: [],
+            uv: uv,
             normal: position,
             tangent: []
         }
