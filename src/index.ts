@@ -29,6 +29,7 @@ import { SphereLight } from "./scene/sphere-light";
 import { FragLightSphere } from "./engine/shader/fragment/frag-light-sphere";
 import { IcoSphere } from "./engine/geometry/ico-sphere";
 import { LoopMoveNode } from "./scene/custom/loop-move-node";
+import { Scene01 } from "./priview/scene01/scene01";
 
 
 async function initScene(width: number, height: number): Promise<Scene> {
@@ -142,7 +143,7 @@ async function run() {
     // pipeline.rasterizer.push(rasterizerTriangle);
 
 
-    const scene = await initScene(width, height);
+    const scene = await Scene01.creat(width, height);
     const camera = scene.getCamera();
 
 
@@ -183,8 +184,10 @@ function render(scene: Scene, glData: GlData, pipeline: RenderingPipeline): void
     glData.matOrthographic = camera.getOrthographicMat();
     glData.time = RenderingScheduler.getTime();
     glData.cameraPos = camera.getPosition().xyz;
-    glData.sphereLitPos = sphereLight.getPosition().xyz;
-    glData.sphereLitColor = sphereLight.getColor();
+    if (sphereLight) {
+        glData.sphereLitPos = sphereLight.getPosition().xyz;
+        glData.sphereLitColor = sphereLight.getColor();
+    }
     for (let i = 0, len = scene.size(); i < len; i++) {
         const node = scene.getChild(i);
         // 每个模型设置一次
