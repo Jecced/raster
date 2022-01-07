@@ -15,10 +15,14 @@ export class Primitives {
         const indices: number[] = struct.cells.reduce(function (a, b) {
             return a.concat(b)
         });
+        const color = [];
+        for (let i = 0, len = position.length; i < len; i++) {
+            color.push(1);
+        }
         return {
             position,
             indices,
-            color: [],
+            color,
             uv: [],
             normal: position,
             tangent: []
