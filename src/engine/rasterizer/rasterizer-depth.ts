@@ -63,8 +63,7 @@ export class RasterizerDepth implements Rasterizer {
                     continue;
                 }
 
-                let z = 1 / p0.z * alpha + 1 / p1.z * beta + 1 / p2.z * gamma;
-                z = 1 / z;
+                const z = p0.z * alpha + p1.z * beta + p2.z * gamma;
 
                 // 深度测试
                 if (!this.zBuffer.zTest(x, y, z)) {
