@@ -12,6 +12,8 @@ import { FragmentShader } from "../../engine/shader/fragment/fragment-shader";
 import { GlData } from "../../engine/data/gl-data";
 import { ShaderVariable } from "../../engine/data/shader-variable";
 import { texture2D } from "../../engine/shader/glsl-grammar/glsl-texture";
+import { VertRotationY } from "../../engine/shader/vertex/vert-rotation-y";
+import { FragTexture } from "../../engine/shader/fragment/frag-texture";
 
 class FragUVTexture implements FragmentShader {
     private u_speedU: number = 0;
@@ -46,14 +48,24 @@ export class Scene09 {
         camera.lookAt(new Vec3(0, 0, 0));
         scene.setCamera(camera);
 
-        const sphere = new Node();
-        sphere.setVBO(Primitives.sphere(3), 3, 2, 3, 3, 0);
-        sphere.setPosition(0, 0, 0)
-        sphere.setScaleFull(1);
-        sphere.vs = new VertSimple();
-        sphere.fs = new FragUVTexture(0.02, 0);
-        sphere.texture0 = new Texture(await Loader.loadImg(ResourcePng.Moon))
-        scene.addChild(sphere);
+        const moo1 = new Node();
+        moo1.setVBO(Primitives.sphere(3), 3, 2, 3, 3, 0);
+        moo1.setPosition(1, 0, 0)
+        moo1.setScaleFull(1);
+        moo1.vs = new VertRotationY();
+        moo1.fs = new FragTexture();
+        moo1.texture0 = new Texture(await Loader.loadImg(ResourcePng.Moon))
+        scene.addChild(moo1);
+
+
+        const moon2 = new Node();
+        moon2.setVBO(Primitives.sphere(3), 3, 2, 3, 3, 0);
+        moon2.setPosition(-1, 0, 0)
+        moon2.setScaleFull(1);
+        moon2.vs = new VertSimple();
+        moon2.fs = new FragUVTexture(1 / 2 / Math.PI, 0);
+        moon2.texture0 = new Texture(await Loader.loadImg(ResourcePng.Moon))
+        scene.addChild(moon2);
 
         return scene;
     }
