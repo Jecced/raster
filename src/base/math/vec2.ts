@@ -16,39 +16,68 @@ export class Vec2 {
         this.y = other.y;
     }
 
-    public add(vec2: Vec2, out?: Vec2): Vec2 {
+
+    public add(value: number, out?: Vec2): Vec2;
+    public add(value: Vec2, out?: Vec2): Vec2;
+    public add(vec4: Vec2 | number, out?: Vec2): Vec2 {
         if (!out) {
             out = new Vec2();
         }
-        out.x = this.x + vec2.x;
-        out.y = this.y + vec2.y;
+        if (vec4 instanceof Vec2) {
+            out.x = this.x + vec4.x;
+            out.y = this.y + vec4.y;
+        } else if (typeof vec4 === "number") {
+            out.x = this.x + vec4;
+            out.y = this.y + vec4;
+        }
         return out;
     }
 
-    public sub(vec2: Vec2, out?: Vec2): Vec2 {
+    public sub(value: number, out?: Vec2): Vec2;
+    public sub(value: Vec2, out?: Vec2): Vec2;
+    public sub(vec4: Vec2 | number, out?: Vec2): Vec2 {
         if (!out) {
             out = new Vec2();
         }
-        out.x = this.x - vec2.x;
-        out.y = this.y - vec2.y;
+        if (vec4 instanceof Vec2) {
+            out.x = this.x - vec4.x;
+            out.y = this.y - vec4.y;
+        } else if (typeof vec4 === "number") {
+            out.x = this.x - vec4;
+            out.y = this.y - vec4;
+        }
         return out;
     }
 
-    public mul(vec2: Vec2, out?: Vec2): Vec2 {
+    public mul(value: number, out?: Vec2): Vec2;
+    public mul(value: Vec2, out?: Vec2): Vec2;
+    public mul(vec4: Vec2 | number, out?: Vec2): Vec2 {
         if (!out) {
             out = new Vec2();
         }
-        out.x = this.x * vec2.x;
-        out.y = this.y * vec2.y;
+        if (vec4 instanceof Vec2) {
+            out.x = this.x * vec4.x;
+            out.y = this.y * vec4.y;
+        } else if (typeof vec4 === "number") {
+            out.x = this.x * vec4;
+            out.y = this.y * vec4;
+        }
         return out;
     }
 
-    public div(vec2: Vec2, out?: Vec2): Vec2 {
+    public div(value: number, out?: Vec2): Vec2;
+    public div(value: Vec2, out?: Vec2): Vec2;
+    public div(vec4: Vec2 | number, out?: Vec2): Vec2 {
         if (!out) {
             out = new Vec2();
         }
-        out.x = this.x / vec2.x;
-        out.y = this.y / vec2.y;
+        if (vec4 instanceof Vec2) {
+            out.x = this.x / vec4.x;
+            out.y = this.y / vec4.y;
+        } else if (typeof vec4 === "number") {
+            out.x = this.x / vec4;
+            out.y = this.y / vec4;
+        }
         return out;
     }
 
