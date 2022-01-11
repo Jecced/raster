@@ -1,7 +1,5 @@
 import { Scheduler } from "../scheduler/scheduler";
 import { RenderingScheduler } from "../scheduler/rendering-scheduler";
-import { Camera } from "../camera";
-import { vec3 } from "../../engine/shader/glsl-grammar/glsl-vec";
 import { SphereLight } from "../sphere-light";
 
 export class LoopMoveSphereLight extends SphereLight implements Scheduler {
