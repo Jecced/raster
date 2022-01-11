@@ -22,6 +22,7 @@ import { Scene08 } from "./priview/scene08/scene08";
 import { Scene09 } from "./priview/scene09/scene09";
 import { Scene10 } from "./priview/scene10/scene10";
 import { Scene11 } from "./priview/scene11/scene11";
+import { Scene12 } from "./priview/scene12/scene12";
 import { RasterizerTriangle } from "./engine/rasterizer/rasterizer-triangle";
 import { RasterizerDepth } from "./engine/rasterizer/rasterizer-depth";
 import { Mat4 } from "./base/math/mat4";
@@ -59,7 +60,7 @@ async function run() {
     pipeline.rasterizer.push(rasterizerTriangle);
 
 
-    const scene = await Scene11.creat(width, height);
+    const scene = await Scene12.creat(width, height);
     const camera = scene.getCamera();
 
 
