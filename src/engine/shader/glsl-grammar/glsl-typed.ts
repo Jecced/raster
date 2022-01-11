@@ -97,7 +97,12 @@ export function mat3(a?: VecTyped, b?: VecTyped, c?: VecTyped,
         arr[6], arr[7], arr[8]);
 }
 
-export function mat4(x?: VecTyped, y?: VecTyped, z?: VecTyped, w?: VecTyped): Mat4 {
+export function mat4(
+    a?: VecTyped, b?: VecTyped, c?: VecTyped, d?: VecTyped,
+    e?: VecTyped, f?: VecTyped, g?: VecTyped, h?: VecTyped,
+    i?: VecTyped, j?: VecTyped, k?: VecTyped, l?: VecTyped,
+    m?: VecTyped, n?: VecTyped, o?: VecTyped, p?: VecTyped,
+): Mat4 {
     const arr = [];
     for (let i = 0, len = arguments.length; i < len; i++) {
         arr.push(...VecTypedToArray(arguments[i]));
