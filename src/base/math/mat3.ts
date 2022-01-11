@@ -1,3 +1,5 @@
+import { Vec3 } from "./vec3";
+
 export class Mat3 {
     private readonly data: Float32Array = undefined;
 
@@ -93,6 +95,68 @@ export class Mat3 {
         const mat = new Mat3();
         mat.setFromNumber(a, b, c, d, e, f, g, h, i);
         return mat;
+    }
+
+    public mul(mat3: Mat3, out?: Mat3): Mat3;
+    public mul(vec3: Vec3, out?: Vec3): Vec3;
+    public mul(value: Vec3 | Mat3, out?: Vec3 | Mat3): Vec3 | Mat3 {
+        if (value instanceof Vec3) {
+            const a = this;
+            const b = value;
+            const x = a.get(0) * b.x + a.get(1) * b.y + a.get(2) * b.z;
+            const y = a.get(3) * b.x + a.get(4) * b.y + a.get(5) * b.z;
+            const z = a.get(6) * b.x + a.get(7) * b.y + a.get(8) * b.z;
+            if (!out) {
+                out = new Vec3();
+            }
+            out.set(x, y, z);
+            return out;
+        } else if (value instanceof Mat3) {
+            if (!out) {
+                out = new Mat3();
+            }
+            out = out as Mat3;
+
+            /**
+             * b取横, a取纵
+             */
+            const a = value;
+            const b = this;
+            const a00 = a.get(0),
+                a01 = a.get(1),
+                a02 = a.get(2),
+                a10 = a.get(3),
+                a11 = a.get(4),
+                a12 = a.get(5),
+                a20 = a.get(6),
+                a21 = a.get(7),
+                a22 = a.get(8)
+
+            // Cache only the current line of the second matrix
+            let b0 = b.get(0),
+                b1 = b.get(1),
+                b2 = b.get(2);
+            out.set(0, b0 * a00 + b1 * a10 + b2 * a20);
+            out.set(1, b0 * a01 + b1 * a11 + b2 * a21);
+            out.set(2, b0 * a02 + b1 * a12 + b2 * a22);
+
+            b0 = b.get(3);
+            b1 = b.get(4);
+            b2 = b.get(5);
+            out.set(4, b0 * a00 + b1 * a10 + b2 * a20);
+            out.set(5, b0 * a01 + b1 * a11 + b2 * a21);
+            out.set(6, b0 * a02 + b1 * a12 + b2 * a22);
+
+            b0 = b.get(6);
+            b1 = b.get(7);
+            b2 = b.get(8);
+            out.set(8, b0 * a00 + b1 * a10 + b2 * a20);
+            out.set(9, b0 * a01 + b1 * a11 + b2 * a21);
+            out.set(10, b0 * a02 + b1 * a12 + b2 * a22);
+
+            return out;
+        }
+        return undefined;
     }
 
 }
