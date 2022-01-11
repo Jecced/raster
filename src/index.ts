@@ -23,6 +23,7 @@ import { Scene09 } from "./priview/scene09/scene09";
 import { RasterizerTriangle } from "./engine/rasterizer/rasterizer-triangle";
 import { RasterizerDepth } from "./engine/rasterizer/rasterizer-depth";
 import { Scene10 } from "./priview/scene10/scene10";
+import { Mat4 } from "./base/math/mat4";
 
 
 async function run() {
@@ -109,8 +110,10 @@ function render(scene: Scene, glData: GlData, pipeline: RenderingPipeline): void
         glData.matWorldIT = node.getMatWorldIT();
         // const matMVP = Calc.mat4Mul(glData.matView, glData.matWorld);
         // Calc.mat4Mul(glData.matProjection, matMVP, matMVP);
-        const matMVP = Calc.mat4Mul(glData.matView, glData.matProjection);
-        Calc.mat4Mul(glData.matWorld, matMVP, matMVP);
+        // const matMVP = Calc.mat4Mul(glData.matView, glData.matProjection);
+        // Calc.mat4Mul(glData.matWorld, matMVP, matMVP);
+        const matMVP = Mat4.identity();
+        matMVP.mul(glData.matProjection, matMVP).mul(glData.matView, matMVP).mul(glData.matWorld, matMVP);
         glData.matMVP = matMVP;
 
         // 切换渲染管线的顶点着色器和片断着色器为模型中设定的

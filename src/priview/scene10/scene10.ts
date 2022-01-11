@@ -13,9 +13,11 @@ import { GlData } from "../../engine/data/gl-data";
 import { ShaderVariable } from "../../engine/data/shader-variable";
 import { texture2D } from "../../engine/shader/glsl-grammar/glsl-texture";
 import { vec4 } from "../../engine/shader/glsl-grammar/glsl-vec";
-import { add, dot, max, mul, normalize, pow, reflect, sub } from "../../engine/shader/glsl-grammar/glsl";
+import { dot, max, normalize, pow, reflect } from "../../engine/shader/glsl-grammar/glsl";
 import { LoopMoveSphereLight } from "../../scene/custom/loop-move-light-sphere";
 import { FragLightSphere } from "../../engine/shader/fragment/frag-light-sphere";
+import { FragLightLambert } from "../../engine/shader/fragment/frag-light-lambert";
+import { LoopMoveNode } from "../../scene/custom/loop-move-node";
 
 class NormalTextureShader implements FragmentShader {
 
@@ -41,11 +43,11 @@ class NormalTextureShader implements FragmentShader {
          * 环境光照阶段
          */
         const ambientStrength = 0.1;// 环境光强度
-        const ambient = mul(ambientStrength, glData.sphereLitColor.xyz);
+        const ambient = glData.sphereLitColor.xyz.mul(ambientStrength);
 
         /**
-         * 漫反射阶段
-         */
+         //  * 漫反射阶段
+         //  */
             // const normal: Vec3 = v.normal;
             // 从贴图中获取0-1的法线
             // 法线改为从贴图中获取
@@ -53,34 +55,39 @@ class NormalTextureShader implements FragmentShader {
         // 将法线转为-1到1
         normal = normal.mul(2).sub(1);
         normal.y = -normal.y;
-        normal = mul(glData.matWorldIT, vec4(normal, 0)).xyz;
+        normal = glData.matWorldIT.mul(vec4(normal, 0)).xyz;//mul(glData.matWorldIT, vec4(normal, 0)).xyz;
         normal = normalize(normal);
 
-        const lightDir: Vec3 = normalize(sub(glData.sphereLitPos, v.position));
+        const lightDir: Vec3 = normalize(glData.sphereLitPos.sub(v.position));
         // const lightDir: Vec3 = glData.mainLitDir;
 
         const diff = max(dot(normal, lightDir), 0.0);
-        const diffuse = mul(diff, glData.sphereLitColor.xyz);
+        const diffuse = glData.sphereLitColor.xyz.mul(diff);
 
         /**
          * 镜面高光
          */
         const specularStrength = this.u_specularStrength;
-        const viewDir: Vec3 = normalize(sub(glData.cameraPos, v.position));
+        const viewDir: Vec3 = normalize(glData.cameraPos.sub(v.position));
         const reflectDir = reflect(lightDir.reverse(), normal);
         const spec = pow(max(dot(viewDir, reflectDir), 0.0), this.u_specularPow);
-        const specular: Vec3 = mul(specularStrength * spec, glData.sphereLitColor.xyz);
+        const specular: Vec3 = glData.sphereLitColor.xyz.mul(specularStrength * spec);
 
 
-        let baseColor: Vec4 = texture2D(glData.texture0, v.uv);
+        let baseColor: Vec4;
+        if (glData.texture0) {
+            baseColor = texture2D(glData.texture0, v.uv);
+        } else {
+            baseColor = v.color;
+        }
 
         /**
          * 环境光 + 漫反射
          */
             // const result = mul(diffuse, baseColor.xyz);
-        const result = ambient.add(diffuse).add(specular).mul(baseColor.xyz);
+        const result = baseColor.xyz.mul(ambient.add(diffuse).add(specular));
 
-        return vec4(result, 1.);
+        return vec4(result, 1);
     }
 
 }
@@ -102,19 +109,19 @@ export class Scene10 {
         scene.setCamera(camera);
 
         // 设置点光源信息
-        const sphereLight = new LoopMoveSphereLight(2, 2, 0, 1);
+        const sphereLight = new LoopMoveSphereLight(5, 2, 0, 1);
         sphereLight.setPosition(1, 1, 0);
         sphereLight.setColor(new Vec4(1, 1, 1, 1));
         scene.setSphereLight(sphereLight);
 
-        // const light = new LoopMoveNode(2, 2, 0, 1);
-        // light.setVBO(Primitives.sphere(2), 3, 0, 0, 3, 0);
-        // // 将位置设置成点光源位置
-        // light.setPosition(sphereLight.getPosition().x, sphereLight.getPosition().y, sphereLight.getPosition().z);
-        // light.setScaleFull(0.2);
-        // light.vs = new VertSimple();
-        // light.fs = new FragLightLambert();
-        // scene.addChild(light);
+        const light = new LoopMoveNode(5, 2, 0, 1);
+        light.setVBO(Primitives.sphere(2), 3, 0, 0, 3, 0);
+        // 将位置设置成点光源位置
+        light.setPosition(sphereLight.getPosition().x, sphereLight.getPosition().y, sphereLight.getPosition().z);
+        light.setScaleFull(0.2);
+        light.vs = new VertSimple();
+        light.fs = new FragLightLambert();
+        scene.addChild(light);
 
         const cube = new Node();
         cube.setVBO(Primitives.cube(), 3, 2, 3, 3, 0);

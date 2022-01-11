@@ -128,7 +128,7 @@ export class Node implements Base {
          * move为右矩阵, scale为左矩阵
          *
          */
-        this.worldMat = Calc.mat4Mul(scale, move);
+        this.worldMat = move.mul(scale);//Calc.mat4Mul(scale, move);
 
 
         const scaleIT = Mat4.fromData(
@@ -148,7 +148,7 @@ export class Node implements Base {
          * move为纵向, scale为横向
          * move为左矩阵, scale为右矩阵
          */
-        this.worldMatIT = Calc.mat4Mul(moveIT, scaleIT);
+        this.worldMatIT = scaleIT.mul(moveIT);//Calc.mat4Mul(moveIT, scaleIT);
     }
 
 
