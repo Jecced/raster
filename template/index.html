@@ -19,5 +19,15 @@
 <div>
     <span id="rendering-time">111</span>
 </div>
+
+<script>
+    const width = 400;
+    const height = 300;
+    const list = document.getElementsByTagName("canvas");
+    for (let i = 0, len = list.length; i < len; i++) {
+        list[i].width = width;
+        list[i].height = height;
+    }
+</script>
 </body>
 </html>
