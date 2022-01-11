@@ -15,6 +15,7 @@ import { texture2D } from "../../engine/shader/glsl-grammar/glsl-texture";
 import { vec4 } from "../../engine/shader/glsl-grammar/glsl-vec";
 import { add, dot, max, mul, normalize, pow, reflect, sub } from "../../engine/shader/glsl-grammar/glsl";
 import { LoopMoveSphereLight } from "../../scene/custom/loop-move-light-sphere";
+import { FragLightSphere } from "../../engine/shader/fragment/frag-light-sphere";
 
 class NormalTextureShader implements FragmentShader {
 
@@ -51,6 +52,7 @@ class NormalTextureShader implements FragmentShader {
         let normal = texture2D(glData.texture1, v.uv).xyz;
         // 将法线转为-1到1
         normal = normal.mul(2).sub(1);
+        normal.y = -normal.y;
         normal = mul(glData.matWorldIT, vec4(normal, 0)).xyz;
         normal = normalize(normal);
 
@@ -121,8 +123,8 @@ export class Scene10 {
         // cube.setScale(3, 3, 3);
         cube.vs = new VertSimple();
         // cube.fs = new FragTexture();
-        // cube.fs = new FragLightSphere(1, 128);
-        cube.fs = new NormalTextureShader(2, 128);//法线贴图的光照
+        // cube.fs = new FragLightSphere(1, 8);
+        cube.fs = new NormalTextureShader(2, 8);//法线贴图的光照
         cube.texture0 = new Texture(await Loader.loadImg(ResourcePng.BrickWall));
         cube.texture1 = new Texture(await Loader.loadImg(ResourcePng.BrickWallNormal));
         scene.addChild(cube);
