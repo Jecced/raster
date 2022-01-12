@@ -38,10 +38,32 @@ export function pow(a: number | Vec2 | Vec3 | Vec4, pow: number): number | Vec2 
 }
 
 
+// 反射函数
 export function reflect(i: Vec3, n: Vec3): Vec3 {
     // i - 2.0 * n * dot(n, i);
     // return sub(i, mul(mul(n, dot(n, i)), 2.0));
     return i.sub(n.mul(2).mul(dot(n, i)));
+}
+
+/**
+ * 折射函数
+ * @param i 入射向量
+ * @param n 法线
+ * @param eta 折射系数
+ */
+export function refract(i: Vec3, n: Vec3, eta: number) {
+    let cosi = Math.max(-1, Math.min(1, dot(i, n)));
+    // if(cosi < 0){
+    //     cosi = -cosi;
+    //     n = n.mul(-1);
+    // }
+    const k = 1 - eta * eta * (1 - cosi * cosi);
+    if (k < 0) {
+        return new Vec3(0, 0, 0);
+    } else {
+        return i.mul(eta).add(n.mul(eta * cosi - Math.sqrt(k)));
+    }
+
 }
 
 
