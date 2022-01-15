@@ -34,7 +34,7 @@ export class Scene06 {
 
         // 设置点光源信息
         const sphereLight = new SphereLight();
-        sphereLight.setPosition(1, 1, 1);
+        sphereLight.setPosition(1, 1, 0);
         sphereLight.setColor(new Vec4(1, 1, 1, 1));
         scene.setSphereLight(sphereLight);
 
