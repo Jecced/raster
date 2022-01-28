@@ -71,8 +71,6 @@ https://forum.cocos.org/t/topic/99545
 
 《GPU编程与CG语言之阳春白雪下里巴人》
 
-
-
 # 目前实现效果
 
 ## 解释
@@ -95,7 +93,7 @@ https://forum.cocos.org/t/topic/99545
 
 ## Scene02
 
->绘制一个立方体
+> 绘制一个立方体
 >
 >使用顶点色
 >
@@ -135,7 +133,6 @@ https://forum.cocos.org/t/topic/99545
 
 ![image-20220115151507665](https://raw.githubusercontent.com/Jecced/image/master/typora/202201151515695.png)
 
-
 ![image-20220115151507665](https://raw.githubusercontent.com/Jecced/image/master/typora/202201151521432.gif)
 
 ## Scene07
@@ -145,8 +142,6 @@ https://forum.cocos.org/t/topic/99545
 > 使用不同的光照参数
 
 ![image-20220115151802916](https://raw.githubusercontent.com/Jecced/image/master/typora/202201151518947.png)
-
-
 
 ![202201151523266](https://raw.githubusercontent.com/Jecced/image/master/typora/202201151523266.gif)
 
@@ -178,7 +173,7 @@ https://forum.cocos.org/t/topic/99545
 
 ![QQ20220115-154019](https://raw.githubusercontent.com/Jecced/image/master/typora/202201151540090.gif)
 
-##  Scene10
+## Scene10
 
 > 新增法线贴图
 
@@ -202,7 +197,13 @@ https://forum.cocos.org/t/topic/99545
 
 ![image-20220115144424952](https://raw.githubusercontent.com/Jecced/image/master/typora/202201151444015.png)
 
+## Scene13
 
+> 多texture
+
+![image-20220128154745](https://raw.githubusercontent.com/Jecced/image/master/typora/20220128154745.png)
+
+![image-20220128154730](https://raw.githubusercontent.com/Jecced/image/master/typora/20220128154730.gif)
 
 # 广告
 

@@ -5,7 +5,9 @@ import african_nm from "../../resources/african/african_head_nm.png";
 import diablo from "../../resources/diablo3/diablo3_pose.obj";
 import diablo_diffuse from "../../resources/diablo3/diablo3_pose_diffuse.png";
 import grid from "../../resources/comm/grid.png";
-import earth_map from "../../resources/comm/earthmap.jpg";
+import earth_map from "../../resources/earth/earthmap.jpg";
+import earth_clouds from "../../resources/earth/earth_clouds.jpg";
+import earth_nightmap from "../../resources/earth/earth_nightmap.jpg";
 import moon from "../../resources/comm/moon.jpg";
 import brick_wall from "../../resources/brickwall/brickwall.jpg"
 import brick_wall_normal from "../../resources/brickwall/brickwall_normal.jpg"
@@ -27,6 +29,8 @@ export enum ResourcePng {
     DiabloDiffuse = diablo_diffuse,
 
     EarthMap = earth_map,
+    EarthClouds = earth_clouds,
+    EarthNightMap = earth_nightmap,
 
     BrickWall = brick_wall,
     BrickWallNormal = brick_wall_normal,
