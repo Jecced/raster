@@ -204,11 +204,3 @@ https://forum.cocos.org/t/topic/99545
 ![image-20220128154745](https://raw.githubusercontent.com/Jecced/image/master/typora/20220128154745.png)
 
 ![image-20220128154730](https://raw.githubusercontent.com/Jecced/image/master/typora/20220128154730.gif)
-
-# 广告
-
-![IMG_9232](https://raw.githubusercontent.com/Jecced/image/master/typora/202201151604733.JPG)
-
-欢迎加入QQ群：897331800 一起交流
-
-目前刚刚开始接触3d、图形方向的学习，欢迎一起学习和交流
