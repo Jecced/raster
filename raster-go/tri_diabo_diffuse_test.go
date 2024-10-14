@@ -86,9 +86,9 @@ func TestDrawDiablo(t *testing.T) {
 	}
 
 	// 绘制三角形的线
-	for _, fvs := range obj.fv {
-		drawTri(obj.v, fvs, png)
-	}
+	//for _, fvs := range obj.fv {
+	//	drawTri(obj.v, fvs, png)
+	//}
 	// 写出文件
 	imgutil.SaveImage("out/tri_diffuse.png", png)
 
@@ -104,6 +104,7 @@ func drawTri1(v [][]float64, fv []int, uv [][]float64, fuv []int) {
 	x1, y1 := getXy1(float64s1[0], float64s1[1])
 	x2, y2 := getXy1(float64s2[0], float64s2[1])
 	x3, y3 := getXy1(float64s3[0], float64s3[1])
+	z1, z2, z3 := float64s1[2], float64s2[2], float64s3[2]
 
 	// 从所有的顶点信息中, 找到索引的顶点位置信息
 	uv1 := uv[fuv[0]-1]
@@ -111,10 +112,10 @@ func drawTri1(v [][]float64, fv []int, uv [][]float64, fuv []int) {
 	uv3 := uv[fuv[2]-1]
 	//fmt.Println("111", uv1, uv2, uv3)
 
-	BarycentricDiabloDiffuseTest(x1, y1, x2, y2, x3, y3, uv1[0], uv1[1], uv2[0], uv2[1], uv3[0], uv3[1])
+	BarycentricDiabloDiffuseTest(x1, y1, x2, y2, x3, y3, uv1[0], uv1[1], uv2[0], uv2[1], uv3[0], uv3[1], z1, z2, z3)
 }
 
-func BarycentricDiabloDiffuseTest(x1, y1, x2, y2, x3, y3 int, u0, v0, u1, v1, u2, v2 float64) {
+func BarycentricDiabloDiffuseTest(x1, y1, x2, y2, x3, y3 int, u2, v2, u0, v0, u1, v1 float64, z1, z2, z3 float64) {
 	maxX, maxY, minX, minY := screen.Bound(x1, y1, x2, y2, x3, y3)
 
 	for x := minX; x < maxX; x++ {
@@ -129,11 +130,12 @@ func BarycentricDiabloDiffuseTest(x1, y1, x2, y2, x3, y3 int, u0, v0, u1, v1, u2
 			//vy := my - int((a*v0+b*v1+c*v2)*float64(my))
 			ux := int((a*u0 + b*u1 + c*u2) * float64(mx))
 			vy := my - int((a*v0+b*v1+c*v2)*float64(my))
+			z := a*z1 + b*z2 + c*z3
 
 			at := diffuse.At(ux, vy)
 
 			rr, gg, bb, aa := at.RGBA()
-			screen.SetColor(x, y, uint8(rr), uint8(gg), uint8(bb), uint8(aa), 0)
+			screen.SetColor(x, y, uint8(rr), uint8(gg), uint8(bb), uint8(aa), z)
 		}
 	}
 }
