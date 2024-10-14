@@ -1,9 +1,11 @@
 package raster_go
 
 import (
+	"fmt"
 	"github.com/Jecced/go-tools/src/imgutil"
 	"image"
 	"math"
+	"strconv"
 	"testing"
 )
 
@@ -25,45 +27,37 @@ func init() {
 	my = diffuse.Bounds().Max.Y
 }
 
-//func TestDrawBulbasaurFace(t *testing.T) {
-//	u1, v1 := 0.109, 0.367
-//	u2, v2 := 0.108, 0.326
-//	u3, v3 := 0.187, 0.395
-//	fmt.Println(u1, v1, u2, v2, u3, v3)
-//	const x1, y1, x2, y2, x3, y3 = 1000, 1000, 1000, 0, 0, 1000
-//	png := imgutil.CreatPng(1000, 1000)
-//
-//	BarycentricTriColorDiffuseTest(x1, y1, x2, y2, x3, y3, png)
-//	pngPath := "out/tri_diffuse.png"
-//	imgutil.SaveImage(pngPath, png)
-//}
-//
-//func BarycentricTriColorDiffuseTest(x1, y1, x2, y2, x3, y3 int, png *image.RGBA) {
-//	maxX := Max(x1, x2, x3)
-//	maxY := Max(y1, y2, y3)
-//	minX := Min(x1, x2, x3)
-//	minY := Min(y1, y2, y3)
-//
-//	u1, v1 := 0.191, 0.455
-//	u2, v2 := 0.108, 0.326
-//	u3, v3 := 0.177, 0.338
-//
-//	for x := minX; x < maxX; x++ {
-//		for y := minY; y < maxY; y++ {
-//			a, b, c := Barycentric(x1, y1, x2, y2, x3, y3, x, y)
-//			// 判断是否在三角形内
-//			if a < 0 || b < 0 || c < 0 {
-//				continue
-//			}
-//
-//			ux := int((a*u1 + b*u2 + c*u3) * float64(mx))
-//			vy := my - int((a*v1+b*v2+c*v3)*float64(my))
-//			at := diffuse.At(ux, vy)
-//
-//			png.SetRGBA(x, y, at.(color.RGBA))
-//		}
-//	}
-//}
+func TestDrawDiablo360(t *testing.T) {
+	for i := 0; i < 360; i++ {
+
+		png := imgutil.CreatPng(screen.W, screen.H)
+
+		for _, vert := range obj.v {
+			vert[0], vert[1], vert[2] = RotateY(vert[0], vert[1], vert[2], math.Pi/180)
+		}
+
+		// 绘制三角形
+		for i, _ := range obj.fv {
+			drawTri1(obj.v, obj.fv[i], obj.vt, obj.fuv[i])
+		}
+
+		for x := 0; x < screen.W; x++ {
+			for y := 0; y < screen.H; y++ {
+				png.Set(x, y, screen.GetColor(x, y))
+			}
+		}
+
+		// 绘制三角形的线
+		//for _, fvs := range obj.fv {
+		//	drawTri(obj.v, fvs, png)
+		//}
+		out := "out/a/tri_diffuse_" + strconv.Itoa(i) + ".png"
+		// 写出文件
+		imgutil.SaveImage(out, png)
+		fmt.Println("write:", out)
+		screen.Clean()
+	}
+}
 
 func TestDrawDiablo(t *testing.T) {
 
