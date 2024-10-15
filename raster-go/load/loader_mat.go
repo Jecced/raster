@@ -58,6 +58,18 @@ func LoadMatByPath(path string) (*ObjMat, error) {
 	return LoadMat(text), nil
 }
 
+func CreatDefault() *ObjMat {
+	mat := make(ObjMat)
+	return &mat
+}
+
+func CreatDefaultWithDiffuse(imgPath string) *ObjMat {
+	mat := make(ObjMat)
+	mat["default"] = &ObjMatMeta{}
+	mat.SetMapKd("default", imgPath)
+	return &mat
+}
+
 func LoadMat(text string) *ObjMat {
 	text = strings.ReplaceAll(text, "\r", "")
 	lines := strings.Split(text, "\n")

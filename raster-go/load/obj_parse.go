@@ -64,7 +64,7 @@ func LoadObjModel(text string) *ObjModel {
 	var VN = make([]gl.Vec3f, 0, 0)
 	var Face = make([]ObjFace, 0, 0)
 
-	var matKey string
+	var matKey = "default"
 
 	text = strings.ReplaceAll(text, "\r", "")
 	lines := strings.Split(text, "\n")
