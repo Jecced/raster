@@ -106,9 +106,9 @@ func drawTri2(obj *load.ObjModel, i int) {
 
 //func BarycentricDiabloDiffuseTest(x1, y1, x2, y2, x3, y3 int, u2, v2, u0, v0, u1, v1 float64, z1, z2, z3 float64) {
 func BarycentricDiabloDiffuseTest(v1, v2, v3 *gl.Vec3f, uv0, uv1, uv2 gl.Vec3f, meta *load.ObjMatMeta) {
-	x1, y1 := getXy1(v1.X, v1.Y)
-	x2, y2 := getXy1(v2.X, v2.Y)
-	x3, y3 := getXy1(v3.X, v3.Y)
+	x1, y1 := getXy1(v1.X(), v1.Y())
+	x2, y2 := getXy1(v2.X(), v2.Y())
+	x3, y3 := getXy1(v3.X(), v3.Y())
 
 	maxX, maxY, minX, minY := screen.Bound(x1, y1, x2, y2, x3, y3)
 	for x := minX; x < maxX; x++ {
@@ -120,9 +120,9 @@ func BarycentricDiabloDiffuseTest(v1, v2, v3 *gl.Vec3f, uv0, uv1, uv2 gl.Vec3f, 
 			}
 
 			// UV 坐标 0, 0 在左下角
-			ux := int((a*uv0.X + b*uv1.X + c*uv2.X) * float64(meta.MaxX))
-			vy := meta.MaxY - int((a*uv0.Y+b*uv1.Y+c*uv2.Y)*float64(meta.MaxY))
-			z := a*v1.Z + b*v2.Z + c*v3.Z
+			ux := int((a*uv0.X() + b*uv1.X() + c*uv2.X()) * float64(meta.MaxX))
+			vy := meta.MaxY - int((a*uv0.Y()+b*uv1.Y()+c*uv2.Y())*float64(meta.MaxY))
+			z := a*v1.Z() + b*v2.Z() + c*v3.Z()
 
 			at := meta.At(ux, vy)
 

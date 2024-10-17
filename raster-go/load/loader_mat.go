@@ -136,7 +136,8 @@ func toVec3f(line, key string) gl.Vec3f {
 	if l > 2 {
 		z, _ = strconv.ParseFloat(split[2], 64)
 	}
-	return gl.Vec3f{X: x, Y: y, Z: z}
+	//return gl.Vec3f{X: x, Y: y, Z: z}
+	return *gl.NewVec3f(x, y, z)
 }
 
 func toVec3fAddr(line, key string) *gl.Vec3f {
