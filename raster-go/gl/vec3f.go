@@ -1,6 +1,9 @@
 package gl
 
-import "math"
+import (
+	"fmt"
+	"math"
+)
 
 //type Vec3f struct {
 //	X float64
@@ -100,4 +103,22 @@ func (v *Vec3f) RotateZ(rad float64) {
 	y := v[0]*math.Sin(rad) + v[1]*math.Cos(rad)
 	v[0] = x
 	v[1] = y
+}
+
+func (v *Vec3f) Normalize() {
+	x := v[0]
+	y := v[1]
+	z := v[2]
+	length := x*x + y*y + z*z
+	if length > 0 {
+		//TODO: evaluate use of glm_invsqrt here?
+		length = 1 / math.Sqrt(length)
+	}
+	v[0] *= length
+	v[1] *= length
+	v[2] *= length
+}
+
+func (v *Vec3f) String() string {
+	return fmt.Sprintf("vec3(%f, %f, %f)", v.X(), v.Y(), v.Z())
 }
