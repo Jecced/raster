@@ -14,6 +14,9 @@ type Vec3f [3]float64
 
 func (v Vec3f) Clone() *Vec3f {
 	clone := new(Vec3f)
+	clone.SetX(v.X())
+	clone.SetY(v.Y())
+	clone.SetZ(v.Z())
 	return clone
 	//return &Vec3f{X: v.X, Y: v.Y, Z: v.Z}
 }
