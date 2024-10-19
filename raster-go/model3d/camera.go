@@ -1,6 +1,8 @@
 package model3d
 
-import "raster-go/gl"
+import (
+	"raster-go/gl"
+)
 
 type Camera struct {
 	position *gl.Vec3f // 位置
@@ -41,6 +43,19 @@ func (c *Camera) LookAt(node NodeBase, up gl.Vec3f) {
 	newUp := gl.CrossVec3f(c.Direct, parallel)
 	newUp.Normalize()
 	c.Up = newUp
+
+	//TView := gl.NewMat4fIdentity()
+	//TView[3] = -c.position.X()
+	//TView[7] = -c.position.Y()
+	//TView[11] = -c.position.Z()
+	//
+	//RView := gl.NewMat4fIdentity()
+	//
+	//RView.Transpose()
+	//fmt.Println(TView)
+	//fmt.Println(RView)
+	//
+	//fmt.Println(gl.Mat4fMul(RView, TView))
 }
 
 // UsePerspective 透视模式
