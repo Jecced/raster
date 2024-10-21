@@ -67,6 +67,9 @@ func (s *Screen) SetColor(x, y int, r, g, b, a uint8, z float64) {
 	if x < 0 || y < 0 || x >= s.W || y >= s.H {
 		return
 	}
+	if z >= 0 {
+		return
+	}
 	p := s.pixies[x+y*s.W]
 	p.SetColor(r, g, b, a, z)
 }

@@ -86,6 +86,12 @@ func (v *Vec3f) Div(o Vec3f) {
 	v[2] /= o[2]
 }
 
+func (v *Vec3f) Scale(scale float64) {
+	v[0] *= scale
+	v[1] *= scale
+	v[2] *= scale
+}
+
 func (v *Vec3f) RotateX(rad float64) {
 	rad *= math.Pi / 180
 	y := v[1]*math.Cos(rad) - v[2]*math.Sin(rad)

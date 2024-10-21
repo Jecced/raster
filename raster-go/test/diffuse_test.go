@@ -17,38 +17,46 @@ func Test2222(t *testing.T) {
 	}
 }
 
-func run(angle int) {
-	up := gl.NewVec3f(0, 1, 0)
-
-	scene := model3d.NewScene(1000, 1000)
-
+func getNode() *model3d.Node {
 	node1 := model3d.NewNode()
 	node1.SetPosition(0, 0, 0)
 	node1.SetObjModel("../obj/african/african_head.obj")
 	node1.SetObjDefaultMat("../obj/african/african_head_diffuse.png")
+	return node1
+}
+
+func getScene() *model3d.Scene {
+
+	scene := model3d.NewScene(1000, 1000)
+
+	node1 := getNode()
 
 	scene.AddChild(node1)
 
-	x, z := ma.CalcVec2ByAngleDist(float64(angle), 1)
+	scene.AddChild(getNode())
 
-	scene.Camera.SetPosition(x, 0.4, z)
-	scene.Camera.LookAt(node1, *up)
+	//x, z := ma.CalcVec2ByAngleDist(float64(angle), 1)
+	//
+	//scene.Camera.SetPosition(x, 0.4, z)
+	//scene.Camera.LookAt(node1)
 
+	return scene
+}
+
+func run(angle int) {
+
+	scene := getScene()
 	node := scene.Child[0]
 
+	node.SetPosition(.5, .5, 0)
 	camera := scene.Camera
 
-	// 摄像机摆放到原点
-	for _, vert := range node.Obj.V {
-		vec3, _ := gl.Mat4MulVec3(camera.TR, vert, 1)
-		vert.Set(vec3.X(), vec3.Y(), vec3.Z())
-		//fmt.Println(vert, vec3)
-	}
+	x, z := ma.CalcVec2ByAngleDist(float64(angle), 1)
 
-	// 绘制三角形
-	for i, l := 0, node.Obj.FaceLen; i < l; i++ {
-		drawTri2(node.Obj, node.Mat, scene.Screen, i)
-	}
+	camera.SetPosition(x, 0.4, z)
+	camera.LookAt(node)
+
+	drawScene(scene)
 
 	png := imgutil.CreatPng(scene.Screen.W, scene.Screen.H)
 
@@ -58,40 +66,29 @@ func run(angle int) {
 			png.Set(x, y, scene.Screen.GetColor(x, y))
 		}
 	}
+
 	path := "../out/angle/tri_diffuse_" + strconv.Itoa(angle) + ".png"
 	fmt.Println(path)
 	imgutil.SaveImage(path, png)
 }
 
 func Test1111(t *testing.T) {
-	up := gl.NewVec3f(0, 1, 0)
-
-	scene := model3d.NewScene(1000, 1000)
-
-	node1 := model3d.NewNode()
-	node1.SetPosition(0, 0, 0)
-	node1.SetObjModel("../obj/african/african_head.obj")
-	node1.SetObjDefaultMat("../obj/african/african_head_diffuse.png")
-
-	scene.AddChild(node1)
-	scene.Camera.SetPosition(0.3, 0.4, 1.1)
-	scene.Camera.LookAt(node1, *up)
-
-	node := scene.Child[0]
-
+	scene := getScene()
+	node0 := scene.Child[0]
+	node1 := scene.Child[1]
 	camera := scene.Camera
 
-	// 摄像机摆放到原点, 然后看做相对运动
-	for _, vert := range node.Obj.V {
-		vec3, _ := gl.Mat4MulVec3(camera.TR, vert, 1)
-		vert.Set(vec3.X(), vec3.Y(), vec3.Z())
-		//fmt.Println(vert, vec3)
-	}
+	//node.SetPosition(0., 0., -10)
+	node0.SetPosition(-3, 0, -15)
+	node1.SetPosition(0, 0, 0)
+	camera.SetPosition(0, 0, 2)
 
-	// 绘制三角形
-	for i, l := 0, node.Obj.FaceLen; i < l; i++ {
-		drawTri2(node.Obj, node.Mat, scene.Screen, i)
-	}
+	camera.LookAt(node0)
+
+	camera.UsePerspective()
+	camera.SetNera(-10.0)
+
+	drawScene(scene)
 
 	png := imgutil.CreatPng(scene.Screen.W, scene.Screen.H)
 
@@ -101,7 +98,97 @@ func Test1111(t *testing.T) {
 			png.Set(x, y, scene.Screen.GetColor(x, y))
 		}
 	}
-	imgutil.SaveImage("../out/tri_diffuse2.png", png)
+	imgutil.SaveImage("../out/perspective/tri_diffuse_test.png", png)
+}
+
+func TestPerspective(t *testing.T) {
+	for i := 0; i < 360; i++ {
+		go runTestPerspective(i)
+	}
+	select {}
+}
+
+func runTestPerspective(z int) {
+
+	zz := z
+	if zz > 180 {
+		zz = 360 - zz
+	}
+	scene := getScene()
+	node0 := scene.Child[0]
+	node1 := scene.Child[1]
+	camera := scene.Camera
+
+	//node.SetPosition(0., 0., -10)
+	node0.SetPosition(-3, -1, -15)
+	node1.SetPosition(0, 0, 0)
+	camera.SetPosition(0, 0, 1+float64(zz*2)/10)
+
+	camera.LookAt(node0)
+
+	camera.UsePerspective()
+	camera.SetNera(-10.0)
+
+	drawScene(scene)
+
+	png := imgutil.CreatPng(scene.Screen.W, scene.Screen.H)
+
+	// 屏幕中的颜色绘制到png中
+	for x := 0; x < scene.Screen.W; x++ {
+		for y := 0; y < scene.Screen.H; y++ {
+			png.Set(x, y, scene.Screen.GetColor(x, y))
+		}
+	}
+	path := fmt.Sprintf("../out/perspective/tri_diffuse_%d.png", z)
+	fmt.Println(path)
+	imgutil.SaveImage(path, png)
+}
+
+func drawScene(scene *model3d.Scene) {
+	camera := scene.Camera
+
+	for _, node := range scene.Child {
+		// 模型移动
+		for _, vert := range node.Obj.V {
+			vert.Add(*gl.NewVec3f(node.Position()))
+		}
+
+		// 正交投影
+		// 摄像机摆放到原点, 然后看做相对变换
+		for _, vert := range node.Obj.V {
+			vec3, _ := gl.Mat4MulVec3(camera.TR, vert, 1)
+			vert.Set(vec3.X(), vec3.Y(), vec3.Z())
+			//fmt.Println(vec3)
+			//fmt.Println(vert, vec3)
+		}
+
+		// 使用透视投影
+		if camera.IsPerspective() {
+			for _, vert := range node.Obj.V {
+				n := camera.Nera
+				f := vert.Z()
+
+				mat := gl.NewMat4fZero()
+				mat[0] = n
+				mat[5] = n
+				mat[10] = n + f
+				mat[11] = -n * f
+				mat[14] = 1
+
+				vec3, w := gl.Mat4MulVec3(mat, vert, 1)
+				vec3.Scale(1 / w)
+				vert.Set(vec3.X(), vec3.Y(), vec3.Z())
+
+				//fmt.Println(n, f, vec3, w)
+			}
+		}
+
+		// 绘制三角形
+		for i, l := 0, node.Obj.FaceLen; i < l; i++ {
+			drawTri2(node.Obj, node.Mat, scene.Screen, i)
+		}
+	}
+
 }
 
 func drawTri2(obj *load.ObjModel, mat *load.ObjMat, screen *model3d.Screen, i int) {
