@@ -6,7 +6,7 @@ import (
 )
 
 type Node struct {
-	position *gl.Vec3f // 位置
+	position *gl.Vec4f // 位置
 
 	Obj *load.ObjModel
 
@@ -15,7 +15,7 @@ type Node struct {
 
 func NewNode() *Node {
 	node := &Node{
-		position: gl.NewVec3f(0, 0, 0),
+		position: gl.NewVec4f(0, 0, 0, 1),
 	}
 	return node
 }
@@ -49,9 +49,9 @@ func (n *Node) SetMatDiffuse(key, diffuse string) {
 
 func (n *Node) SetPosition(x, y, z float64) {
 	if n.position == nil {
-		n.position = gl.NewVec3f(x, y, z)
+		n.position = gl.NewVec4f(x, y, z, 1)
 	} else {
-		n.position.Set(x, y, z)
+		n.position.Set(x, y, z, 1)
 	}
 }
 
