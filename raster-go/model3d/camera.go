@@ -102,3 +102,18 @@ func (c *Camera) IsPerspective() bool {
 func (c *Camera) IsOrthographic() bool {
 	return !c.perspective
 }
+
+// GetPerspectiveMat4 获取透视投影矩阵
+// @param f 模型的z的值
+func (c *Camera) GetPerspectiveMat4(f float64) *gl.Mat4f {
+	n := c.Nera
+
+	mat := gl.NewMat4fZero()
+	mat[0] = n
+	mat[5] = n
+	mat[10] = n + f
+	mat[11] = -n * f
+	mat[14] = 1
+
+	return mat
+}
