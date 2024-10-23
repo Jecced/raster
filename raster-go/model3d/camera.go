@@ -1,6 +1,7 @@
 package model3d
 
 import (
+	"fmt"
 	"raster-go/gl"
 )
 
@@ -50,6 +51,10 @@ func (c *Camera) LookAt(node NodeBase) {
 	//dir 叉乘up 得到x轴向量
 	xAxis := gl.CrossVec3f(c.Direct, &up)
 	xAxis.Normalize()
+	if xAxis.IsZero() {
+		xAxis.Set(1, 0, 0)
+		fmt.Println("look at x 轴是0向量, 强制改为:", xAxis)
+	}
 	// x 轴叉乘dir, 得到向上的y轴向量
 	newUp := gl.CrossVec3f(xAxis, c.Direct)
 	newUp.Normalize()
