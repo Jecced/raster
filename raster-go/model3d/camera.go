@@ -80,7 +80,7 @@ func (c *Camera) LookAt(node NodeBase) {
 	// 转置
 	RView.Transpose()
 
-	c.TR = gl.Mat4fMul(RView, TView)
+	c.TR = gl.Mat4fMul(TView, RView)
 }
 
 // UsePerspective 透视模式
