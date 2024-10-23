@@ -69,3 +69,37 @@ func Mat4MulVec3(a *Mat4f, b *Vec3f, w float64) (*Vec3f, float64) {
 	v := a[12]*b[0] + a[13]*b[1] + a[14]*b[2] + a[15]*w
 	return NewVec3f(x, y, z), v
 }
+
+// Mat4MulVec4 mat4 x vec4, vec3的第四个值用w来代替, 一般是 0 or 1, 结果还是vec3, 带一个w
+func Mat4MulVec4(a *Mat4f, b *Vec4f) *Vec4f {
+	x := a[0]*b[0] + a[1]*b[1] + a[2]*b[2] + a[3]*b.W()
+	y := a[4]*b[0] + a[5]*b[1] + a[6]*b[2] + a[7]*b.W()
+	z := a[8]*b[0] + a[9]*b[1] + a[10]*b[2] + a[11]*b.W()
+	w := a[12]*b[0] + a[13]*b[1] + a[14]*b[2] + a[15]*b.W()
+	return NewVec4f(x, y, z, w)
+}
+
+func CrossVec3f(a, b *Vec3f) *Vec3f {
+	return NewVec3f(
+		a.Y()*b.Z()-a.Z()*b.Y(),
+		a.Z()*b.X()-a.X()*b.Z(),
+		a.X()*b.Y()-a.Y()*b.X(),
+	)
+}
+
+func DotVec3f(a, b *Vec3f) float64 {
+	return a.X()*b.X() + a.Y()*b.Y() + a.Z()*b.Z()
+}
+
+func CrossVec4f(a, b *Vec4f) *Vec4f {
+	return NewVec4f(
+		a.Y()*b.Z()-a.Z()*b.Y(),
+		a.Z()*b.X()-a.X()*b.Z(),
+		a.X()*b.Y()-a.Y()*b.X(),
+		0,
+	)
+}
+
+func DotVec4f(a, b *Vec4f) float64 {
+	return a.X()*b.X() + a.Y()*b.Y() + a.Z()*b.Z() + a.W()*b.W()
+}
