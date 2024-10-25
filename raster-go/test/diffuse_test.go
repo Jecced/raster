@@ -220,7 +220,13 @@ func BarycentricDiabloDiffuseTest(v0, v1, v2 *gl.Vec4f, uv0, uv1, uv2 gl.Vec3f, 
 	maxX, maxY, minX, minY := screen.Bound(x1, y1, x2, y2, x3, y3)
 	for x := minX; x < maxX; x++ {
 		for y := minY; y < maxY; y++ {
-			a, b, c := ma.Barycentric(x1, y1, x2, y2, x3, y3, float64(x), float64(y))
+			a, b, c := ma.Barycentric(
+				// tri
+				x1, y1, x2, y2, x3, y3,
+				// x+0.5
+				float64(x)+0.5,
+				// y+0.5
+				float64(y)+.5)
 			// 判断是否在三角形内
 			if a < 0 || b < 0 || c < 0 {
 				continue
