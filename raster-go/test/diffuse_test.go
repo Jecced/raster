@@ -18,6 +18,10 @@ func TestAngle(t *testing.T) {
 	select {}
 }
 
+func TestOneAngle(t *testing.T) {
+	run(200)
+}
+
 func getNode() *model3d.Node {
 	node1 := model3d.NewNode()
 	node1.SetPosition(0, 0, 0)
@@ -34,13 +38,46 @@ func getNode1() *model3d.Node {
 	return node1
 }
 
+func getNode2() *model3d.Node {
+	node1 := model3d.NewNode()
+	node1.SetPosition(0, 0, 0)
+
+	node1.SetObjModel("../obj/Bulbasaur/Bulbasaur.obj")
+
+	// 缩放一下
+	for _, v := range node1.Obj.V {
+		v.Mul(*gl.NewVec4f(0.2, 0.2, 0.2, 1))
+	}
+	node1.SetObjMat("../obj/Bulbasaur/Fushigidane.mtl")
+	node1.SetMatDiffuse("mat1", "../obj/FushigidaneDh.png")
+	node1.SetMatDiffuse("mat2", "../obj/FushigidaneEyeDh.png")
+	return node1
+}
+
+var node1 model3d.Node
+var node2 model3d.Node
+var node3 model3d.Node
+
+func init() {
+	node1 = *getNode()
+	node2 = *getNode1()
+	node3 = *getNode2()
+}
+
+func clone(node model3d.Node) *model3d.Node {
+	t1 := &node
+	t2 := *t1
+	t3 := &t2
+	return t3
+}
+
 func getScene() *model3d.Scene {
 
 	scene := model3d.NewScene(1000, 1000)
 
-	scene.AddChild(getNode())
+	scene.AddChild(getNode2())
 
-	scene.AddChild(getNode1())
+	//scene.AddChild(clone(node3))
 
 	//x, z := ma.CalcVec2ByAngleDist(float64(angle), 1)
 	//
@@ -84,7 +121,7 @@ func TestCameraLookAt(t *testing.T) {
 	node0 := scene.Child[0]
 	camera := scene.Camera
 
-	node0.SetPosition(0, 0, 0)
+	node0.SetPosition(-2, 0, 0)
 	camera.SetPosition(5, 3, 3)
 
 	camera.LookAt(node0)
@@ -106,7 +143,7 @@ func TestCameraLookAt(t *testing.T) {
 }
 
 func Test1111(t *testing.T) {
-	runTestPerspective(30)
+	runTestPerspective(300)
 }
 
 func TestPerspective(t *testing.T) {
@@ -233,8 +270,8 @@ func BarycentricDiabloDiffuseTest(v0, v1, v2 *gl.Vec4f, uv0, uv1, uv2 gl.Vec3f, 
 			}
 
 			// UV 坐标 0, 0 在左下角
-			ux := int((a*uv1.X() + b*uv2.X() + c*uv0.X()) * float64(meta.MaxX))
-			vy := meta.MaxY - int((a*uv1.Y()+b*uv2.Y()+c*uv0.Y())*float64(meta.MaxY))
+			ux := int((a*uv0.X() + b*uv1.X() + c*uv2.X()) * float64(meta.MaxX))
+			vy := meta.MaxY - int((a*uv0.Y()+b*uv1.Y()+c*uv2.Y())*float64(meta.MaxY))
 			z := a*v0.Z() + b*v1.Z() + c*v2.Z()
 
 			at := meta.At(ux, vy)
