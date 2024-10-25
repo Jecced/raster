@@ -2,7 +2,15 @@ package ma
 
 import "math"
 
-// Barycentric 求一个点的重心坐标
+// Inside 判断一个点是否在三角形内
+func Inside(x1, y1, x2, y2, x3, y3 int, x, y float64) bool {
+	a := CrossFloat64(x-float64(x3), y-float64(y3), x-float64(x1), y-float64(y1))
+	b := CrossFloat64(x-float64(x1), y-float64(y1), x-float64(x2), y-float64(y2))
+	c := CrossFloat64(x-float64(x2), y-float64(y2), x-float64(x3), y-float64(y3))
+	return a > 0 && b > 0 && c > 0 || a < 0 && b < 0 && c < 0
+}
+
+// Barycentric 求一个点在三角形内的重心坐标
 func Barycentric(x1, y1, x2, y2, x3, y3 int, px, py float64) (a, b, c float64) {
 	s := CrossInt(x2-x1, y2-y1, x3-x1, y3-y1) / 2
 
