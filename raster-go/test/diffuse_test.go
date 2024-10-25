@@ -213,16 +213,16 @@ func drawTri2(obj *load.ObjModel, mat *load.ObjMat, screen *model3d.Screen, i in
 }
 
 func BarycentricDiabloDiffuseTest(v0, v1, v2 *gl.Vec4f, uv0, uv1, uv2 gl.Vec3f, meta *load.ObjMatMeta, screen *model3d.Screen) {
-	x1, y1 := getXy1(v0.X(), v0.Y())
-	x2, y2 := getXy1(v1.X(), v1.Y())
-	x3, y3 := getXy1(v2.X(), v2.Y())
+	x0, y0 := getXy1(v0.X(), v0.Y())
+	x1, y1 := getXy1(v1.X(), v1.Y())
+	x2, y2 := getXy1(v2.X(), v2.Y())
 
-	maxX, maxY, minX, minY := screen.Bound(x1, y1, x2, y2, x3, y3)
+	maxX, maxY, minX, minY := screen.Bound(x0, y0, x1, y1, x2, y2)
 	for x := minX; x < maxX; x++ {
 		for y := minY; y < maxY; y++ {
 			a, b, c := ma.Barycentric(
 				// tri
-				x1, y1, x2, y2, x3, y3,
+				x0, y0, x1, y1, x2, y2,
 				// x+0.5
 				float64(x)+0.5,
 				// y+0.5
