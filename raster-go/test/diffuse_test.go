@@ -19,7 +19,7 @@ func TestAngle(t *testing.T) {
 }
 
 func TestOneAngle(t *testing.T) {
-	run(0)
+	run(90)
 }
 
 func getNode() *model3d.Node {
@@ -109,7 +109,7 @@ func run(angle int) {
 
 	x, z := ma.CalcVec2ByAngleDist(float64(angle), 2)
 
-	camera.SetPosition(x, 1, z)
+	camera.SetPosition(x, 0.7, z)
 	//camera.SetPosition(0, 100, 10)
 	camera.LookAt(node)
 	camera.UsePerspective()
@@ -190,7 +190,7 @@ func runTestPerspective(angle int) {
 
 	camera.LookAt(node0)
 
-	camera.UsePerspective()
+	//camera.UsePerspective()
 	camera.SetNera(-10.0)
 
 	drawScene(scene)
@@ -284,10 +284,17 @@ func BarycentricDiabloDiffuseTest(v0, v1, v2 *gl.Vec4f, uv0, uv1, uv2 gl.Vec3f, 
 				continue
 			}
 
+			z := a*v0.Z() + b*v1.Z() + c*v2.Z()
+
+			//a1, b1, c1 := a, b, c
+			//a = a / v0.Z() * z
+			//b = b / v1.Z() * z
+			//c = c / v2.Z() * z
+			//fmt.Println(a, b, c, a1, b1, c1)
+
 			// UV 坐标 0, 0 在左下角
 			ux := int((a*uv0.X() + b*uv1.X() + c*uv2.X()) * float64(meta.MaxX))
 			vy := meta.MaxY - int((a*uv0.Y()+b*uv1.Y()+c*uv2.Y())*float64(meta.MaxY))
-			z := a*v0.Z() + b*v1.Z() + c*v2.Z()
 
 			at := meta.At(ux, vy)
 
