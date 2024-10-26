@@ -2,24 +2,22 @@ package model3d
 
 import (
 	"image/color"
+	"raster-go/gl"
 )
 
 // Pixi 记录屏幕中每个像素的信息
 type Pixi struct {
-	r      uint8
-	g      uint8
-	b      uint8
-	a      uint8
+	color  *gl.Color
 	z      float64 // 深度缓冲信息, z越大, 越靠近屏幕
 	isFull bool    // 是否已经被填充
 }
 
 // Clean 清空一个像素信息
 func (p *Pixi) Clean() {
-	p.r = 0
-	p.g = 0
-	p.b = 0
-	p.a = 0
+	p.color.R = 0
+	p.color.G = 0
+	p.color.B = 0
+	p.color.A = 0
 	p.z = 0
 	p.isFull = false
 }
@@ -28,7 +26,7 @@ func (p Pixi) GetColor() *color.RGBA {
 	if !p.isFull {
 		return &color.RGBA{}
 	}
-	return &color.RGBA{R: p.r, G: p.g, B: p.b, A: p.a}
+	return &color.RGBA{R: p.color.R, G: p.color.G, B: p.color.B, A: p.color.A}
 }
 
 func (p *Pixi) SetColor(r, g, b, a uint8, z float64) {
@@ -36,10 +34,10 @@ func (p *Pixi) SetColor(r, g, b, a uint8, z float64) {
 	if p.isFull && p.z > z {
 		return
 	}
-	p.r = r
-	p.g = g
-	p.b = b
-	p.a = a
+	p.color.R = r
+	p.color.G = g
+	p.color.B = b
+	p.color.A = a
 	p.z = z
 	p.isFull = true
 }
