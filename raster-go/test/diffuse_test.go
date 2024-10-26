@@ -19,7 +19,7 @@ func TestAngle(t *testing.T) {
 }
 
 func TestOneAngle(t *testing.T) {
-	run(200)
+	run(0)
 }
 
 func getNode() *model3d.Node {
@@ -54,21 +54,31 @@ func getNode2() *model3d.Node {
 	return node1
 }
 
-var node1 model3d.Node
-var node2 model3d.Node
-var node3 model3d.Node
+func getFloor() *model3d.Node {
+	node := model3d.NewNode()
+	vert := make([]*gl.Vec4f, 0, 4)
+	vert = append(vert, gl.NewVec4f(-1, 0, -1, 1))
+	vert = append(vert, gl.NewVec4f(1, 0, -1, 1))
+	vert = append(vert, gl.NewVec4f(1, 0, 1, 1))
+	vert = append(vert, gl.NewVec4f(-1, 0, 1, 1))
 
-func init() {
-	node1 = *getNode()
-	node2 = *getNode1()
-	node3 = *getNode2()
-}
+	uv := make([]gl.Vec3f, 0, 4)
+	uv = append(uv, *gl.NewVec3f(0, 0, 0))
+	uv = append(uv, *gl.NewVec3f(0, 1, 0))
+	uv = append(uv, *gl.NewVec3f(1, 1, 0))
+	uv = append(uv, *gl.NewVec3f(1, 0, 0))
 
-func clone(node model3d.Node) *model3d.Node {
-	t1 := &node
-	t2 := *t1
-	t3 := &t2
-	return t3
+	a := load.ObjFace{Key: "default", V: []int{1, 2, 3}, VT: []int{1, 2, 3}}
+	b := load.ObjFace{Key: "default", V: []int{3, 4, 1}, VT: []int{3, 4, 1}}
+
+	face := []load.ObjFace{a, b}
+
+	node.Obj = &load.ObjModel{
+		V: vert, VT: uv, Face: face, FaceLen: len(face),
+	}
+	node.SetObjDefaultMat("../obj/floor_diffuse.png")
+
+	return node
 }
 
 func getScene() *model3d.Scene {
@@ -76,6 +86,8 @@ func getScene() *model3d.Scene {
 	scene := model3d.NewScene(1000, 1000)
 
 	scene.AddChild(getNode2())
+
+	scene.AddChild(getFloor())
 
 	//scene.AddChild(clone(node3))
 
@@ -95,10 +107,13 @@ func run(angle int) {
 	node.SetPosition(0, 0, 0)
 	camera := scene.Camera
 
-	x, z := ma.CalcVec2ByAngleDist(float64(angle), 1)
+	x, z := ma.CalcVec2ByAngleDist(float64(angle), 2)
 
-	camera.SetPosition(x, 0.4, z)
+	camera.SetPosition(x, 1, z)
+	//camera.SetPosition(0, 100, 10)
 	camera.LookAt(node)
+	camera.UsePerspective()
+	camera.SetNera(-2)
 
 	drawScene(scene)
 
