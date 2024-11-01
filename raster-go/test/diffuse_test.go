@@ -288,7 +288,10 @@ func BarycentricDiabloDiffuseTest(v0, v1, v2 *gl.Vec4f, uv0, uv1, uv2 gl.Vec3f, 
 			}
 
 			// 修正透视变形的alpha, beta, gamma
-			z := a*v0.Z() + b*v1.Z() + c*v2.Z()
+			// 1 / z = (1/z1 * alpha) + (1/z2 * beta) + (1/z3 * gamma)
+			uz := 1/v0.Z()*a + 1/v1.Z()*b + 1/v2.Z()*c
+			z := 1 / uz
+
 			a = a / v0.Z() * z
 			b = b / v1.Z() * z
 			c = c / v2.Z() * z
