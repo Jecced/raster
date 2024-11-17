@@ -46,6 +46,7 @@ type Screen struct {
 	W      int
 	H      int
 	pixies []*Pixi
+	Size   float64
 }
 
 func NewScreen(w, h int) *Screen {
@@ -57,6 +58,7 @@ func NewScreen(w, h int) *Screen {
 		W:      w,
 		H:      h,
 		pixies: pixies,
+		Size:   200,
 	}
 	return s
 }
@@ -132,5 +134,5 @@ func (s Screen) max(a ...int) (out int) {
 
 func (s Screen) GetXY(x, y float64) (int, int) {
 	//return int(x*100) + 500, -int(y*100) + 500 + 400
-	return int(x*300) + s.W/2, -int(y*300) + s.H/2
+	return int(x*s.Size) + s.W/2, -int(y*s.Size) + s.H/2
 }
