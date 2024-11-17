@@ -2,6 +2,7 @@ package model3d
 
 import (
 	"image/color"
+	"math"
 	"raster-go/gl"
 )
 
@@ -58,7 +59,7 @@ func NewScreen(w, h int) *Screen {
 		W:      w,
 		H:      h,
 		pixies: pixies,
-		Size:   200,
+		Size:   math.Min(float64(w), float64(h)) / 2,
 	}
 	return s
 }
