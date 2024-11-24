@@ -15,13 +15,13 @@ import (
 func TestUv01(t *testing.T) {
 
 	scene := comm.Scene03()
-	path := "../../temp/uv_03.png"
+	path := "../../temp/uv_01_1_2.png"
 	w, h := scene.Screen.W, scene.Screen.H
 	node := scene.Child[0]
 
 	camera := scene.Camera
 
-	camera.SetPosition(0, 0, 5)
+	camera.SetPosition(0, 10, 20)
 	camera.LookAt(node)
 
 	drawScene(scene)
@@ -41,21 +41,21 @@ func TestUv01(t *testing.T) {
 
 func TestUv02(t *testing.T) {
 
-	path := "../../temp/uv_01.gif"
+	path := "../../temp/uv_03_1.gif"
 
 	gif := gifs.NewGif(300, 300)
 
 	for i := 0; i < 360; i++ {
 
-		scene := comm.Scene01()
+		scene := comm.Scene03()
 		w, h := scene.Screen.W, scene.Screen.H
 		node := scene.Child[0]
 
 		camera := scene.Camera
 
-		x, z := ma.CalcVec2ByAngleDist(float64(i), 5)
+		x, z := ma.CalcVec2ByAngleDist(float64(i), 20)
 
-		camera.SetPosition(x, 0, z)
+		camera.SetPosition(x, 10, z)
 		camera.LookAt(node)
 
 		scene.Screen.Clean()
