@@ -18,11 +18,7 @@ export class Color {
     private _val: number = 0;
 
     constructor(r = 0, g = 0, b = 0, a = 255) {
-        r &= 0xff;
-        g &= 0xff;
-        b &= 0xff;
-        a &= 0xff;
-        this._val = (a << 24 | b << 16 | g << 8 | r) >>> 0;
+        this.set(r, g, b, a);
     }
 
     get r(): number {
@@ -58,12 +54,20 @@ export class Color {
         this._val = (this._val & 0xffffff00 | v & 255 << 24) >>> 0;
     }
 
-    public toString(): string {
-        return `color(${this.r}, ${this.g}, ${this.b}, ${this.a})`;
+    public set(r: number, g: number, b: number, a = 255): void {
+        r &= 0xff;
+        g &= 0xff;
+        b &= 0xff;
+        a &= 0xff;
+        this._val = (a << 24 | b << 16 | g << 8 | r) >>> 0;
     }
 
-    public string():string{
-        return this.toString()
+    public fromColor(color: Color): void {
+        this._val = color._val;
+    }
+
+    public toString(): string {
+        return `color(${this.r}, ${this.g}, ${this.b}, ${this.a})`;
     }
 
     /**
@@ -90,5 +94,17 @@ export class Color {
             a = parseInt(hexString.charAt(3) + hexString.charAt(3), 16) || 255;
         }
         return new Color(r, g, b, a);
+    }
+
+    public toHEX(): string{
+        const prefix = '0';
+        // #rrggbb
+        const hex = [
+            "#",
+            (this.r < 16 ? prefix : '') + (this.r).toString(16),
+            (this.g < 16 ? prefix : '') + (this.g).toString(16),
+            (this.b < 16 ? prefix : '') + (this.b).toString(16),
+        ];
+        return hex.join("");
     }
 }
