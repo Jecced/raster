@@ -35,7 +35,7 @@ export class NormalZBuffer implements ZBuffer {
     }
 
     public isFull(x: number, y: number): boolean {
-        return this.z[x + y * this.width] === undefined;
+        return this.z[x + y * this.width] !== undefined;
     }
 
     public getColor(x: number, y: number): Color {
@@ -44,8 +44,13 @@ export class NormalZBuffer implements ZBuffer {
     }
 
     public setColor(x: number, y: number, z: number, color: Color): void {
+        x = x >> 0;
+        y = y >> 0;
         const index = x + y * this.width;
         const tempColor = this.colors[index];
+        if(!tempColor){
+            return;
+        }
         const nz = this.z[index];
         if (nz === undefined || z > nz) {
             this.z[index] = z;
