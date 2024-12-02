@@ -8,10 +8,10 @@
  * @param w [24-32) 位
  */
 export class Vec4 {
-    private x: number;
-    private y: number;
-    private z: number;
-    private w: number;
+    public x: number;
+    public y: number;
+    public z: number;
+    public w: number;
 
     constructor(x = 0, y = 0, z = 0, w = 0) {
         this.set(x, y, z, w);
