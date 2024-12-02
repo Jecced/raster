@@ -85,9 +85,9 @@ export class Vec4 {
     public rotateY(rad: number): void {
         rad *= Math.PI / 180;
         const x = this.z * Math.sin(rad) + this.x * Math.cos(rad);
-        const y = this.z * Math.cos(rad) - this.x * Math.sin(rad);
+        const z = this.z * Math.cos(rad) - this.x * Math.sin(rad);
         this.x = x;
-        this.y = y;
+        this.z = z;
     }
 
     public rotateZ(rad: number): void {
