@@ -11,6 +11,8 @@ export class NormalZBuffer implements ZBuffer {
     private readonly colors: Array<Color> = undefined;
     private readonly z: Array<number> = undefined;
 
+    private clearColor: Color = Color.BLACK.clone();
+
     constructor(width: number, height: number) {
         this.width = width;
         this.height = height;
@@ -25,9 +27,13 @@ export class NormalZBuffer implements ZBuffer {
         }
     }
 
+    public setClearColor(color:Color): void {
+        this.clearColor.fromColor(color);
+    }
+
     public clear(): void {
         for (let i = 0, len = this.colors.length; i < len; i++) {
-            this.colors[i].set(0, 0, 0, 255);
+            this.colors[i].fromColor(this.clearColor);
         }
         for (let i = 0, len = this.z.length; i < len; i++) {
             this.z[i] = undefined;
@@ -48,7 +54,7 @@ export class NormalZBuffer implements ZBuffer {
         y = y >> 0;
         const index = x + y * this.width;
         const tempColor = this.colors[index];
-        if(!tempColor){
+        if (!tempColor) {
             return;
         }
         const nz = this.z[index];
