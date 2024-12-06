@@ -10,7 +10,8 @@ export class ScenePreview {
             .setPosition(0, 10, 20)
             .lookAt(node.getPosition())
             .usePerspective()
-            .setNera(10);
+            .setNera(-10)
+            .setFar(-20);
         return scene;
     }
 
@@ -22,7 +23,8 @@ export class ScenePreview {
             .setPosition(0, 10, 20)
             .lookAt(node.getPosition())
             .usePerspective()
-            .setNera(10);
+            .setNera(-10)
+            .setFar(-20);
         return scene;
     }
 
@@ -34,7 +36,8 @@ export class ScenePreview {
             .setPosition(0, 10, 20)
             .lookAt(node.getPosition())
             .usePerspective()
-            .setNera(10);
+            .setNera(-10)
+            .setFar(-20);
         return scene;
     }
 }
