@@ -76,7 +76,7 @@ export class Mat4 {
     }
 
     public toString(): string {
-        return `mat4(\n\t${this.data[0]}, ${this.data[1]}, ${this.data[2]}, ${this.data[3]},\n\t${this.data[4]}, ${this.data[5]}, ${this.data[6]}, ${this.data[7]},\n\t${this.data[8]}, ${this.data[9]}, ${this.data[10]}, ${this.data[11]},\n\t${this.data[12]}, ${this.data[13]}, ${this.data[14]}, ${this.data[15]})`;
+        return `mat4(\n\t${this.data[0].toFixed(2)}, ${this.data[1].toFixed(2)}, ${this.data[2].toFixed(2)}, ${this.data[3].toFixed(2)},\n\t${this.data[4].toFixed(2)}, ${this.data[5].toFixed(2)}, ${this.data[6].toFixed(2)}, ${this.data[7].toFixed(2)},\n\t${this.data[8].toFixed(2)}, ${this.data[9].toFixed(2)}, ${this.data[10].toFixed(2)}, ${this.data[11].toFixed(2)},\n\t${this.data[12].toFixed(2)}, ${this.data[13].toFixed(2)}, ${this.data[14].toFixed(2)}, ${this.data[15].toFixed(2)})`;
     }
 
     /**
