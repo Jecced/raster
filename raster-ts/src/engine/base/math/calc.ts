@@ -93,13 +93,18 @@ export class Calc {
      * 矩阵和一个向量相乘
      * @param a
      * @param b
+     * @param out
      */
-    public static mat4MulVec4(a: Mat4, b: Vec4): Vec4 {
+    public static mat4MulVec4(a: Mat4, b: Vec4, out?: Vec4): Vec4 {
         const x = a.get(0) * b.x + a.get(1) * b.y + a.get(2) * b.z + a.get(3) * b.w;
         const y = a.get(4) * b.x + a.get(5) * b.y + a.get(6) * b.z + a.get(7) * b.w;
         const z = a.get(8) * b.x + a.get(9) * b.y + a.get(10) * b.z + a.get(11) * b.w;
         const w = a.get(12) * b.x + a.get(13) * b.y + a.get(14) * b.z + a.get(15) * b.w;
-        return new Vec4(x, y, z, w);
+        if (!out) {
+            out = new Vec4();
+        }
+        out.set(x, y, z, w);
+        return out;
     }
 
     /**
@@ -124,11 +129,32 @@ export class Calc {
         return a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w;
     }
 
-    public static crossVec3(a: Vec4, b: Vec4): Vec4 {
-        return new Vec4(
+    public static crossVec3(a: Vec4, b: Vec4, out?: Vec4): Vec4 {
+        if (!out) {
+            out = new Vec4();
+        }
+        out.set(
             a.y * b.z - a.z * b.y,
             a.z * b.x - a.x * b.z,
             a.x * b.y - a.y * b.x,
+            0,
         );
+        return out;
     }
+
+    public vec2ByAngleDist(angle: number, distance: number, out: Vec4): Vec4 {
+        angle = Math.PI / 180 * angle;
+        out.x = distance * Math.cos(angle);
+        out.y = distance * Math.cos(angle);
+        return out
+    }
+
+    // func CalcVec2ByAngleDist(angle, distance float64) (x, y float64) {
+    //
+    //     angle = math.Pi / 180 * angle
+    //     x = distance * math.Cos(angle)
+    //     y = distance * math.Sin(angle)
+    //     return
+    // }
+
 }

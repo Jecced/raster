@@ -87,7 +87,7 @@ export class Mat4 {
      * 0 0 0 0
      * @constructor
      */
-    public static Zero(): Mat4 {
+    public static zero(): Mat4 {
         return new Mat4();
     }
 
@@ -99,7 +99,7 @@ export class Mat4 {
      * 0 0 0 1
      * @constructor
      */
-    public static Identity(): Mat4 {
+    public static identity(): Mat4 {
         const mat = new Mat4();
         mat.data[0] = 1;
         mat.data[5] = 1;
