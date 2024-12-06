@@ -17,6 +17,8 @@ export class Camera implements Base {
 
     // 近平面n的距离
     private nera: number;
+    // 远平面f的距离
+    private far: number;
 
     constructor() {
         this.position = new Vec4(0, 0, 0, 1);
@@ -35,6 +37,11 @@ export class Camera implements Base {
 
     public setNera(n: number): this {
         this.nera = n;
+        return this;
+    }
+
+    public setFar(f: number): this{
+        this.far = f;
         return this;
     }
 
@@ -113,12 +120,12 @@ export class Camera implements Base {
         return !this.perspective;
     }
 
-    public getPerspectiveMat4(far: number): Mat4 {
+    public getPerspectiveMat4(): Mat4 {
         const mat = new Mat4();
         mat.setFromNumber(
             this.nera, 0, 0, 0,
             0, this.nera, 0, 0,
-            0, 0, this.nera + far, -this.nera * far,
+            0, 0, this.nera + this.far, -this.nera * this.far,
             0, 0, 1, 0,
         );
         return mat;
