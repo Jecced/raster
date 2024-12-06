@@ -26,8 +26,9 @@ export class LoadObjUtil {
     }
 
     private static toFace(line: string, key: string): ObjFace {
-        line = line.substring(key.length + 1);
+        line = line.substring(2);
         const face = new ObjFace();
+        face.key = key;
         let vers = line.split(" ");
 
         for (let i = 0; i < 3; i++) {
@@ -71,7 +72,7 @@ export class LoadObjUtil {
                     obj.n.push(LoadObjUtil.toVec3f(line, "vn"));
                     break;
                 case line.startsWith("f "):
-                    obj.face.push(LoadObjUtil.toFace(line, "f"));
+                    obj.face.push(LoadObjUtil.toFace(line, matKey));
                     break;
                 case line.startsWith("usemtl "):
                     matKey = line.substring(7);
