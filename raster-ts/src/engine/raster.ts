@@ -5,6 +5,10 @@ import { ObjModel } from "../model/obj/load-obj-model";
 import { Vertices } from "../model/vertices";
 import { Texture } from "./base/texture";
 import { Barycentric } from "./base/barycentric";
+import { Scene } from "../scene/scene";
+import { Node } from "../scene/node";
+import { Calc } from "./base/math/calc";
+import { Camera } from "../scene/camera";
 
 export class Raster {
 
@@ -63,7 +67,7 @@ export class Raster {
 
         output.set(
             Math.round(input.x * this.size + this.hw),
-            Math.round(-input.y * this.size + this.hh),
+            Math.round(input.y * this.size + this.hh),
             0, 0);
     }
 
@@ -100,6 +104,53 @@ export class Raster {
     private v3 = {} as Vertices;
 
 
+
+    public renderScene(scene: Scene, buffer: ZBuffer): void {
+        const camera = scene.getCamera();
+        for (let i = 0, len = scene.size(); i < len; i++) {
+
+            const node = scene.getChild(i);
+            const model = node.getModel();
+
+            for (let i = 0, len = model.face.length; i < len; i++) {
+                const face = model.face[i];
+                let key = face.key;
+                if (key === "") {
+                    key = "default";
+                }
+                const texture = model.mat.get(key);
+                model.faceToVertices(i, this.v1, this.v2, this.v3);
+
+                this.vertexTransform(this.v1, node, camera);
+                this.vertexTransform(this.v2, node, camera);
+                this.vertexTransform(this.v3, node, camera);
+
+                this.renderFace(texture, this.v1, this.v2, this.v3, buffer);
+            }
+        }
+    }
+
+
+    private vertexTransform(vertex: Vertices, node: Node, camera: Camera): void{
+        const vert = vertex.vec;
+        // 模型移动到node位置
+        vert.add(node.getPosition());
+
+        // 视窗变换
+        // 摄像机摆放到原点, 然后看做相对变换
+        Calc.mat4MulVec4(camera.tr, vert, vert);
+
+        // 使用透视
+        if(camera.isPerspective){
+            const mat = camera.getPerspectiveMat4(vert.z);
+            Calc.mat4MulVec4(mat, vert, vert);
+            const z = vert.w;
+            vert.standardized();
+            vert.z = z;
+            vert.w = 1;
+        }
+    }
+
     public renderModel(model: ObjModel, buffer: ZBuffer): void {
         for (let i = 0, len = model.face.length; i < len; i++) {
             const face = model.face[i];
@@ -114,20 +165,6 @@ export class Raster {
         }
     }
 
-    public renderModelTest(i: number, model: ObjModel, buffer: ZBuffer): void {
-        this.renderTest(i, model, buffer);
-    }
-
-    private renderTest(i: number, model: ObjModel, buffer: ZBuffer) {
-        const face = model.face[i];
-        let key = face.key;
-        if (key === "") {
-            key = "default";
-        }
-        const texture = model.mat.get(key);
-        model.faceToVertices(i, this.v1, this.v2, this.v3);
-        this.renderFace(texture, this.v1, this.v2, this.v3, buffer);
-    }
 
     private tempVecOutV0: Vec4 = new Vec4();
     private tempVecOutV1: Vec4 = new Vec4();
@@ -162,19 +199,19 @@ export class Raster {
                     continue;
                 }
 
-                // let z =
-                //     1 / v0.vec.z * this.tempBarycentricOut.x +
-                //     1 / v1.vec.z * this.tempBarycentricOut.y +
-                //     1 / v2.vec.z * this.tempBarycentricOut.z;
-                // z = 1 / z;
-                //
-                // this.tempBarycentricOut.x = this.tempBarycentricOut.x / v0.vec.z * z;
-                // this.tempBarycentricOut.y = this.tempBarycentricOut.y / v1.vec.z * z;
-                // this.tempBarycentricOut.z = this.tempBarycentricOut.z / v2.vec.z * z;
+                let z =
+                    1 / v0.vec.z * this.tempBarycentricOut.x +
+                    1 / v1.vec.z * this.tempBarycentricOut.y +
+                    1 / v2.vec.z * this.tempBarycentricOut.z;
+                z = 1 / z;
 
-                const z = this.tempBarycentricOut.x * v0.vec.z +
-                    this.tempBarycentricOut.y * v1.vec.z +
-                    this.tempBarycentricOut.z * v2.vec.z;
+                this.tempBarycentricOut.x = this.tempBarycentricOut.x / v0.vec.z * z;
+                this.tempBarycentricOut.y = this.tempBarycentricOut.y / v1.vec.z * z;
+                this.tempBarycentricOut.z = this.tempBarycentricOut.z / v2.vec.z * z;
+
+                // const z = this.tempBarycentricOut.x * v0.vec.z +
+                //     this.tempBarycentricOut.y * v1.vec.z +
+                //     this.tempBarycentricOut.z * v2.vec.z;
 
                 const u = this.tempBarycentricOut.x * v0.u + this.tempBarycentricOut.y * v1.u + this.tempBarycentricOut.z * v2.u;
                 const v = this.tempBarycentricOut.x * v0.v + this.tempBarycentricOut.y * v1.v + this.tempBarycentricOut.z * v2.v;
