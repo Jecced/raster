@@ -6,9 +6,8 @@ import { Vertices } from "../model/vertices";
 import { Texture } from "./base/texture";
 import { Barycentric } from "./base/barycentric";
 import { Scene } from "../scene/scene";
-import { Node } from "../scene/node";
 import { Calc } from "./base/math/calc";
-import { Camera } from "../scene/camera";
+import { Mat4 } from "./base/math/mat4";
 
 export class Raster {
 
@@ -104,13 +103,25 @@ export class Raster {
     private v3 = {} as Vertices;
 
 
-
     public renderScene(scene: Scene, buffer: ZBuffer): void {
         const camera = scene.getCamera();
         for (let i = 0, len = scene.size(); i < len; i++) {
 
             const node = scene.getChild(i);
             const model = node.getModel();
+
+            // 提前矩阵连乘运算
+            let list = [];
+            // 模型移动到node位置
+            list.push(node.getPositionMat4());
+            // 视窗变换
+            list.push(camera.tr);
+            // 使用透视
+            if(camera.isPerspective()){
+                list.push(camera.getPerspectiveMat4());
+            }
+            const mat = Calc.mat4MulLinked(...list);
+
 
             for (let i = 0, len = model.face.length; i < len; i++) {
                 const face = model.face[i];
@@ -121,9 +132,9 @@ export class Raster {
                 const texture = model.mat.get(key);
                 model.faceToVertices(i, this.v1, this.v2, this.v3);
 
-                this.vertexTransform(this.v1, node, camera);
-                this.vertexTransform(this.v2, node, camera);
-                this.vertexTransform(this.v3, node, camera);
+                this.vertexTransform(this.v1, mat);
+                this.vertexTransform(this.v2, mat);
+                this.vertexTransform(this.v3, mat);
 
                 this.renderFace(texture, this.v1, this.v2, this.v3, buffer);
             }
@@ -131,19 +142,10 @@ export class Raster {
     }
 
 
-    private vertexTransform(vertex: Vertices, node: Node, camera: Camera): void{
+    private vertexTransform(vertex: Vertices, mat: Mat4): void {
         const vert = vertex.vec;
-        // 模型移动到node位置
-        vert.add(node.getPosition());
-
-        // 视窗变换
-        // 摄像机摆放到原点, 然后看做相对变换
-        Calc.mat4MulVec4(camera.tr, vert, vert);
-
-        // 使用透视
-        if(camera.isPerspective){
-            const mat = camera.getPerspectiveMat4(vert.z);
-            Calc.mat4MulVec4(mat, vert, vert);
+        Calc.mat4MulVec4(mat, vert, vert);
+        if(vert.w !== 1){
             const z = vert.w;
             vert.standardized();
             vert.z = z;
