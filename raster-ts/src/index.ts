@@ -103,12 +103,28 @@ run().then();
 
 // @ts-ignore
 window["ctl"] = {
-    msaa: function(a: any) {
-        if (a.checked) {
+    msaa: function(checked: boolean) {
+        if (checked) {
             rasterCtl.useMsaa();
         } else {
             rasterCtl.useNormal();
         }
         update();
     },
+
+    rx: function(x: number) {
+        i = x;
+        update();
+    },
+
+    cameraUseOrt: function(useOrt: boolean) {
+        const camera = scene.getCamera();
+        if (useOrt) {
+            camera.useOrthographic();
+        } else {
+            camera.usePerspective();
+        }
+        update();
+    },
+
 };
