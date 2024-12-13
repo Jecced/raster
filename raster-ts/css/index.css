@@ -5,9 +5,7 @@ body {
 }
 
 #canvas {
-    margin: 0 auto;
-    width: 800px;
-    height: 600px;
+    /*margin: 0 auto;*/
     display: flex;
     justify-content: center;
 }
