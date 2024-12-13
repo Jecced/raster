@@ -62,6 +62,10 @@ let scene: Scene;
 
 let i = 90;
 
+let cy = 2;
+
+let distance = 30;
+
 function update() {
 
     const buffer = rasterCtl.getBuffer();
@@ -74,8 +78,8 @@ function update() {
 
     const camera = scene.getCamera();
     const node = scene.getChild(0);
-    const out = Calc.vec2ByAngleDist(i, 30);
-    camera.setPosition(out.x, 2, out.y);
+    const out = Calc.vec2ByAngleDist(i, distance);
+    camera.setPosition(out.x, cy, out.y);
     camera.lookAt(node.getPosition());
 
 
@@ -126,5 +130,14 @@ window["ctl"] = {
         }
         update();
     },
+
+    cy: function(y: number){
+        cy = y;
+        update()
+    },
+    dist: function(dist:number){
+        distance = dist;
+        update()
+    }
 
 };
