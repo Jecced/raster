@@ -138,6 +138,17 @@ window["ctl"] = {
     dist: function(dist:number){
         distance = dist;
         update()
+    },
+    scene: async function(value: any){
+        let s = undefined;
+        switch (value){
+            case "0": s = await ScenePreview.scene01();break;
+            case "1": s = await ScenePreview.scene02();break;
+            case "2": s = await ScenePreview.scene03();break;
+        }
+        console.log(s)
+        scene = s;
+        update();
     }
 
 };
