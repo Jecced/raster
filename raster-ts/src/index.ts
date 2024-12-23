@@ -44,10 +44,10 @@ class RasterCtl {
 
     public useMsaa() {
         const raster = new MsaaRaster();
-        const buffer = new MsaaZBuffer(raster.width, raster.height, 2);
+        const buffer = new MsaaZBuffer(raster.width, raster.height, 3);
         buffer.setFrameBuffer(raster.getFrameBuffer());
         this.buffer = buffer;
-        this.raster = raster
+        this.raster = raster;
         this.initRaster();
     }
 
@@ -71,8 +71,7 @@ function update() {
     const buffer = rasterCtl.getBuffer();
     const raster = rasterCtl.getRaster();
 
-
-    console.time("render");
+    const now = Date.now();
 
     buffer.clear();
 
@@ -91,7 +90,7 @@ function update() {
 
     // requestAnimationFrame(update);
 
-    console.timeEnd("render");
+    document.getElementById("time").innerText = (Date.now() - now).toFixed(0);
 }
 
 
