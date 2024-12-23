@@ -20,7 +20,7 @@ export class MsaaZBuffer implements ZBuffer {
 
     private clearColor: Color = Color.BLACK.clone();
 
-    private points: Array<Vec4> = undefined;
+    private points: Array<Vec4> = [];
 
     constructor(width: number, height: number, msaa: number) {
         msaa >>= 0;
@@ -34,16 +34,15 @@ export class MsaaZBuffer implements ZBuffer {
             this.colors[i] = new Color();
         }
         this.z = new Float32Array(size);
-        // for (let i = 0, len = this.z.length; i < len; i++) {
-        //     this.z[i] = undefined;
-        // }
 
-        this.points = [
-            new Vec4(0.125, 0.325),
-            new Vec4(-0.125, -0.325),
-            new Vec4(0.325, -0.125),
-            new Vec4(-0.325, 0.125),
-        ];
+        const diff = 1 / (msaa + 1);
+        for (let h = 0; h < msaa; h++) {
+            for (let v = 0; v < msaa; v++) {
+                const p = new Vec4((h + 1) * diff, (v + 1) * diff);
+                this.points.push(p);
+                console.log(p.toString());
+            }
+        }
     }
 
     public setFrameBuffer(frameBuffer: Uint8ClampedArray): void {
