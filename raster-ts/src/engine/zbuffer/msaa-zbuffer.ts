@@ -38,9 +38,7 @@ export class MsaaZBuffer implements ZBuffer {
         const diff = 1 / (msaa + 1);
         for (let h = 0; h < msaa; h++) {
             for (let v = 0; v < msaa; v++) {
-                const p = new Vec4((h + 1) * diff, (v + 1) * diff);
-                this.points.push(p);
-                console.log(p.toString());
+                this.points.push(new Vec4((h + 1) * diff, (v + 1) * diff));
             }
         }
     }
