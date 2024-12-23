@@ -83,11 +83,6 @@ export class MsaaZBuffer implements ZBuffer {
         }
     }
 
-    public isFull(x: number, y: number): boolean {
-        // return this.z[(x + y * this.width)  * this.msaa * this.msaa] !== undefined;
-        return true;
-    }
-
     public getColor(x: number, y: number): Color {
 
         const index = this.getZPosition(x, y, 0);
@@ -102,34 +97,7 @@ export class MsaaZBuffer implements ZBuffer {
         return color;
     }
 
-    public setColor(x: number, y: number, z: number, color: Color): void {
-        // x = x >> 0;
-        // y = y >> 0;
-        // const index = x + y * this.width;
-        // const tempColor = this.colors[index];
-        // if (!tempColor) {
-        //     return;
-        // }
-        // const nz = this.z[index];
-        // if (nz === undefined || z > nz) {
-        //     this.z[index] = z;
-        //     tempColor.fromColor(color);
-        // }
-    }
-
-    public setMsaaColor(x: number, y: number, z: number, color: Color, i: number): void {
-        // x = x >> 0;
-        // y = y >> 0;
-        // const index = (x + y * this.width) * this.msaa * this.msaa;
-        // const tempColor = this.colors[index + i];
-        // if (!tempColor) {
-        //     return;
-        // }
-        // const nz = this.z[index];
-        // if (nz === undefined || z > nz) {
-        //     this.z[index] = z;
-        //     tempColor.fromColor(color);
-        // }
+    public setColor(x: number, y: number, color: Color, i: number): void {
         x >>= 0;
         y >>= 0;
         const index = this.getZPosition(x, y, i);
