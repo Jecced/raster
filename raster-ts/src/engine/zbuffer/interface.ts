@@ -20,6 +20,7 @@ export interface ZBuffer {
      * @param x
      * @param y
      */
+
     // isFull(x: number, y: number): boolean;
 
     /**

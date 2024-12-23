@@ -45,7 +45,7 @@ export class Texture {
         const i = (y * w + x) * 4;
         const data = this.img.data;
 
-        if(!out){
+        if (!out) {
             out = new Color();
         }
         out.set(data[i], data[i + 1], data[i + 2], data[i + 3]);
