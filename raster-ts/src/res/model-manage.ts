@@ -32,9 +32,11 @@ export class ModelManage {
         model.setMatUV("mat1", await Res.loadBulbasaurImg1());
         model.setMatUV("mat2", await Res.loadBulbasaurImg2());
 
-        // 缩放一下
         for (let i = 0; i < model.v.length; i++) {
+            // 缩放一下
             model.v[i].scale(0.2);
+            // 往下移动一点
+            model.v[i].y -= 0.5;
         }
 
         return new Node(model);
