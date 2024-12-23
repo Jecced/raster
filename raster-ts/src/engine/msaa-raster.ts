@@ -35,23 +35,23 @@ export class MsaaRaster {
     }
 
     public render(buffer: MsaaZBuffer): void {
-        let index = -1;
-        let color: Color;
-        for (let x = 0; x < this.width; x++) {
-            for (let y = 0; y < this.height; y++) {
-
-                index = y * this.width + x;
-
-                color = buffer.getColor(x, y);
-                // Uint8ClampedArray 后面可以改成frameBuffer
-                this.imgData.data[4 * index] = color.r;
-                this.imgData.data[4 * index + 1] = color.g;
-                this.imgData.data[4 * index + 2] = color.b;
-                this.imgData.data[4 * index + 3] = color.a;
-                // this.ctx.fillStyle = color.toHEX();
-                // this.ctx.fillRect(x, y, 1, 1)
-            }
-        }
+        // let index = -1;
+        // let color: Color;
+        // for (let x = 0; x < this.width; x++) {
+        //     for (let y = 0; y < this.height; y++) {
+        //
+        //         index = y * this.width + x;
+        //
+        //         color = buffer.getColor(x, y);
+        //         // Uint8ClampedArray 后面可以改成frameBuffer
+        //         this.imgData.data[4 * index] = color.r;
+        //         this.imgData.data[4 * index + 1] = color.g;
+        //         this.imgData.data[4 * index + 2] = color.b;
+        //         this.imgData.data[4 * index + 3] = color.a;
+        //         // this.ctx.fillStyle = color.toHEX();
+        //         // this.ctx.fillRect(x, y, 1, 1)
+        //     }
+        // }
         this.ctx.putImageData(this.imgData, 0, 0);
     }
 
@@ -233,7 +233,9 @@ export class MsaaRaster {
 
                     msaa++;
                 }
-                // buffer.applyMSAAFilter(x, y)
+                if(msaa > 0){
+                    buffer.applyMSAAFilter(x, y)
+                }
             }
         }
     }

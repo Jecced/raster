@@ -13,25 +13,12 @@ class RasterCtl {
     raster: MsaaRaster | NormalRaster;
     buffer: MsaaZBuffer | NormalZBuffer;
 
-    private normalRaster: NormalRaster = undefined;
-    private normalZBuffer: NormalZBuffer = undefined;
-
-    private msaaRaster: MsaaRaster = undefined;
-    private msaaZBuffer: MsaaZBuffer = undefined;
-
     constructor() {
-        this.msaaRaster = new MsaaRaster();
-        this.msaaZBuffer = new MsaaZBuffer(this.msaaRaster.width, this.msaaRaster.height, 2);
-        this.normalRaster = new NormalRaster();
-        this.normalZBuffer = new NormalZBuffer(this.normalRaster.width, this.normalRaster.height);
-        this.normalZBuffer.setFrameBuffer(this.normalRaster.getFrameBuffer());
-
         this.useNormal();
     }
 
     public setClearColor(color: Color): void {
-        this.normalZBuffer.setClearColor(color);
-        this.msaaZBuffer.setClearColor(color);
+        this.buffer.setClearColor(color);
     }
 
     public getBuffer() {
@@ -42,14 +29,26 @@ class RasterCtl {
         return this.raster;
     }
 
+    private initRaster(): void {
+        this.buffer.setClearColor(Color.WHITE);
+    }
+
     public useNormal() {
-        this.buffer = this.normalZBuffer;
-        this.raster = this.normalRaster;
+        const raster = new NormalRaster();
+        const buffer = new NormalZBuffer(raster.width, raster.height);
+        buffer.setFrameBuffer(raster.getFrameBuffer());
+        this.buffer = buffer;
+        this.raster = raster;
+        this.initRaster();
     }
 
     public useMsaa() {
-        this.buffer = this.msaaZBuffer;
-        this.raster = this.msaaRaster;
+        const raster = new MsaaRaster();
+        const buffer = new MsaaZBuffer(raster.width, raster.height, 2);
+        buffer.setFrameBuffer(raster.getFrameBuffer());
+        this.buffer = buffer;
+        this.raster = raster
+        this.initRaster();
     }
 
 }
@@ -132,24 +131,29 @@ window["ctl"] = {
         update();
     },
 
-    cy: function(y: number){
+    cy: function(y: number) {
         cy = y;
-        update()
+        update();
     },
-    dist: function(dist:number){
+    dist: function(dist: number) {
         distance = dist;
-        update()
+        update();
     },
-    scene: async function(value: any){
+    scene: async function(value: any) {
         let s = undefined;
-        switch (value){
-            case "0": s = await ScenePreview.scene01();break;
-            case "1": s = await ScenePreview.scene02();break;
-            case "2": s = await ScenePreview.scene03();break;
+        switch (value) {
+            case "0":
+                s = await ScenePreview.scene01();
+                break;
+            case "1":
+                s = await ScenePreview.scene02();
+                break;
+            case "2":
+                s = await ScenePreview.scene03();
+                break;
         }
-        console.log(s)
         scene = s;
         update();
-    }
+    },
 
 };
