@@ -42,9 +42,9 @@ class RasterCtl {
         this.initRaster();
     }
 
-    public useMsaa() {
+    public useMsaa(size: number) {
         const raster = new MsaaRaster();
-        const buffer = new MsaaZBuffer(raster.width, raster.height, 3);
+        const buffer = new MsaaZBuffer(raster.width, raster.height, size);
         buffer.setFrameBuffer(raster.getFrameBuffer());
         this.buffer = buffer;
         this.raster = raster;
@@ -106,11 +106,11 @@ run().then();
 
 // @ts-ignore
 window["ctl"] = {
-    msaa: function(checked: boolean) {
-        if (checked) {
-            rasterCtl.useMsaa();
-        } else {
+    msaa: function(size: number) {
+        if (size === 1) {
             rasterCtl.useNormal();
+        } else {
+            rasterCtl.useMsaa(size);
         }
         update();
     },

@@ -23,10 +23,6 @@
             </div>
 
             <div>
-                <input id="msaa" type="checkbox" onchange="ctl.msaa(this.checked)" />
-                <label for="msaa">msaa抗锯齿</label>
-            </div>
-            <div>
                 <label>角度</label>
                 <input type="range"
                        min="0"
@@ -65,6 +61,21 @@
                 <label for="per">透视</label>
                 <input id="ort" type="radio" name="perspective" onclick="ctl.cameraUseOrt(true)">
                 <label for="ort">正交</label>
+            </div>
+            <div>
+                <label>MSAA抗锯齿:</label>
+            </div>
+            <div>
+                <input id="point" type="radio" checked name="msaa" onclick="ctl.msaa(1)">
+                <label for="point">关</label>
+                <input id="msaa22" type="radio" name="msaa" onclick="ctl.msaa(2)">
+                <label for="msaa22">2x2</label>
+
+                <input id="msaa33" type="radio" name="msaa" onclick="ctl.msaa(3)">
+                <label for="msaa33">3x3</label>
+
+                <input id="msaa44" type="radio" name="msaa" onclick="ctl.msaa(4)">
+                <label for="msaa44">4x4</label>
             </div>
             <div>
                 <label>渲染耗时: </label>
