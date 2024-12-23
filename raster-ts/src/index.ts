@@ -24,6 +24,7 @@ class RasterCtl {
         this.msaaZBuffer = new MsaaZBuffer(this.msaaRaster.width, this.msaaRaster.height, 2);
         this.normalRaster = new NormalRaster();
         this.normalZBuffer = new NormalZBuffer(this.normalRaster.width, this.normalRaster.height);
+        this.normalZBuffer.setFrameBuffer(this.normalRaster.getFrameBuffer());
 
         this.useNormal();
     }
