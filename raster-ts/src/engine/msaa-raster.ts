@@ -131,9 +131,9 @@ export class MsaaRaster {
                 const texture = model.mat.get(key);
                 model.faceToVertices(i, this.v1, this.v2, this.v3);
 
-                this.vertexTransform(this.v1, mat);
-                this.vertexTransform(this.v2, mat);
-                this.vertexTransform(this.v3, mat);
+                this.vertexTransform(this.v1, mat, camera);
+                this.vertexTransform(this.v2, mat, camera);
+                this.vertexTransform(this.v3, mat, camera);
 
                 this.renderFace(texture, this.v1, this.v2, this.v3, buffer);
             }
@@ -141,10 +141,11 @@ export class MsaaRaster {
     }
 
 
-    private vertexTransform(vertex: Vertices, mat: Mat4): void {
+
+    private vertexTransform(vertex: Vertices, mat: Mat4, camera: Camera): void {
         const vert = vertex.vec;
         Calc.mat4MulVec4(mat, vert, vert);
-        if (vert.w !== 1) {
+        if(camera.isPerspective()){
             const z = vert.w;
             vert.standardized();
             vert.z = z;
