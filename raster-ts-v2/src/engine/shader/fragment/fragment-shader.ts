@@ -3,5 +3,5 @@ import { VAO } from "../../data/vao";
 import { GlData } from "../../data/gl-data";
 
 export interface FragmentShader {
-    main(glData: GlData, input: VAO, output: VAO): Vec4;
+    main(glData: GlData, input: VAO): Vec4;
 }
