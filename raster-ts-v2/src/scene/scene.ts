@@ -6,7 +6,10 @@ export class Scene {
     private child: Array<Node> = [];
 
     constructor() {
-        this.camera = new Camera();
+    }
+
+    public setCamera(camera: Camera): void {
+        this.camera = camera;
     }
 
     public addChild(node: Node): void {
