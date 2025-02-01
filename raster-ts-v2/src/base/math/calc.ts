@@ -7,10 +7,13 @@ export class Calc {
      * 矩阵乘法, 左矩阵横向, 右矩阵纵向
      * @param a 左矩阵
      * @param b 右矩阵
+     * @param out
      */
-    public static mat4Mul(a: Mat4, b: Mat4): Mat4 {
-        const out = new Mat4();
-
+    public static mat4Mul(a: Mat4, b: Mat4, out?: Mat4): Mat4 {
+        // const out = new Mat4();
+        if (!out) {
+            out = new Mat4();
+        }
         const a00 = a.get(0),
             a01 = a.get(1),
             a02 = a.get(2),
