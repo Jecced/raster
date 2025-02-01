@@ -11,9 +11,27 @@ export class SimpleVertex implements VertexShader {
 
         const position = Vec4.fromArray(input.position);
 
-        Calc.mat4MulVec4(glData.matWorld, position);
+        /**
+         * 局部坐标转世界坐标
+         * 只需要使用xyz
+         */
+        output.v_position = Calc.mat4MulVec4(glData.matWorld, position);
 
-        return undefined;
+        /**
+         * 计算法线
+         */
+        output.v_normal = Calc.mat4MulVec4(glData.matWorldIT, Vec4.fromArray(input.normal));
+        output.v_normal.normalize3();
+
+        output.v_uv = Vec4.fromArray(input.uv);
+
+        output.v_color = Vec4.fromArray(input.color);
+
+        const mat = Calc.mat4Mul(glData.matView, glData.matWorld);
+        Calc.mat4Mul(glData.matProjection, mat, mat);
+
+
+        return Calc.mat4MulVec4(mat, position);
     }
 
 }
