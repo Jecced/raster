@@ -3,22 +3,29 @@
  */
 import { Color } from "../../base/color";
 import { FrameBuffer } from "./frame-buffer";
+import { Vec4 } from "../../base/math/vec4";
 
 export class FrameBuffer1x implements FrameBuffer {
     private readonly buffer: Float32Array;
 
     private clearColor = Color.BLACK;
 
+    private readonly width: number;
+    private readonly height: number;
 
     public constructor(width: number, height: number) {
+        this.width = width;
+        this.height = height;
         this.buffer = new Float32Array(width * height * 4);
     }
 
-    /**
-     * 获取FrameBuffer
-     */
-    public getFrameBuffer(): Float32Array {
-        return this.buffer;
+
+    public setColor(x: number, y: number, rgba: Vec4) {
+        const index = x + y * this.width;
+        this.buffer[index * 4] = rgba.x;
+        this.buffer[index * 4 + 1] = rgba.y;
+        this.buffer[index * 4 + 2] = rgba.z;
+        this.buffer[index * 4 + 3] = rgba.w;
     }
 
     /**
