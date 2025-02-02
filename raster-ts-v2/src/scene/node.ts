@@ -13,8 +13,8 @@ export class Node implements Base {
     private vbo: VBO;
     private ebo: number[];
 
-    private vs: VertexShader;
-    private fs: FragmentShader;
+    public vs: VertexShader;
+    public fs: FragmentShader;
 
     constructor() {
         this.position = new Vec4(0, 0, 0, 1);
@@ -26,12 +26,49 @@ export class Node implements Base {
         this.ebo = vao.indices;
     }
 
+    /**
+     * 获取vbo信息
+     */
     public getVBO(): VBO {
         return this.vbo;
     }
 
+    /**
+     * 获取三角形面索引
+     */
     public getIndices(): number[] {
         return this.ebo;
+    }
+
+    /**
+     * 获取有多少顶点
+     */
+    public getVertexCount(): number {
+        return this.vbo.getVertexCount();
+    }
+
+    /**
+     * 获取一共有多少三角形
+     */
+    public getTriangleCount(): number {
+        return ~~(this.ebo.length / 3);
+    }
+
+    /**
+     * 获取一个三角形的索引
+     * @param index
+     * @param out
+     */
+    public getTriangle(index: number, out?: number[]): number[] {
+        if (!out) {
+            out = [0, 0, 0];
+        }
+
+        const start = index * 3;
+        out[0] = this.ebo[start];
+        out[1] = this.ebo[start + 1];
+        out[2] = this.ebo[start + 2];
+        return out;
     }
 
     public setPosition(x: number, y: number, z: number) {
