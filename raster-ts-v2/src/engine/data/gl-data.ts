@@ -18,6 +18,10 @@ export class GlData {
      */
     matView: Mat4;
     /**
+     * 正交矩阵, 转换到屏幕空间
+     */
+    matOrthographic: Mat4;
+    /**
      * 投影矩阵
      */
     matProjection: Mat4;
