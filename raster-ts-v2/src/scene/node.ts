@@ -88,5 +88,14 @@ export class Node implements Base {
         );
     }
 
+    public getMatWorldIT(): Mat4 {
+        return Mat4.fromData(
+            1, 0, 0, -this.position.x,
+            0, 1, 0, -this.position.y,
+            0, 0, 1, -this.position.z,
+            0, 0, 0, 1,
+        );
+    }
+
 
 }
