@@ -221,7 +221,7 @@ export class Camera implements Base {
          */
         const matScreen = Mat4.fromData(
             w / 2, 0, 0, (w - 1) / 2,
-            0, h / 2, 0, (h - 1) / 2,
+            0, -h / 2, 0, (h - 1) / 2,
             0, 0, 1, 0,
             0, 0, 0, 1,
         );
