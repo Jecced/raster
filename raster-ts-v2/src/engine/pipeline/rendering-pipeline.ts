@@ -58,7 +58,7 @@ export class RenderingPipeline {
      * @param ebo
      * @param glData
      */
-    public run(vbo: VBO, ebo: number[], glData: GlData): Float32Array {
+    public run(vbo: VBO, ebo: number[], glData: GlData): void {
         // 顶点, 都先执行一次顶点着色器
         const vertexCount = vbo.getVertexCount();
         // 着色器传递变量
@@ -94,6 +94,9 @@ export class RenderingPipeline {
             );
         }
 
+    }
+
+    public getFrameBuffer(): Float32Array {
         return this.rasterizer.getFrameBuffer();
     }
 
