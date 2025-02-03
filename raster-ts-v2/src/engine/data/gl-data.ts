@@ -26,6 +26,10 @@ export class GlData {
      */
     matProjection: Mat4;
     /**
+     * MVP矩阵
+     */
+    matMVP: Mat4;
+    /**
      * 摄像机世界坐标
      * xyz
      */
