@@ -14,4 +14,6 @@ export interface Rasterizer {
     ): void;
 
     getFrameBuffer(): Float32Array;
+
+    clear(): void;
 }
