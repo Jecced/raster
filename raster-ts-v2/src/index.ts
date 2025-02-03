@@ -7,10 +7,9 @@ import { RenderingPipeline } from "./engine/pipeline/rendering-pipeline";
 import { SimpleVertex } from "./engine/shader/vertex/simple-vertex";
 import { RandFragment } from "./engine/shader/fragment/rand-fragment";
 import { WebCanvas } from "./h5/web-canvas";
-import { ZBuffer1x } from "./engine/buffer/z-buffer-1x";
-import { FrameBuffer1x } from "./engine/buffer/frame-buffer-1x";
 import { GlData } from "./engine/data/gl-data";
 import { Vec4 } from "./base/math/vec4";
+import { NormalRasterizer } from "./engine/rasterizer/normal-rasterizer";
 
 function run() {
 
@@ -54,8 +53,8 @@ function run() {
      * 创建渲染管线
      */
     const pipeline = new RenderingPipeline();
-    pipeline.zBuffer = new ZBuffer1x(width, height);
-    pipeline.frameBuffer = new FrameBuffer1x(width, height);
+    // 初始化光栅器
+    pipeline.rasterizer = new NormalRasterizer(width, height);
 
     // 切换渲染管线的顶点着色器和片断着色器为模型中设定的
     pipeline.vs = node.vs;
