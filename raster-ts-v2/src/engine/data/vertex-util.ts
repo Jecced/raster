@@ -1,5 +1,7 @@
 import { VAO } from "./vao";
 import { VBO } from "./vbo";
+import { ShaderVariable } from "./shader-variable";
+import { Vec4 } from "../../base/math/vec4";
 
 export class VertexUtil {
 
@@ -59,6 +61,33 @@ export class VertexUtil {
 
         return offset + variableSize;
     }
+
+    /**
+     * 将三个顶点的数据进行重心坐标插值
+     */
+    public static barycentric(v0: ShaderVariable, v1: ShaderVariable, v2: ShaderVariable, alpha: number, beta: number, gamma: number, out?: ShaderVariable): ShaderVariable {
+        if (!out) {
+            out = new ShaderVariable();
+        }
+        this.barycentricVec4(v0.position, v1.position, v2.position, alpha, beta, gamma, out.position);
+        this.barycentricVec4(v0.normal, v1.normal, v2.normal, alpha, beta, gamma, out.normal);
+        this.barycentricVec4(v0.uv, v1.uv, v2.uv, alpha, beta, gamma, out.uv);
+        this.barycentricVec4(v0.color, v1.color, v2.color, alpha, beta, gamma, out.color);
+        return out;
+    }
+
+    private static barycentricVec4(v0: Vec4, v1: Vec4, v2: Vec4, alpha: number, beta: number, gamma: number, out?: Vec4): Vec4 {
+        if (!out) {
+            out = new Vec4();
+        }
+        out.x = v0.x * alpha + v1.x * beta + v2.x * gamma;
+        out.y = v0.y * alpha + v1.y * beta + v2.y * gamma;
+        out.z = v0.z * alpha + v1.z * beta + v2.z * gamma;
+        out.w = v0.w * alpha + v1.w * beta + v2.w * gamma;
+        return out;
+    }
+
+
 }
 
 
