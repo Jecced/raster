@@ -5,12 +5,12 @@ import { Camera } from "./scene/camera";
 import { Node } from "./scene/node";
 import { RenderingPipeline } from "./engine/pipeline/rendering-pipeline";
 import { SimpleVertex } from "./engine/shader/vertex/simple-vertex";
-import { RandFragment } from "./engine/shader/fragment/rand-fragment";
 import { WebCanvas } from "./h5/web-canvas";
 import { GlData } from "./engine/data/gl-data";
 import { Vec4 } from "./base/math/vec4";
 import { NormalRasterizer } from "./engine/rasterizer/normal-rasterizer";
 import { Calc } from "./base/math/calc";
+import { VertexColorFragment } from "./engine/shader/fragment/vertex-color-fragment";
 
 function run() {
 
@@ -46,7 +46,7 @@ function run() {
      * 设置简易顶点着色器和随机颜色片元着色器
      */
     node.vs = new SimpleVertex();
-    node.fs = new RandFragment();
+    node.fs = new VertexColorFragment();
 
     camera.lookAt(node.getPosition());
 
