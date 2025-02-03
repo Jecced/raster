@@ -232,7 +232,7 @@ export class Camera implements Base {
      * 获取透视矩阵
      */
     public getProjectionMat(): Mat4 {
-        if (this.useOrthographic()) {
+        if (this.isOrthographic()) {
             return Mat4.identity();
         }
         const n = this.near;
@@ -249,7 +249,7 @@ export class Camera implements Base {
      * 透视矩阵的逆矩阵
      */
     public getProjectionMatIT(): Mat4 {
-        if (this.useOrthographic()) {
+        if (this.isOrthographic()) {
             return Mat4.identity();
         }
         const n = this.near;
