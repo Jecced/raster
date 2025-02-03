@@ -214,19 +214,18 @@ export class Camera implements Base {
             0, 0, 0, 1,
         );
 
+        return matOrt;
+    }
+
+    public getScreenMat(): Mat4 {
         const w = this.width;
         const h = this.height;
-        /**
-         * 屏幕矩阵, 将正交矩阵变换到屏幕上
-         */
-        const matScreen = Mat4.fromData(
-            w / 2, 0, 0, (w - 1) / 2,
-            0, -h / 2, 0, (h - 1) / 2,
+        return Mat4.fromData(
+            w / 2, 0, 0, w / 2,
+            0, -h / 2, 0, h / 2,
             0, 0, 1, 0,
             0, 0, 0, 1,
         );
-
-        return Calc.mat4Mul(matScreen, matOrt);
     }
 
     /**

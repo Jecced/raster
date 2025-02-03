@@ -68,7 +68,10 @@ export class RenderingPipeline {
         for (let i = 0; i < vertexCount; i++) {
             variable[i] = new ShaderVariable();
             const point = this.vs.main(glData, vbo.getVertex(i), variable[i]);
+            // 正交投影
             positions[i] = Calc.mat4MulVec4(glData.matOrthographic, point);
+            // 变换屏幕空间
+            positions[i] = Calc.mat4MulVec4(glData.matScreen, positions[i], positions[i]);
         }
 
         // 遍历三角形的面

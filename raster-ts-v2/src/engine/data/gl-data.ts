@@ -30,6 +30,10 @@ export class GlData {
      */
     matMVP: Mat4;
     /**
+     * mat 屏幕矩阵
+     */
+    matScreen: Mat4;
+    /**
      * 摄像机世界坐标
      * xyz
      */
