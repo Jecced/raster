@@ -73,9 +73,10 @@ export class RenderingPipeline {
         const positions: Vec4[] = new Array(vertexCount);
         for (let i = 0; i < vertexCount; i++) {
             variable[i] = new ShaderVariable();
-            positions[i] = this.vs.main(glData, vbo.getVertex(i), variable[i]);
+            const point = this.vs.main(glData, vbo.getVertex(i), variable[i]);
+            positions[i] = Calc.mat4MulVec4(glData.matOrthographic, point);
         }
-        
+
         // 遍历三角形的面
         for (let i = 0, len = ebo.length / 3; i < len; i++) {
             let i0 = ebo[i * 3];
@@ -84,12 +85,9 @@ export class RenderingPipeline {
             const p0 = positions[i0];
             const p1 = positions[i1];
             const p2 = positions[i2];
-            const o0 = Calc.mat4MulVec4(glData.matOrthographic, p0);
-            const o1 = Calc.mat4MulVec4(glData.matOrthographic, p1);
-            const o2 = Calc.mat4MulVec4(glData.matOrthographic, p2);
-            console.log(p0.toString(), o0.toString());
-            console.log(p1.toString(), o1.toString());
-            console.log(p2.toString(), o2.toString());
+            console.log(p0.toString());
+            console.log(p1.toString());
+            console.log(p2.toString());
         }
         return undefined;
     }
