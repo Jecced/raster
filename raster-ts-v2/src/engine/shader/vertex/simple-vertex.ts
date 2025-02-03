@@ -9,7 +9,7 @@ export class SimpleVertex implements VertexShader {
     main(glData: GlData, input: VAO, v: ShaderVariable): Vec4 {
         // return cc_matProj * (cc_matView * matWorld) * In.position;
 
-        const position = Vec4.fromArray(input.position);
+        const position = new Vec4(input.position[0], input.position[1], input.position[2], 1);
 
         /**
          * 局部坐标转世界坐标
