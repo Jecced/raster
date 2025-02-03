@@ -130,7 +130,7 @@ export class Camera implements Base {
          * v = w x u
          */
         const w = this.direct.clone();
-        w.scale(-1);
+        // w.scale(-1);
 
         const u = Calc.crossVec3(this.up, w);
         u.normalize();
