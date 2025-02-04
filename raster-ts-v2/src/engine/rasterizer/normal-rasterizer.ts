@@ -46,13 +46,18 @@ export class NormalRasterizer implements Rasterizer {
          */
         this.bound(p0, p1, p2);
 
+        let currX = 0;
+        let currY = 0;
+
         // 包围盒内, 逐像素遍历
         for (let x = this.boundBox.x; x < this.boundBox.z; x++) {
             for (let y = this.boundBox.y; y < this.boundBox.w; y++) {
+                currX = x + 0.5;
+                currY = y + 0.5;
 
                 // 计算重心坐标
-                let alpha = this.cross(x - p1.x, y - p1.y, x - p2.x, y - p2.y) / 2 / s;
-                let beta = this.cross(x - p2.x, y - p2.y, x - p0.x, y - p0.y) / 2 / s;
+                let alpha = this.cross(currX - p1.x, currY - p1.y, currX - p2.x, currY - p2.y) / 2 / s;
+                let beta = this.cross(currX - p2.x, currY - p2.y, currX - p0.x, currY - p0.y) / 2 / s;
                 let gamma = 1 - alpha - beta;
 
                 // 不在三角形内, 跳过
