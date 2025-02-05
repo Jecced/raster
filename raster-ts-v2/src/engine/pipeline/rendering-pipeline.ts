@@ -72,6 +72,7 @@ export class RenderingPipeline {
             positions[i] = Calc.mat4MulVec4(glData.matOrthographic, point);
             // 变换屏幕空间
             positions[i] = Calc.mat4MulVec4(glData.matScreen, positions[i], positions[i]);
+            positions[i].standardized();
         }
 
         // 遍历三角形的面
