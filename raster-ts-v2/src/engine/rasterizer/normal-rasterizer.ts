@@ -130,10 +130,9 @@ export class NormalRasterizer implements Rasterizer {
         if (this.boundBox.w > this.height) {
             this.boundBox.w = this.height;
         }
-
-        this.boundBox.x >>= 0;
-        this.boundBox.y >>= 0;
-        this.boundBox.z >>= 0;
-        this.boundBox.w >>= 0;
+        this.boundBox.x = Math.round(this.boundBox.x);
+        this.boundBox.y = Math.round(this.boundBox.y);
+        this.boundBox.z = Math.round(this.boundBox.z);
+        this.boundBox.w = Math.round(this.boundBox.w);
     }
 }
