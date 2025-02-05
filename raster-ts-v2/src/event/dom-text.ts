@@ -1,11 +1,11 @@
 import { TimeEvent, TimeEventEnum } from "./time-event";
 
 export class DomText {
-    public constructor() {
+    public static init(): void {
         TimeEvent.addListener(TimeEventEnum.Rendering, this.flashRenderingTime);
     }
 
-    private flashRenderingTime(time: number): void {
+    private static flashRenderingTime(time: number): void {
         document.getElementById("rendering-time").textContent = `渲染耗时: ${time}ms`;
     }
 }
