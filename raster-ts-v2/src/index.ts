@@ -11,6 +11,8 @@ import { Vec4 } from "./base/math/vec4";
 import { NormalRasterizer } from "./engine/rasterizer/normal-rasterizer";
 import { Calc } from "./base/math/calc";
 import { VertexColorFragment } from "./engine/shader/fragment/vertex-color-fragment";
+import { RenderingScheduler } from "./scene/scheduler/rendering-scheduler";
+import { RotationVertex } from "./engine/shader/vertex/rotation-vertex";
 
 
 // 三角形的VAO
@@ -102,21 +104,20 @@ function run() {
     const width = canvas.width;
     const height = canvas.height;
 
-    let vao: VAO = getCubeVAO();
-
     const scene = new Scene();
     const camera = new Camera(width, height, -2, -50, 90);
     camera.usePerspective();
     scene.setCamera(camera);
     const node = new Node();
-    node.setVBO(vao, 3, 0, 3, 0, 0);
+    node.setVBO(getCubeVAO(), 3, 0, 3, 0, 0);
+    scene.addChild(node);
 
     camera.setPosition(2, 1, 1);
     node.setPosition(0, 0, -2);
     /**
      * 设置简易顶点着色器和随机颜色片元着色器
      */
-    node.vs = new SimpleVertex();
+    node.vs = new RotationVertex();
     node.fs = new VertexColorFragment();
 
     camera.lookAt(node.getPosition());
@@ -128,39 +129,60 @@ function run() {
     // 初始化光栅器
     pipeline.rasterizer = new NormalRasterizer(width, height);
 
-    // 切换渲染管线的顶点着色器和片断着色器为模型中设定的
-    pipeline.vs = node.vs;
-    pipeline.fs = node.fs;
-
     //glData
     const glData = new GlData();
-
-    // 每次渲染设置一次
-    glData.matView = camera.getViewMat();
-    glData.matProjection = camera.getProjectionMat();
-    glData.matOrthographic = camera.getOrthographicMat();
-    glData.time = ~~(Date.now() / 1000);
-    glData.cameraPos = camera.getPosition();
-
-    // 每个模型设置一次
-    glData.matWorld = node.getMatWorld();
-    glData.matWorldIT = node.getMatWorldIT();
-    // const matMVP = Calc.mat4Mul(glData.matView, glData.matWorld);
-    // Calc.mat4Mul(glData.matProjection, matMVP, matMVP);
-    const matMVP = Calc.mat4Mul(glData.matView, glData.matProjection);
-    Calc.mat4Mul(glData.matWorld, matMVP, matMVP);
-    glData.matMVP = matMVP;
-
     // 只设置一次
     glData.screenSize = new Vec4(width, height, 1 / width, 1 / height);
     glData.matScreen = camera.getScreenMat();
 
-    pipeline.clear();
-    console.time("render");
-    pipeline.run(node.getVBO(), node.getIndices(), glData);
-    const frameBuffer = pipeline.getFrameBuffer();
-    canvas.render(frameBuffer);
-    console.timeEnd("render");
+    const renderOnce = function() {
+        console.time("render");
+        pipeline.clear();
+        RenderingScheduler.go();
+        render(scene, glData, pipeline);
+        const frameBuffer = pipeline.getFrameBuffer();
+        canvas.render(frameBuffer);
+        console.timeEnd("render");
+        requestAnimationFrame(renderOnce);
+    };
+
+    requestAnimationFrame(renderOnce);
+
+
+}
+
+function render(scene: Scene, glData: GlData, pipeline: RenderingPipeline): void {
+    const camera = scene.getCamera();
+    // 每次渲染设置一次
+    glData.matView = camera.getViewMat();
+    glData.matProjection = camera.getProjectionMat();
+    glData.matOrthographic = camera.getOrthographicMat();
+    glData.time = RenderingScheduler.getTime();
+    glData.cameraPos = camera.getPosition();
+    for (let i = 0, len = scene.size(); i < len; i++) {
+        const node = scene.getChild(i);
+        // 每个模型设置一次
+        glData.matWorld = node.getMatWorld();
+        glData.matWorldIT = node.getMatWorldIT();
+        // const matMVP = Calc.mat4Mul(glData.matView, glData.matWorld);
+        // Calc.mat4Mul(glData.matProjection, matMVP, matMVP);
+        const matMVP = Calc.mat4Mul(glData.matView, glData.matProjection);
+        Calc.mat4Mul(glData.matWorld, matMVP, matMVP);
+        glData.matMVP = matMVP;
+
+        // 切换渲染管线的顶点着色器和片断着色器为模型中设定的
+        pipeline.vs = node.vs;
+        pipeline.fs = node.fs;
+
+        /**
+         * 运行pipeline 进行渲染一个模型
+         * vbo
+         * ebo
+         * GlData
+         */
+        pipeline.run(node.getVBO(), node.getIndices(), glData);
+    }
+
 }
 
 run();
