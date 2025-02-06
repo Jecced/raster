@@ -93,6 +93,10 @@ export class Node implements Base {
         this.scale.set(x, y, z, 0);
     }
 
+    public setScaleFull(scale: number): void {
+        this.setScale(scale, scale, scale);
+    }
+
     public getPosition(): Vec4 {
         return this.position.clone();
     }
