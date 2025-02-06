@@ -1,10 +1,12 @@
+import { ResourcePng } from "../res/res";
+
 export class Loader {
 
     /**
      * 读取某个纹理图片文件
      * @param path
      */
-    public static async loadImg(path: string): Promise<ImageData> {
+    public static async loadImg(path: ResourcePng): Promise<ImageData> {
         return new Promise<ImageData>(resolve => {
             let img = new Image();
             img.crossOrigin = "*";
@@ -20,7 +22,7 @@ export class Loader {
                 img = undefined;
                 resolve(imageData);
             };
-            img.src = path;
+            img.src = path as unknown as string;
         });
     }
 
