@@ -73,9 +73,9 @@ export class RasterizerTriangle implements Rasterizer {
 
         for (let x = x0; x < x1; x++) {
             if (steep) {
-                this.frameBuffer.setColor(y, x, this.color);
+                this.setColor(y, x);
             } else {
-                this.frameBuffer.setColor(x, y, this.color);
+                this.setColor(x, y);
             }
             error = error - deltaY;
             if (error < 0) {
@@ -83,8 +83,13 @@ export class RasterizerTriangle implements Rasterizer {
                 error = error + deltaX;
             }
         }
+    }
 
-
+    private setColor(x: number, y: number): void {
+        if (x >= this.width || x < 0 || y > this.height || y < 0) {
+            return;
+        }
+        this.frameBuffer.setColor(x, y, this.color);
     }
 
     public getFrameBuffer(): Float32Array {
