@@ -182,6 +182,16 @@ function render(scene: Scene, glData: GlData, pipeline: RenderingPipeline): void
         // 切换渲染管线的顶点着色器和片断着色器为模型中设定的
         pipeline.vs = node.vs;
         pipeline.fs = node.fs;
+        glData.texture0 = node.texture0;
+        glData.texture1 = node.texture1;
+        glData.texture2 = node.texture2;
+        glData.texture3 = node.texture3;
+        glData.texture4 = node.texture4;
+        glData.texture5 = node.texture5;
+        glData.texture6 = node.texture6;
+        glData.texture7 = node.texture7;
+        glData.texture8 = node.texture8;
+        glData.texture9 = node.texture9;
 
         /**
          * 运行pipeline 进行渲染一个模型
