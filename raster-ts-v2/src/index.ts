@@ -9,97 +9,49 @@ import { GlData } from "./engine/data/gl-data";
 import { Vec4 } from "./base/math/vec4";
 import { NormalRasterizer } from "./engine/rasterizer/normal-rasterizer";
 import { Calc } from "./base/math/calc";
-import { VertexColorFragment } from "./engine/shader/fragment/vertex-color-fragment";
 import { RenderingScheduler } from "./scene/scheduler/rendering-scheduler";
-import { RotationVertex } from "./engine/shader/vertex/rotation-vertex";
 import { TimeEvent, TimeEventEnum } from "./event/time-event";
 import { DomText } from "./event/dom-text";
+import { FragTexture } from "./engine/shader/fragment/frag-texture";
+import { ResourcePng } from "./res/res";
+import { Loader } from "./util/loader";
+import { Texture } from "./base/texture";
+import { VertRotationY } from "./engine/shader/vertex/vert-rotation-y";
+import { VertSimple } from "./engine/shader/vertex/vert-simple";
+import { FragVertexColor } from "./engine/shader/fragment/frag-vertex-color";
+import { Primitives } from "./engine/geometry/primitives";
 
 
-// 三角形的VAO
-function getTriangleVAO(): VAO {
-    return {
-        position: [
-            -0.5, -0.5, 0.0,
-            0.5, -0.5, 0.0,
-            0.0, 0.5, 0.0],
-        color: [
-            1.0, 0.0, 0.0,
-            0.0, 1.0, 0.0,
-            0.0, 0.0, 1.0],
-        uv: [],
-        tangent: [],
-        normal: [],
-        indices: [0, 1, 2],
-    };
+async function initScene(width: number, height: number): Promise<Scene> {
+    const scene = new Scene();
+    const camera = new Camera(width, height, -1, -100, 90);
+    camera.usePerspective();
+    camera.setPosition(0, 1, 1);
+    scene.setCamera(camera);
+
+    const cube = new Node();
+    cube.setVBO(Primitives.cube(), 3, 0, 3, 0, 0);
+    cube.setPosition(0, 0, -3);
+    cube.vs = new VertRotationY();
+    cube.fs = new FragVertexColor();
+    scene.addChild(cube);
+
+    const floor = new Node();
+    floor.setVBO(Primitives.plane(), 3, 2, 3, 0, 0);
+    floor.setPosition(0, -1, -4);
+    floor.setScale(5, 5, 5);
+    floor.vs = new VertSimple();
+    floor.fs = new FragTexture();
+    floor.texture0 = new Texture(await Loader.loadImg(ResourcePng.Grid));
+    scene.addChild(floor);
+
+
+    camera.lookAt(cube.getPosition());
+
+    return scene;
 }
 
-// 正方体的VAO
-function getCubeVAO(): VAO {
-    return {
-        position: [
-            // front
-            -0.5, -0.5, 0.5,
-            -0.5, 0.5, 0.5,
-            0.5, 0.5, 0.5,
-            0.5, -0.5, 0.5,
-            // back
-            -0.5, -0.5, -0.5,
-            -0.5, 0.5, -0.5,
-            0.5, 0.5, -0.5,
-            0.5, -0.5, -0.5,
-        ],
-        color: [
-            0.0, 0.0, 0.0,
-            0.0, 1.0, 0.0,
-            1.0, 1.0, 0.0,
-            1.0, 0.0, 0.0,
-            0.0, 0.0, 1.0,
-            0.0, 1.0, 1.0,
-            1.0, 1.0, 1.0,
-            1.0, 0.0, 1.0,
-        ],
-        uv: [],
-        tangent: [],
-        normal: [],
-        indices: [
-            0, 1, 2, 2, 3, 0, // front
-            4, 5, 6, 6, 7, 4, // back
-            3, 2, 6, 6, 7, 3, // right
-            0, 1, 5, 5, 4, 0, // left
-            1, 5, 6, 6, 2, 1, // top
-            0, 4, 7, 7, 3, 0, // bottom
-        ],
-    };
-}
-
-// 正方形面
-function getQuadVAO(): VAO {
-    return {
-        position: [
-            // front
-            -0.5, -0.5, 0.,
-            -0.5, 0.5, 0.,
-            0.5, 0.5, 0.,
-            0.5, -0.5, 0.,
-        ],
-        color: [
-            1.0, 0.0, 0.0,
-            0.0, 1.0, 0.0,
-            0.0, 0.0, 1.0,
-            1.0, 1.0, 0.0,
-        ],
-        uv: [],
-        tangent: [],
-        normal: [],
-        indices: [
-            0, 1, 2, 2, 3, 0,
-        ],
-    };
-}
-
-
-function run() {
+async function run() {
 
     // dom 调试文本初始化
     DomText.init();
@@ -108,23 +60,8 @@ function run() {
     const width = canvas.width;
     const height = canvas.height;
 
-    const scene = new Scene();
-    const camera = new Camera(width, height, -2, -50, 90);
-    camera.usePerspective();
-    scene.setCamera(camera);
-    const node = new Node();
-    node.setVBO(getCubeVAO(), 3, 0, 3, 0, 0);
-    scene.addChild(node);
-
-    camera.setPosition(0, 1, 1);
-    node.setPosition(0, 0, -2);
-    /**
-     * 设置简易顶点着色器和随机颜色片元着色器
-     */
-    node.vs = new RotationVertex();
-    node.fs = new VertexColorFragment();
-
-    camera.lookAt(node.getPosition());
+    const scene = await initScene(width, height);
+    const camera = scene.getCamera();
 
     /**
      * 创建渲染管线
