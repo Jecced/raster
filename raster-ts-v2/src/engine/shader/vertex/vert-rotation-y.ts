@@ -6,7 +6,7 @@ import { Calc } from "../../../base/math/calc";
 import { ShaderVariable } from "../../data/shader-variable";
 import { Mat4 } from "../../../base/math/mat4";
 
-export class RotationVertex implements VertexShader {
+export class VertRotationY implements VertexShader {
     main(glData: GlData, input: VAO, v: ShaderVariable): Vec4 {
         // return cc_matProj * (cc_matView * matWorld) * In.position;
 
