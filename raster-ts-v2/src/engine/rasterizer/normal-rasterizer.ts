@@ -8,6 +8,7 @@ import { ZBuffer1x } from "../buffer/z-buffer-1x";
 import { FrameBuffer1x } from "../buffer/frame-buffer-1x";
 import { VertexUtil } from "../data/vertex-util";
 import { GlData } from "../data/gl-data";
+import { Calc } from "../../base/math/calc";
 
 export class NormalRasterizer implements Rasterizer {
     private zBuffer: ZBuffer;
@@ -36,7 +37,7 @@ export class NormalRasterizer implements Rasterizer {
     ): void {
 
         // 计算三角形面积
-        const s = this.cross(p1.x - p0.x, p1.y - p0.y, p2.x - p0.x, p2.y - p0.y) / 2;
+        const s = Calc.cross(p1.x - p0.x, p1.y - p0.y, p2.x - p0.x, p2.y - p0.y) / 2;
         if (s === 0) {
             return;
         }
@@ -44,7 +45,7 @@ export class NormalRasterizer implements Rasterizer {
         /**
          * 计算三角形包围盒
          */
-        this.bound(p0, p1, p2);
+        Calc.bound(this.width, this.height, p0, p1, p2, this.boundBox);
 
         let currX = 0;
         let currY = 0;
@@ -56,8 +57,8 @@ export class NormalRasterizer implements Rasterizer {
                 currY = y + 0.5;
 
                 // 计算重心坐标
-                let alpha = this.cross(currX - p1.x, currY - p1.y, currX - p2.x, currY - p2.y) / 2 / s;
-                let beta = this.cross(currX - p2.x, currY - p2.y, currX - p0.x, currY - p0.y) / 2 / s;
+                let alpha = Calc.cross(currX - p1.x, currY - p1.y, currX - p2.x, currY - p2.y) / 2 / s;
+                let beta = Calc.cross(currX - p2.x, currY - p2.y, currX - p0.x, currY - p0.y) / 2 / s;
                 let gamma = 1 - alpha - beta;
 
                 // 不在三角形内, 跳过
@@ -95,48 +96,5 @@ export class NormalRasterizer implements Rasterizer {
         this.frameBuffer.clearBuffer();
     }
 
-    /**
-     * 叉乘
-     * @param x1
-     * @param y1
-     * @param x2
-     * @param y2
-     * @private
-     */
-    private cross(x1: number, y1: number, x2: number, y2: number): number {
-        return x1 * y2 - x2 * y1;
-    }
 
-    /**
-     * 计算三个点的包围盒
-     * @param p0
-     * @param p1
-     * @param p2
-     * @private
-     */
-    private bound(p0: Vec4, p1: Vec4, p2: Vec4): void {
-        this.boundBox.x = Math.min(p0.x, p1.x, p2.x);
-        if (this.boundBox.x < 0) {
-            this.boundBox.x = 0;
-        }
-
-        this.boundBox.y = Math.min(p0.y, p1.y, p2.y);
-        if (this.boundBox.y < 0) {
-            this.boundBox.y = 0;
-        }
-
-        this.boundBox.z = Math.max(p0.x, p1.x, p2.x);
-        if (this.boundBox.z > this.width) {
-            this.boundBox.z = this.width;
-        }
-
-        this.boundBox.w = Math.max(p0.y, p1.y, p2.y);
-        if (this.boundBox.w > this.height) {
-            this.boundBox.w = this.height;
-        }
-        this.boundBox.x = Math.round(this.boundBox.x);
-        this.boundBox.y = Math.round(this.boundBox.y);
-        this.boundBox.z = Math.round(this.boundBox.z);
-        this.boundBox.w = Math.round(this.boundBox.w);
-    }
 }
