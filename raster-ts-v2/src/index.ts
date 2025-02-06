@@ -18,8 +18,9 @@ import { VertRotationY } from "./engine/shader/vertex/vert-rotation-y";
 import { VertSimple } from "./engine/shader/vertex/vert-simple";
 import { FragVertexColor } from "./engine/shader/fragment/frag-vertex-color";
 import { Primitives } from "./engine/geometry/primitives";
-import { Bytes } from "./engine/buffer/bytes";
 import { RasterizerNormal } from "./engine/rasterizer/rasterizer-normal";
+import { CanvasRasterizerMapping } from "./h5/canvas-rasterizer-mapping";
+import { RasterizerDepth } from "./engine/rasterizer/rasterizer-depth";
 
 
 async function initScene(width: number, height: number): Promise<Scene> {
@@ -57,9 +58,16 @@ async function run() {
     DomText.init();
 
     const canvas = new WebCanvas("canvas");
-    const depth = new WebCanvas("depth");
     const width = canvas.width;
     const height = canvas.height;
+
+    const rasterizerNormal = new RasterizerNormal(width, height);
+    CanvasRasterizerMapping.bind(canvas, rasterizerNormal);
+
+    const depth = new WebCanvas("depth");
+    const rasterizerDepth = new RasterizerDepth(width, height);
+    CanvasRasterizerMapping.bind(depth, rasterizerDepth);
+
 
     const scene = await initScene(width, height);
     const camera = scene.getCamera();
@@ -68,8 +76,10 @@ async function run() {
      * 创建渲染管线
      */
     const pipeline = new RenderingPipeline();
-    // 初始化光栅器
-    pipeline.rasterizer = new RasterizerNormal(width, height);
+
+    //将普通光栅器加入管线
+    pipeline.rasterizer.push(rasterizerNormal);
+    pipeline.rasterizer.push(rasterizerDepth);
 
     //glData
     const glData = new GlData();
@@ -87,9 +97,7 @@ async function run() {
         // 渲染整个scene到pipeline中
         render(scene, glData, pipeline);
         // 获取更新后的frameBuffer绘制到canvas中
-        const frameBuffer = pipeline.getFrameBuffer();
-        canvas.render(frameBuffer);
-        depth.render(Bytes.ZBuffer2FrameBuffer(pipeline.getZBuffer()));
+        CanvasRasterizerMapping.renderCanvas();
         TimeEvent.dispatch(TimeEventEnum.Rendering, Date.now() - renderTime);
         requestAnimationFrame(renderOnce);
     };

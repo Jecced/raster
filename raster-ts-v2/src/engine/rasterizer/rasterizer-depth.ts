@@ -10,24 +10,21 @@ import { VertexUtil } from "../data/vertex-util";
 import { GlData } from "../data/gl-data";
 import { Calc } from "../../base/math/calc";
 
-export class RasterizerNormal implements Rasterizer {
-    private zBuffer: ZBuffer;
-
-    private frameBuffer: FrameBuffer;
+export class RasterizerDepth implements Rasterizer {
+    private readonly zBuffer: ZBuffer;
 
     private readonly width: number = 0;
     private readonly height: number = 0;
 
     private boundBox: Vec4 = new Vec4();
 
-    private readonly variable: ShaderVariable;
+    private readonly zBufferCopy2FrameBuffer: Float32Array = undefined;
 
     constructor(width: number, height: number) {
-        this.variable = new ShaderVariable();
         this.width = width;
         this.height = height;
         this.zBuffer = new ZBuffer1x(width, height);
-        this.frameBuffer = new FrameBuffer1x(width, height);
+        this.zBufferCopy2FrameBuffer = new Float32Array(width * height * 4);
     }
 
     public run(
@@ -74,26 +71,26 @@ export class RasterizerNormal implements Rasterizer {
                     continue;
                 }
                 this.zBuffer.setZ(x, y, z);
-
-                alpha = alpha / p0.z * z;
-                beta = beta / p1.z * z;
-                gamma = gamma / p2.z * z;
-
-                // 顶点数据variable插值
-                VertexUtil.barycentric(v0, v1, v2, alpha, beta, gamma, this.variable);
-
-                this.frameBuffer.setColor(x, y, fs.main(glData, this.variable));
             }
         }
     }
 
+
     public getFrameBuffer(): Float32Array {
-        return this.frameBuffer.getFrameBuffer();
+        const z = this.zBuffer.getZBuffer();
+        const copy = this.zBufferCopy2FrameBuffer;
+        for (let i = 0, len = z.length; i < len; i++) {
+            const v = (z[i] + 1) * 0.5;
+            copy[i * 4] = v;
+            copy[i * 4 + 1] = v;
+            copy[i * 4 + 2] = v;
+            copy[i * 4 + 3] = 1;
+        }
+        return copy;
     }
 
     public clear(): void {
         this.zBuffer.clear();
-        this.frameBuffer.clearBuffer();
     }
 
 
