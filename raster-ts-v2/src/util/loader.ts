@@ -1,4 +1,4 @@
-import { ResourceObj, ResourcePng } from "../res/res";
+import { ResourceObj, ResourcePng } from "../resources/resources";
 
 export class Loader {
 
