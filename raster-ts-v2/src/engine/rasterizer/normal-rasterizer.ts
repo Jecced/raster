@@ -90,6 +90,9 @@ export class NormalRasterizer implements Rasterizer {
     public getFrameBuffer(): Float32Array {
         return this.frameBuffer.getFrameBuffer();
     }
+
+    public getZBuffer(): Float32Array {
+        return this.zBuffer.getZBuffer();
     }
 
     public clear(): void {
