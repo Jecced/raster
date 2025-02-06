@@ -1,5 +1,4 @@
 import "../css/index.css";
-import { VAO } from "./engine/data/vao";
 import { Scene } from "./scene/scene";
 import { Camera } from "./scene/camera";
 import { Node } from "./scene/node";
@@ -7,7 +6,6 @@ import { RenderingPipeline } from "./engine/pipeline/rendering-pipeline";
 import { WebCanvas } from "./h5/web-canvas";
 import { GlData } from "./engine/data/gl-data";
 import { Vec4 } from "./base/math/vec4";
-import { NormalRasterizer } from "./engine/rasterizer/normal-rasterizer";
 import { Calc } from "./base/math/calc";
 import { RenderingScheduler } from "./scene/scheduler/rendering-scheduler";
 import { TimeEvent, TimeEventEnum } from "./event/time-event";
@@ -21,6 +19,7 @@ import { VertSimple } from "./engine/shader/vertex/vert-simple";
 import { FragVertexColor } from "./engine/shader/fragment/frag-vertex-color";
 import { Primitives } from "./engine/geometry/primitives";
 import { Bytes } from "./engine/buffer/bytes";
+import { RasterizerNormal } from "./engine/rasterizer/rasterizer-normal";
 
 
 async function initScene(width: number, height: number): Promise<Scene> {
@@ -70,7 +69,7 @@ async function run() {
      */
     const pipeline = new RenderingPipeline();
     // 初始化光栅器
-    pipeline.rasterizer = new NormalRasterizer(width, height);
+    pipeline.rasterizer = new RasterizerNormal(width, height);
 
     //glData
     const glData = new GlData();
