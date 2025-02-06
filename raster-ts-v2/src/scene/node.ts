@@ -10,6 +10,7 @@ import { Texture } from "../base/texture";
 
 export class Node implements Base {
     private position: Vec4;
+    private scale: Vec4;
 
     private vbo: VBO;
     private ebo: number[];
@@ -30,6 +31,7 @@ export class Node implements Base {
 
     constructor() {
         this.position = new Vec4(0, 0, 0, 1);
+        this.scale = new Vec4(1, 1, 1, 0);
         this.setPosition(0, 0, 0);
     }
 
@@ -83,8 +85,12 @@ export class Node implements Base {
         return out;
     }
 
-    public setPosition(x: number, y: number, z: number) {
+    public setPosition(x: number, y: number, z: number): void {
         this.position.set(x, y, z, 1);
+    }
+
+    public setScale(x: number, y: number, z: number): void {
+        this.scale.set(x, y, z, 0);
     }
 
     public getPosition(): Vec4 {
@@ -93,18 +99,18 @@ export class Node implements Base {
 
     public getMatWorld(): Mat4 {
         return Mat4.fromData(
-            1, 0, 0, this.position.x,
-            0, 1, 0, this.position.y,
-            0, 0, 1, this.position.z,
+            this.scale.x, 0, 0, this.position.x,
+            0, this.scale.y, 0, this.position.y,
+            0, 0, this.scale.z, this.position.z,
             0, 0, 0, 1,
         );
     }
 
     public getMatWorldIT(): Mat4 {
         return Mat4.fromData(
-            1, 0, 0, -this.position.x,
-            0, 1, 0, -this.position.y,
-            0, 0, 1, -this.position.z,
+            1 / this.scale.x, 0, 0, -this.position.x,
+            0, 1 / this.scale.y, 0, -this.position.y,
+            0, 0, 1 / this.scale.z, -this.position.z,
             0, 0, 0, 1,
         );
     }
