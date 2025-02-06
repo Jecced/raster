@@ -5,7 +5,7 @@ import { VertexShader } from "../engine/shader/vertex/vertex-shader";
 import { FragmentShader } from "../engine/shader/fragment/fragment-shader";
 import { VAO } from "../engine/data/vao";
 import { VBO } from "../engine/data/vbo";
-import { VertexUtil } from "../engine/data/vertex-util";
+import { VertexUtil } from "../util/vertex-util";
 import { Texture } from "../base/texture";
 
 export class Node implements Base {

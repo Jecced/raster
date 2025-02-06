@@ -6,7 +6,7 @@ import { ZBuffer } from "../buffer/z-buffer";
 import { FragmentShader } from "../shader/fragment/fragment-shader";
 import { ZBuffer1x } from "../buffer/z-buffer-1x";
 import { FrameBuffer1x } from "../buffer/frame-buffer-1x";
-import { VertexUtil } from "../data/vertex-util";
+import { VertexUtil } from "../../util/vertex-util";
 import { GlData } from "../data/gl-data";
 import { Calc } from "../../base/math/calc";
 
