@@ -88,7 +88,8 @@ export class NormalRasterizer implements Rasterizer {
     }
 
     public getFrameBuffer(): Float32Array {
-        return this.frameBuffer.coverToNormalBuffer();
+        return this.frameBuffer.getFrameBuffer();
+    }
     }
 
     public clear(): void {
