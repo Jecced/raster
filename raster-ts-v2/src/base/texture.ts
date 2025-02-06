@@ -10,7 +10,7 @@ export class Texture {
     }
 
     public setImageData(data: ImageData): void {
-        if (!data || data instanceof ImageData) {
+        if (!data || !(data instanceof ImageData)) {
             console.error("set image data error, data is invalid, data: ", data);
             return;
         }
