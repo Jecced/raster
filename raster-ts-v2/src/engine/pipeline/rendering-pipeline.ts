@@ -67,7 +67,6 @@ export class RenderingPipeline {
             positions[i] = Calc.mat4MulVec4(glData.matOrthographic, point);
             // 变换屏幕空间
             positions[i] = Calc.mat4MulVec4(glData.matScreen, positions[i], positions[i]);
-            positions[i].standardized();
         }
 
         // 遍历三角形的面
@@ -88,7 +87,7 @@ export class RenderingPipeline {
             // 光栅化
             for (let i = 0, len = this.rasterizer.length; i < len; i++) {
                 this.rasterizer[i].run(
-                    p0, p1, p2,
+                    p0.clone(), p1.clone(), p2.clone(),
                     v0, v1, v2,
                     this.fs, glData,
                 );
