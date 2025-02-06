@@ -20,6 +20,7 @@ import { VertRotationY } from "./engine/shader/vertex/vert-rotation-y";
 import { VertSimple } from "./engine/shader/vertex/vert-simple";
 import { FragVertexColor } from "./engine/shader/fragment/frag-vertex-color";
 import { Primitives } from "./engine/geometry/primitives";
+import { Bytes } from "./engine/buffer/bytes";
 
 
 async function initScene(width: number, height: number): Promise<Scene> {
@@ -57,6 +58,7 @@ async function run() {
     DomText.init();
 
     const canvas = new WebCanvas("canvas");
+    const depth = new WebCanvas("depth");
     const width = canvas.width;
     const height = canvas.height;
 
@@ -88,6 +90,7 @@ async function run() {
         // 获取更新后的frameBuffer绘制到canvas中
         const frameBuffer = pipeline.getFrameBuffer();
         canvas.render(frameBuffer);
+        depth.render(Bytes.ZBuffer2FrameBuffer(pipeline.getZBuffer()));
         TimeEvent.dispatch(TimeEventEnum.Rendering, Date.now() - renderTime);
         requestAnimationFrame(renderOnce);
     };
