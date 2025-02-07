@@ -25,10 +25,17 @@ export class VertRotationY implements VertexShader {
          */
         v.position = mul(glData.matWorld, position).xyz;
 
+        let matWorldIT = glData.matWorldIT;
+
+        // rotationMat.transpose();
+        matWorldIT = mul(rotationMat, matWorldIT);
+
+        // matWorldIT = mul(matWorldIT, rotationMat);
+
         /**
          * 计算法线
          */
-        v.normal = normalize(mul(glData.matWorldIT, vec4(input.normal, 0)).xyz);
+        v.normal = normalize(mul(matWorldIT, vec4(input.normal, 0)).xyz);
 
         v.uv = vec2(input.uv);
 
