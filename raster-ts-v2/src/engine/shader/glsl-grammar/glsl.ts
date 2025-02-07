@@ -1,3 +1,3 @@
-export * from "./mul";
-export * from "./vec";
-export * from "./texture";
+export * from "./glsl-mul";
+export * from "./glsl-vec";
+export * from "./glsl-texture";
