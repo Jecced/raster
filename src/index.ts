@@ -73,7 +73,7 @@ async function initScene(width: number, height: number): Promise<Scene> {
     diablo.setVBO(ObjParser.coverToVAO(await Loader.loadText(ResourceObj.Diablo)), 3, 2, 0, 3, 0);
     diablo.setPosition(2.5, 0, -1.5);
     diablo.setScaleFull(1.5);
-    diablo.vs = new VertSimple();
+    diablo.vs = new VertRotationY();
     diablo.fs = new FragLightTest();
     diablo.texture0 = new Texture(await Loader.loadImg(ResourcePng.DiabloDiffuse));
     scene.addChild(diablo);
