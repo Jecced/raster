@@ -2,6 +2,8 @@ import { VAO } from "../engine/data/vao";
 import { VBO } from "../engine/data/vbo";
 import { ShaderVariable } from "../engine/data/shader-variable";
 import { Vec4 } from "../base/math/vec4";
+import { Vec2 } from "../base/math/vec2";
+import { Vec3 } from "../base/math/vec3";
 
 export class VertexUtil {
 
@@ -69,9 +71,9 @@ export class VertexUtil {
         if (!out) {
             out = new ShaderVariable();
         }
-        out.position = this.barycentricVec4(v0.position, v1.position, v2.position, alpha, beta, gamma, out.position);
-        out.normal = this.barycentricVec4(v0.normal, v1.normal, v2.normal, alpha, beta, gamma, out.normal);
-        out.uv = this.barycentricVec4(v0.uv, v1.uv, v2.uv, alpha, beta, gamma, out.uv);
+        out.position = this.barycentricVec3(v0.position, v1.position, v2.position, alpha, beta, gamma, out.position);
+        out.normal = this.barycentricVec3(v0.normal, v1.normal, v2.normal, alpha, beta, gamma, out.normal);
+        out.uv = this.barycentricVec2(v0.uv, v1.uv, v2.uv, alpha, beta, gamma, out.uv);
         out.color = this.barycentricVec4(v0.color, v1.color, v2.color, alpha, beta, gamma, out.color);
         return out;
     }
@@ -84,6 +86,25 @@ export class VertexUtil {
         out.y = v0.y * alpha + v1.y * beta + v2.y * gamma;
         out.z = v0.z * alpha + v1.z * beta + v2.z * gamma;
         out.w = v0.w * alpha + v1.w * beta + v2.w * gamma;
+        return out;
+    }
+
+    private static barycentricVec3(v0: Vec3, v1: Vec3, v2: Vec3, alpha: number, beta: number, gamma: number, out?: Vec3): Vec3 {
+        if (!out) {
+            out = new Vec3();
+        }
+        out.x = v0.x * alpha + v1.x * beta + v2.x * gamma;
+        out.y = v0.y * alpha + v1.y * beta + v2.y * gamma;
+        out.z = v0.z * alpha + v1.z * beta + v2.z * gamma;
+        return out;
+    }
+
+    private static barycentricVec2(v0: Vec2, v1: Vec2, v2: Vec2, alpha: number, beta: number, gamma: number, out?: Vec2): Vec2 {
+        if (!out) {
+            out = new Vec2();
+        }
+        out.x = v0.x * alpha + v1.x * beta + v2.x * gamma;
+        out.y = v0.y * alpha + v1.y * beta + v2.y * gamma;
         return out;
     }
 
