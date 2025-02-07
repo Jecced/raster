@@ -58,13 +58,14 @@ export class Vec2 {
     }
 
 
-    public normalize(): void {
+    public normalize(): this {
         let len = this.x * this.x + this.y * this.y;
         if (len > 0) {
             len = 1 / Math.sqrt(len);
         }
         this.x *= len;
         this.y *= len;
+        return this;
     }
 
     public isZero(): boolean {
