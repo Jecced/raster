@@ -109,6 +109,10 @@ export class Vec3 {
         return out;
     }
 
+    public reverse(): Vec3 {
+        return new Vec3(-this.x, -this.y, -this.z);
+    }
+
     public toString(): string {
         return `vec3(${this.x.toFixed(2)}, ${this.y.toFixed(2)}, ${this.z.toFixed(2)}})`;
     }
