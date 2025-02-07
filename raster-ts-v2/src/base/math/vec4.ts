@@ -1,3 +1,6 @@
+import { Vec3 } from "./vec3";
+import { Vec2 } from "./vec2";
+
 export class Vec4 {
     public x: number;
     public y: number;
@@ -20,6 +23,18 @@ export class Vec4 {
         this.y = other.y;
         this.z = other.z;
         this.w = other.w;
+    }
+
+    public get xyz(): Vec3 {
+        return new Vec3(this.x, this.y, this.z);
+    }
+
+    public get xy(): Vec2 {
+        return new Vec2(this.x, this.y);
+    }
+
+    public get zw(): Vec2 {
+        return new Vec2(this.z, this.w);
     }
 
     public add(vec4: Vec4, out?: Vec4): Vec4 {
