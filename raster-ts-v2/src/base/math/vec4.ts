@@ -148,11 +148,6 @@ export class Vec4 {
         return `vec4(${this.x.toFixed(2)}, ${this.y.toFixed(2)}, ${this.z.toFixed(2)}, ${this.w.toFixed(2)})`;
     }
 
-    public string(): string {
-        return this.toString();
-    }
-
-
     public static fromArray(array: number[]): Vec4 {
         const len = array.length;
         const out = new Vec4();
