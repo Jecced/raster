@@ -10,6 +10,21 @@ import { Vec3 } from "../../../base/math/vec3";
  */
 export class FragLightSphere implements FragmentShader {
 
+    /**
+     * 镜面高光系数
+     */
+    private readonly u_specularStrength: number = 1.5;
+
+    /**
+     * 镜面高光指数
+     */
+    private readonly u_specularPow: number = 32;
+
+    public constructor(strength: number, pow: number) {
+        this.u_specularPow = pow;
+        this.u_specularStrength = strength;
+    }
+
     main(glData: GlData, v: ShaderVariable): Vec4 {
         /**
          * 环境光照阶段
@@ -30,10 +45,10 @@ export class FragLightSphere implements FragmentShader {
         /**
          * 镜面高光
          */
-        const specularStrength = 1.;
+        const specularStrength = this.u_specularStrength;
         const viewDir: Vec3 = normalize(sub(glData.cameraPos, v.position));
         const reflectDir = reflect(lightDir.reverse(), normal);
-        const spec = pow(max(dot(viewDir, reflectDir), 0.0), 2);
+        const spec = pow(max(dot(viewDir, reflectDir), 0.0), this.u_specularPow);
         const specular: Vec3 = mul(specularStrength * spec, glData.sphereLitColor.xyz);
 
 
