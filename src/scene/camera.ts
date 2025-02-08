@@ -1,7 +1,8 @@
-import { Vec4 } from "../base/math/vec4";
 import { Mat4 } from "../base/math/mat4";
 import { Base } from "./base";
 import { Calc } from "../base/math/calc";
+import { Vec3 } from "../base/math/vec3";
+import { Vec4 } from "../base/math/vec4";
 
 enum FovAxis {
     X,
@@ -12,9 +13,9 @@ export class Camera implements Base {
     // 位置
     private position: Vec4;
     // 朝向
-    private readonly direct: Vec4;
+    private readonly direct: Vec3;
     // 上方向
-    private readonly up: Vec4;
+    private readonly up: Vec3;
     // 是否使用透视
     private perspective: boolean = false;
     // fov可视角
@@ -41,8 +42,8 @@ export class Camera implements Base {
      */
     constructor(width: number, height: number, near: number, far: number, fov = 45, axisX = true) {
         this.position = new Vec4(0, 0, 0, 1);
-        this.direct = new Vec4(0, 0, -1);
-        this.up = new Vec4(0, 1, 0);
+        this.direct = new Vec3(0, 0, -1);
+        this.up = new Vec3(0, 1, 0);
         this.width = width;
         this.height = height;
         this.setNera(near);
@@ -79,10 +80,10 @@ export class Camera implements Base {
         return this;
     }
 
-    public lookAt(at: Vec4): this {
+    public lookAt(at: Vec3): this {
         // this.direct.set(at.x, at.y, at.z, 0);
-        this.direct.fromVec4(this.position.clone().sub(at));
-        this.direct.normalize3();
+        this.direct.fromVec3(new Vec3(this.position.x, this.position.y, this.position.z).sub(at));
+        this.direct.normalize();
         return this;
     }
 

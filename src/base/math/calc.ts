@@ -1,5 +1,6 @@
 import { Mat4 } from "./mat4";
 import { Vec4 } from "./vec4";
+import { Vec3 } from "./vec3";
 
 export class Calc {
 
@@ -123,23 +124,14 @@ export class Calc {
     }
 
 
-    public static dotVec3(a: Vec4, b: Vec4): number {
-        return a.x * b.x + a.y * b.y + a.z * b.z;
-    }
-
-    public static dotVec4(a: Vec4, b: Vec4): number {
-        return a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w;
-    }
-
-    public static crossVec3(a: Vec4, b: Vec4, out?: Vec4): Vec4 {
+    public static crossVec3(a: Vec3, b: Vec3, out?: Vec3): Vec3 {
         if (!out) {
-            out = new Vec4();
+            out = new Vec3();
         }
         out.set(
             a.y * b.z - a.z * b.y,
             a.z * b.x - a.x * b.z,
             a.x * b.y - a.y * b.x,
-            0,
         );
         return out;
     }
