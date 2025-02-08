@@ -35,25 +35,25 @@ async function initScene(width: number, height: number): Promise<Scene> {
     // 设置摄像机信息
     const camera = new Camera(width, height, -1, -100, 90);
     camera.usePerspective();
-    camera.setPosition(0, 3, 2);
+    camera.setPosition(0, 3, 5);
     camera.lookAt(new Vec3(0, 0, 0));
     scene.setCamera(camera);
 
 
     // 设置点光源信息
     const sphereLight = new SphereLight();
-    sphereLight.setPosition(1, 1.5, 1);
+    sphereLight.setPosition(0, 2, 1);
     sphereLight.setColor(new Vec4(1, 1, 1, 1));
     scene.setSphereLight(sphereLight);
 
 
-    const cube = new Node();
-    cube.setVBO(Primitives.cube(), 3, 2, 3, 3, 0);
-    cube.setPosition(0, 0, 0);
-    cube.vs = new VertRotationY();
-    cube.fs = new FragVertexColor();
-    cube.texture0 = new Texture(await Loader.loadImg(ResourcePng.Grid));
-    scene.addChild(cube);
+    // const cube = new Node();
+    // cube.setVBO(Primitives.cube(), 3, 2, 3, 3, 0);
+    // cube.setPosition(0, 0, 0);
+    // cube.vs = new VertRotationY();
+    // cube.fs = new FragVertexColor();
+    // cube.texture0 = new Texture(await Loader.loadImg(ResourcePng.Grid));
+    // scene.addChild(cube);
 
     const light = new Node();
     light.setVBO(Primitives.cube(), 3, 2, 3, 0, 0);
@@ -67,33 +67,35 @@ async function initScene(width: number, height: number): Promise<Scene> {
 
     const floor = new Node();
     floor.setVBO(Primitives.plane(), 3, 2, 3, 3, 0);
-    floor.setPosition(0, -0.5, 0);
-    floor.setScaleFull(5);
-    floor.vs = new VertRotationY();
-    floor.fs = new FragLightSphere();
+    floor.setPosition(0, -1.5, 0);
+    floor.setScaleFull(10);
+    floor.vs = new VertSimple();
+    floor.fs = new FragLightSphere(12, 64);
     floor.texture0 = new Texture(await Loader.loadImg(ResourcePng.Grid));
     scene.addChild(floor);
     //
-    // const african = new Node();
-    // african.setVBO(ObjParser.coverToVAO(await Loader.loadText(ResourceObj.African)), 3, 2, 0, 3, 0);
-    // african.setPosition(-2.5, 1, -1);
-    // african.vs = new VertRotationY();
-    // african.fs = new FragTexture();
-    // african.texture0 = new Texture(await Loader.loadImg(ResourcePng.AfricanDiffuse));
-    // scene.addChild(african);
+    const african = new Node();
+    african.setVBO(ObjParser.coverToVAO(await Loader.loadText(ResourceObj.African)), 3, 2, 0, 3, 0);
+    african.setPosition(0, 1, -2);
+    african.setScaleFull(3);
+    african.vs = new VertRotationY();
+    african.fs = new FragLightSphere(2.2, 128);
+    african.texture0 = new Texture(await Loader.loadImg(ResourcePng.AfricanDiffuse));
+    scene.addChild(african);
 
     // const diablo = new Node();
     // diablo.setVBO(ObjParser.coverToVAO(await Loader.loadText(ResourceObj.Diablo)), 3, 2, 0, 3, 0);
-    // diablo.setPosition(-1.5, 1, 0);
-    // diablo.setScaleFull(1.5);
+    // diablo.setPosition(3, 1, -2);
+    // diablo.setScaleFull(3);
     // diablo.vs = new VertRotationY();
-    // diablo.fs = new FragLightSphere();
+    // diablo.fs = new FragLightSphere(10, 4);
     // diablo.texture0 = new Texture(await Loader.loadImg(ResourcePng.DiabloDiffuse));
     // scene.addChild(diablo);
 
 
     return scene;
 }
+
 
 async function run() {
 
@@ -115,16 +117,16 @@ async function run() {
     pipeline.rasterizer.push(rasterizerNormal);
 
     // 深度光栅器
-    const depth = new WebCanvas("depth");
-    const rasterizerDepth = new RasterizerDepth(width, height);
-    CanvasRasterizerMapping.bind(depth, rasterizerDepth);
-    pipeline.rasterizer.push(rasterizerDepth);
-
-    // 三角形光栅器
-    const triangle = new WebCanvas("triangle");
-    const rasterizerTriangle = new RasterizerTriangle(width, height);
-    CanvasRasterizerMapping.bind(triangle, rasterizerTriangle);
-    pipeline.rasterizer.push(rasterizerTriangle);
+    // const depth = new WebCanvas("depth");
+    // const rasterizerDepth = new RasterizerDepth(width, height);
+    // CanvasRasterizerMapping.bind(depth, rasterizerDepth);
+    // pipeline.rasterizer.push(rasterizerDepth);
+    //
+    // // 三角形光栅器
+    // const triangle = new WebCanvas("triangle");
+    // const rasterizerTriangle = new RasterizerTriangle(width, height);
+    // CanvasRasterizerMapping.bind(triangle, rasterizerTriangle);
+    // pipeline.rasterizer.push(rasterizerTriangle);
 
 
     const scene = await initScene(width, height);
