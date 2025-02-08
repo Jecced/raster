@@ -251,7 +251,12 @@ export class Primitives {
                 1.0, 1.0,
             ],
             tangent: [],
-            normal: [],
+            normal: [
+                0, 1, 0,
+                0, 1, 0,
+                0, 1, 0,
+                0, 1, 0,
+            ],
             indices: [
                 0, 1, 2, 2, 3, 0,
             ],
