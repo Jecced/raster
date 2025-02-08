@@ -24,61 +24,73 @@ import { RasterizerTriangle } from "./engine/rasterizer/rasterizer-triangle";
 import { ObjParser } from "./util/obj-parser";
 import { ResourceObj, ResourcePng } from "./resources/resources";
 import { FragLightLambert } from "./engine/shader/fragment/frag-light-lambert";
-import { FragLightTest } from "./engine/shader/fragment/frag-light-test";
 import { Vec3 } from "./base/math/vec3";
+import { SphereLight } from "./scene/sphere-light";
+import { FragLightSphere } from "./engine/shader/fragment/frag-light-sphere";
 
 
 async function initScene(width: number, height: number): Promise<Scene> {
     const scene = new Scene();
+
+    // 设置摄像机信息
     const camera = new Camera(width, height, -1, -100, 90);
     camera.usePerspective();
-    camera.setPosition(0, 0, 2);
+    camera.setPosition(0, 3, 2);
+    camera.lookAt(new Vec3(0, 0, 0));
     scene.setCamera(camera);
 
+
+    // 设置点光源信息
+    const sphereLight = new SphereLight();
+    sphereLight.setPosition(1, 1.5, 1);
+    sphereLight.setColor(new Vec4(1, 1, 1, 1));
+    scene.setSphereLight(sphereLight);
+
+
     const cube = new Node();
-    cube.setVBO(Primitives.cube2(), 3, 2, 0, 3, 0);
-    cube.setPosition(0, 0, -1);
-    cube.vs = new VertSimple();
-    cube.fs = new FragLightTest();
+    cube.setVBO(Primitives.cube(), 3, 2, 3, 3, 0);
+    cube.setPosition(0, 0, 0);
+    cube.vs = new VertRotationY();
+    cube.fs = new FragVertexColor();
     cube.texture0 = new Texture(await Loader.loadImg(ResourcePng.Grid));
     scene.addChild(cube);
 
-    // const light = new Node();
-    // light.setVBO(Primitives.cube(), 3, 0, 3, 0, 0);
-    // light.setPosition(1.2, 1.0, -2);
-    // light.setScaleFull(0.2);
-    // light.vs = new VertSimple();
-    // light.fs = new FragLightLambert();
-    // scene.addChild(light);
+    const light = new Node();
+    light.setVBO(Primitives.cube(), 3, 2, 3, 0, 0);
+    // 将位置设置成点光源位置
+    light.setPosition(sphereLight.getPosition().x, sphereLight.getPosition().y, sphereLight.getPosition().z);
+    light.setScaleFull(0.2);
+    light.vs = new VertSimple();
+    light.fs = new FragLightLambert();
+    scene.addChild(light);
 
 
-    // const floor = new Node();
-    // floor.setVBO(Primitives.plane(), 3, 2, 3, 0, 0);
-    // floor.setPosition(0, -1, -1);
-    // floor.setScaleFull(5);
-    // floor.vs = new VertSimple();
-    // floor.fs = new FragTexture();
-    // floor.texture0 = new Texture(await Loader.loadImg(ResourcePng.Grid));
-    // scene.addChild(floor);
+    const floor = new Node();
+    floor.setVBO(Primitives.plane(), 3, 2, 3, 3, 0);
+    floor.setPosition(0, -0.5, 0);
+    floor.setScaleFull(5);
+    floor.vs = new VertRotationY();
+    floor.fs = new FragLightSphere();
+    floor.texture0 = new Texture(await Loader.loadImg(ResourcePng.Grid));
+    scene.addChild(floor);
     //
     // const african = new Node();
     // african.setVBO(ObjParser.coverToVAO(await Loader.loadText(ResourceObj.African)), 3, 2, 0, 3, 0);
-    // african.setPosition(1.5, 0, -1);
+    // african.setPosition(-2.5, 1, -1);
     // african.vs = new VertRotationY();
     // african.fs = new FragTexture();
     // african.texture0 = new Texture(await Loader.loadImg(ResourcePng.AfricanDiffuse));
     // scene.addChild(african);
-    //
-    const diablo = new Node();
-    diablo.setVBO(ObjParser.coverToVAO(await Loader.loadText(ResourceObj.Diablo)), 3, 2, 0, 3, 0);
-    diablo.setPosition(2.5, 0, -1.5);
-    diablo.setScaleFull(1.5);
-    diablo.vs = new VertRotationY();
-    diablo.fs = new FragLightTest();
-    diablo.texture0 = new Texture(await Loader.loadImg(ResourcePng.DiabloDiffuse));
-    scene.addChild(diablo);
 
-    camera.lookAt(new Vec4(0, 0, -3));
+    // const diablo = new Node();
+    // diablo.setVBO(ObjParser.coverToVAO(await Loader.loadText(ResourceObj.Diablo)), 3, 2, 0, 3, 0);
+    // diablo.setPosition(-1.5, 1, 0);
+    // diablo.setScaleFull(1.5);
+    // diablo.vs = new VertRotationY();
+    // diablo.fs = new FragLightSphere();
+    // diablo.texture0 = new Texture(await Loader.loadImg(ResourcePng.DiabloDiffuse));
+    // scene.addChild(diablo);
+
 
     return scene;
 }
@@ -127,7 +139,7 @@ async function run() {
     glData.mainLitDir = new Vec3(0, 1, 0).normalize();
     glData.mainLitColor = new Vec4(1, 1, 1, 1);
 
-    const renderOnce = function() {
+    const renderOnce = function () {
         // 记录开始渲染的时间
         const renderTime = Date.now();
         // 清空pipeline中的FrameBuffer和zBuffer信息
@@ -149,12 +161,15 @@ async function run() {
 
 function render(scene: Scene, glData: GlData, pipeline: RenderingPipeline): void {
     const camera = scene.getCamera();
+    const sphereLight = scene.getSphereLight();
     // 每次渲染设置一次
     glData.matView = camera.getViewMat();
     glData.matProjection = camera.getProjectionMat();
     glData.matOrthographic = camera.getOrthographicMat();
     glData.time = RenderingScheduler.getTime();
     glData.cameraPos = camera.getPosition().xyz;
+    glData.sphereLitPos = sphereLight.getPosition().xyz;
+    glData.sphereLitColor = sphereLight.getColor();
     for (let i = 0, len = scene.size(); i < len; i++) {
         const node = scene.getChild(i);
         // 每个模型设置一次
