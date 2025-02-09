@@ -27,6 +27,8 @@ import { FragLightLambert } from "./engine/shader/fragment/frag-light-lambert";
 import { Vec3 } from "./base/math/vec3";
 import { SphereLight } from "./scene/sphere-light";
 import { FragLightSphere } from "./engine/shader/fragment/frag-light-sphere";
+import { IcoSphere } from "./engine/geometry/ico-sphere";
+import { LoopMoveNode } from "./scene/custom/loop-move-node";
 
 
 async function initScene(width: number, height: number): Promise<Scene> {
@@ -42,7 +44,7 @@ async function initScene(width: number, height: number): Promise<Scene> {
 
     // 设置点光源信息
     const sphereLight = new SphereLight();
-    sphereLight.setPosition(0, 2, 1);
+    sphereLight.setPosition(1, 3, 3);
     sphereLight.setColor(new Vec4(1, 1, 1, 1));
     scene.setSphereLight(sphereLight);
 
@@ -56,7 +58,7 @@ async function initScene(width: number, height: number): Promise<Scene> {
     // scene.addChild(cube);
 
     const light = new Node();
-    light.setVBO(Primitives.cube(), 3, 2, 3, 0, 0);
+    light.setVBO(Primitives.sphere(2), 3, 0, 0, 3, 0);
     // 将位置设置成点光源位置
     light.setPosition(sphereLight.getPosition().x, sphereLight.getPosition().y, sphereLight.getPosition().z);
     light.setScaleFull(0.2);
@@ -74,14 +76,24 @@ async function initScene(width: number, height: number): Promise<Scene> {
     floor.texture0 = new Texture(await Loader.loadImg(ResourcePng.Grid));
     scene.addChild(floor);
     //
-    const african = new Node();
-    african.setVBO(ObjParser.coverToVAO(await Loader.loadText(ResourceObj.African)), 3, 2, 0, 3, 0);
-    african.setPosition(0, 1, -2);
-    african.setScaleFull(3);
-    african.vs = new VertRotationY();
-    african.fs = new FragLightSphere(2.2, 128);
-    african.texture0 = new Texture(await Loader.loadImg(ResourcePng.AfricanDiffuse));
-    scene.addChild(african);
+    // const african = new Node();
+    // african.setVBO(ObjParser.coverToVAO(await Loader.loadText(ResourceObj.African)), 3, 2, 0, 3, 0);
+    // african.setPosition(0, 1, 3);
+    // african.setScaleFull(1);
+    // african.vs = new VertRotationY();
+    // african.fs = new FragLightSphere(2.2, 128);
+    // african.texture0 = new Texture(await Loader.loadImg(ResourcePng.AfricanDiffuse));
+    // scene.addChild(african);
+
+    const sphere = new LoopMoveNode(5, 0, 0, 1);
+    sphere.setVBO(Primitives.sphere(3), 3, 0, 3, 3, 0);
+    sphere.setPosition(0, 1, 0);
+    sphere.setScaleFull(2);
+    sphere.vs = new VertSimple();
+    sphere.fs = new FragLightSphere(0.5, 64);
+
+    scene.addChild(sphere);
+
 
     // const diablo = new Node();
     // diablo.setVBO(ObjParser.coverToVAO(await Loader.loadText(ResourceObj.Diablo)), 3, 2, 0, 3, 0);
