@@ -1,6 +1,29 @@
 import { VAO } from "../data/vao";
+import { IcoSphere } from "./ico-sphere";
 
 export class Primitives {
+
+    public static sphere(i: number): VAO {
+        /**
+         * 通过正20面体生成一个球体
+         * @param subdivisions
+         */
+        const struct = IcoSphere.icoSphere(i);
+        const position: number[] = struct.positions.reduce(function (a, b) {
+            return a.concat(b)
+        });
+        const indices: number[] = struct.cells.reduce(function (a, b) {
+            return a.concat(b)
+        });
+        return {
+            position,
+            indices,
+            color: [],
+            uv: [],
+            normal: position,
+            tangent: []
+        }
+    }
 
     public static cube(): VAO {
         return {
