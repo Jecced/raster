@@ -31,6 +31,7 @@ import { IcoSphere } from "./engine/geometry/ico-sphere";
 import { LoopMoveNode } from "./scene/custom/loop-move-node";
 import { Scene01 } from "./priview/scene01/scene01";
 import { Scene02 } from "./priview/scene02/scene02";
+import { Scene03 } from "./priview/scene03/scene03";
 
 
 async function initScene(width: number, height: number): Promise<Scene> {
@@ -144,7 +145,7 @@ async function run() {
     // pipeline.rasterizer.push(rasterizerTriangle);
 
 
-    const scene = await Scene02.creat(width, height);
+    const scene = await Scene03.creat(width, height);
     const camera = scene.getCamera();
 
 
