@@ -30,6 +30,7 @@ import { FragLightSphere } from "./engine/shader/fragment/frag-light-sphere";
 import { IcoSphere } from "./engine/geometry/ico-sphere";
 import { LoopMoveNode } from "./scene/custom/loop-move-node";
 import { Scene01 } from "./priview/scene01/scene01";
+import { Scene02 } from "./priview/scene02/scene02";
 
 
 async function initScene(width: number, height: number): Promise<Scene> {
@@ -143,7 +144,7 @@ async function run() {
     // pipeline.rasterizer.push(rasterizerTriangle);
 
 
-    const scene = await Scene01.creat(width, height);
+    const scene = await Scene02.creat(width, height);
     const camera = scene.getCamera();
 
 
