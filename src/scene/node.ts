@@ -30,10 +30,15 @@ export class Node implements Base {
     public texture8: Texture;
     public texture9: Texture;
 
+    private worldMat: Mat4;
+    private worldMatIT: Mat4;
+
     constructor() {
         this.position = new Vec4(0, 0, 0, 1);
         this.scale = new Vec4(1, 1, 1, 0);
         this.setPosition(0, 0, 0);
+        this.worldMat = Mat4.identity();
+        this.worldMatIT = Mat4.identity();
     }
 
     public setVBO(vao: VAO, position: number, uv: number, color: number, normal: number, tangent: number): void {
@@ -88,10 +93,12 @@ export class Node implements Base {
 
     public setPosition(x: number, y: number, z: number): void {
         this.position.set(x, y, z, 1);
+        this.updateMatWorld();
     }
 
     public setScale(x: number, y: number, z: number): void {
         this.scale.set(x, y, z, 0);
+        this.updateMatWorld();
     }
 
     public setScaleFull(scale: number): void {
@@ -102,8 +109,7 @@ export class Node implements Base {
         return this.position.clone();
     }
 
-    public getMatWorld(): Mat4 {
-
+    private updateMatWorld(): void {
         const scale = Mat4.fromData(
             this.scale.x, 0, 0, 0,
             0, this.scale.y, 0, 0,
@@ -122,17 +128,16 @@ export class Node implements Base {
          * move为右矩阵, scale为左矩阵
          *
          */
-        return Calc.mat4Mul(scale, move);
-    }
+        this.worldMat = Calc.mat4Mul(scale, move);
 
-    public getMatWorldIT(): Mat4 {
-        const scale = Mat4.fromData(
+
+        const scaleIT = Mat4.fromData(
             1 / this.scale.x, 0, 0, 0,
             0, 1 / this.scale.y, 0, 0,
             0, 0, 1 / this.scale.z, 0,
             0, 0, 0, 1,
         );
-        const move = Mat4.fromData(
+        const moveIT = Mat4.fromData(
             1, 0, 0, -this.position.x,
             0, 1, 0, -this.position.y,
             0, 0, 1, -this.position.z,
@@ -143,7 +148,16 @@ export class Node implements Base {
          * move为纵向, scale为横向
          * move为左矩阵, scale为右矩阵
          */
-        return Calc.mat4Mul(move, scale);
+        this.worldMatIT = Calc.mat4Mul(moveIT, scaleIT);
+    }
+
+
+    public getMatWorld(): Mat4 {
+        return this.worldMat;
+    }
+
+    public getMatWorldIT(): Mat4 {
+        return this.worldMatIT;
     }
 
 
