@@ -82,7 +82,9 @@ export class RenderingPipeline {
             const v1 = variable[i1];
             const v2 = variable[i2];
 
-            // TODO 背面剔除
+            if (!this.isCCW(p0.clone(), p1.clone(), p2.clone())) {
+                continue;
+            }
 
             // 光栅化
             for (let i = 0, len = this.rasterizer.length; i < len; i++) {
@@ -94,6 +96,24 @@ export class RenderingPipeline {
             }
         }
 
+    }
+
+    /**
+     * 行列式, 计算三角形是顺时针还是逆时针, 用于背面剔除
+     * @param p0
+     * @param p1
+     * @param p2
+     * @private
+     */
+    private isCCW(p0: Vec4, p1: Vec4, p2: Vec4): boolean {
+        p0.standardized();
+        p1.standardized();
+        p2.standardized();
+        const a = p1.x - p0.x;
+        const b = p1.y - p0.y;
+        const c = p2.x - p0.x;
+        const d = p2.y - p0.y;
+        return a * d - b * c < 0;
     }
 
     public clear(): void {
