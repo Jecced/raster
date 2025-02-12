@@ -22,6 +22,7 @@ import { Scene08 } from "./priview/scene08/scene08";
 import { Scene09 } from "./priview/scene09/scene09";
 import { RasterizerTriangle } from "./engine/rasterizer/rasterizer-triangle";
 import { RasterizerDepth } from "./engine/rasterizer/rasterizer-depth";
+import { Scene10 } from "./priview/scene10/scene10";
 
 
 async function run() {
@@ -56,7 +57,7 @@ async function run() {
     pipeline.rasterizer.push(rasterizerTriangle);
 
 
-    const scene = await Scene09.creat(width, height);
+    const scene = await Scene10.creat(width, height);
     const camera = scene.getCamera();
 
 
