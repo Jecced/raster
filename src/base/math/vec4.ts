@@ -37,43 +37,83 @@ export class Vec4 {
         return new Vec2(this.z, this.w);
     }
 
-    public add(vec4: Vec4, out?: Vec4): Vec4 {
+    public add(value: number, out?: Vec4): Vec4;
+    public add(value: Vec4, out?: Vec4): Vec4;
+    public add(vec4: Vec4 | number, out?: Vec4): Vec4 {
         if (!out) {
             out = new Vec4();
         }
-        out.x = this.x + vec4.x;
-        out.y = this.y + vec4.y;
-        out.z = this.z + vec4.z;
+        if (vec4 instanceof Vec4) {
+            out.x = this.x + vec4.x;
+            out.y = this.y + vec4.y;
+            out.z = this.z + vec4.z;
+            out.w = this.w + vec4.w;
+        } else if (typeof vec4 === "number") {
+            out.x = this.x + vec4;
+            out.y = this.y + vec4;
+            out.z = this.z + vec4;
+            out.w = this.w + vec4;
+        }
         return out;
     }
 
-    public sub(vec4: Vec4, out?: Vec4): Vec4 {
+    public sub(value: number, out?: Vec4): Vec4;
+    public sub(value: Vec4, out?: Vec4): Vec4;
+    public sub(vec4: Vec4 | number, out?: Vec4): Vec4 {
         if (!out) {
             out = new Vec4();
         }
-        out.x = this.x - vec4.x;
-        out.y = this.y - vec4.y;
-        out.z = this.z - vec4.z;
+        if (vec4 instanceof Vec4) {
+            out.x = this.x - vec4.x;
+            out.y = this.y - vec4.y;
+            out.z = this.z - vec4.z;
+            out.w = this.w - vec4.w;
+        } else if (typeof vec4 === "number") {
+            out.x = this.x - vec4;
+            out.y = this.y - vec4;
+            out.z = this.z - vec4;
+            out.w = this.w - vec4;
+        }
         return out;
     }
 
-    public mul(vec4: Vec4, out?: Vec4): Vec4 {
+    public mul(value: number, out?: Vec4): Vec4;
+    public mul(value: Vec4, out?: Vec4): Vec4;
+    public mul(vec4: Vec4 | number, out?: Vec4): Vec4 {
         if (!out) {
             out = new Vec4();
         }
-        out.x = this.x * vec4.x;
-        out.y = this.y * vec4.y;
-        out.z = this.z * vec4.z;
+        if (vec4 instanceof Vec4) {
+            out.x = this.x * vec4.x;
+            out.y = this.y * vec4.y;
+            out.z = this.z * vec4.z;
+            out.w = this.w * vec4.w;
+        } else if (typeof vec4 === "number") {
+            out.x = this.x * vec4;
+            out.y = this.y * vec4;
+            out.z = this.z * vec4;
+            out.w = this.w * vec4;
+        }
         return out;
     }
 
-    public div(vec4: Vec4, out?: Vec4): Vec4 {
+    public div(value: number, out?: Vec4): Vec4;
+    public div(value: Vec4, out?: Vec4): Vec4;
+    public div(vec4: Vec4 | number, out?: Vec4): Vec4 {
         if (!out) {
             out = new Vec4();
         }
-        out.x = this.x / vec4.x;
-        out.y = this.y / vec4.y;
-        out.z = this.z / vec4.z;
+        if (vec4 instanceof Vec4) {
+            out.x = this.x / vec4.x;
+            out.y = this.y / vec4.y;
+            out.z = this.z / vec4.z;
+            out.w = this.w / vec4.w;
+        } else if (typeof vec4 === "number") {
+            out.x = this.x / vec4;
+            out.y = this.y / vec4;
+            out.z = this.z / vec4;
+            out.w = this.w / vec4;
+        }
         return out;
     }
 
