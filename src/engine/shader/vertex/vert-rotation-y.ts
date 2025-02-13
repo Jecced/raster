@@ -4,7 +4,7 @@ import { Vec4 } from "../../../base/math/vec4";
 import { GlData } from "../../data/gl-data";
 import { ShaderVariable } from "../../data/shader-variable";
 import { Mat4 } from "../../../base/math/mat4";
-import { mul, normalize, vec2, vec4 } from "../glsl-grammar/glsl";
+import { normalize, vec2, vec4 } from "../glsl-grammar/glsl";
 
 export class VertRotationY implements VertexShader {
     main(glData: GlData, input: VAO, v: ShaderVariable): Vec4 {
@@ -18,30 +18,30 @@ export class VertRotationY implements VertexShader {
             Math.sin(c), 0, Math.cos(c), 0,
             0, 0, 0, 1,
         );
-        position = mul(rotationMat, position);
+        position = rotationMat.mul(position);// mul(rotationMat, position);
         /**
          * 局部坐标转世界坐标
          * 只需要使用xyz
          */
-        v.position = mul(glData.matWorld, position).xyz;
+        v.position = glData.matWorld.mul(position).xyz;//mul(glData.matWorld, position).xyz;
 
         let matWorldIT = glData.matWorldIT;
 
         // rotationMat.transpose();
-        matWorldIT = mul(rotationMat, matWorldIT);
+        matWorldIT = matWorldIT.mul(rotationMat);//mul(rotationMat, matWorldIT);
 
         // matWorldIT = mul(matWorldIT, rotationMat);
 
         /**
          * 计算法线
          */
-        v.normal = normalize(mul(matWorldIT, vec4(input.normal, 0)).xyz);
+        v.normal = normalize(matWorldIT.mul(vec4(input.normal, 0)).xyz);// normalize(mul(matWorldIT, vec4(input.normal, 0)).xyz);
 
         v.uv = vec2(input.uv);
 
         v.color = vec4(input.color);
 
-        return mul(glData.matMVP, position);
+        return glData.matMVP.mul(position);//mul(glData.matMVP, position);
     }
 
 }

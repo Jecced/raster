@@ -1,6 +1,5 @@
 import { Mat4 } from "../base/math/mat4";
 import { Base } from "./base";
-import { Calc } from "../base/math/calc";
 import { Vec3 } from "../base/math/vec3";
 import { Vec4 } from "../base/math/vec4";
 
@@ -138,13 +137,13 @@ export class Camera implements Base {
         const w = this.direct.clone();
         // w.scale(-1);
 
-        const u = Calc.crossVec3(this.up, w);
+        const u = Vec3.cross(this.up, w);
         u.normalize();
         if (u.isZero()) {
             u.set(0, 0, 1);
         }
 
-        const v = Calc.crossVec3(w, u);
+        const v = Vec3.cross(w, u);
 
         const matAngle = Mat4.fromData(
             u.x, u.y, u.z, 0,
@@ -160,7 +159,7 @@ export class Camera implements Base {
             0, 0, 0, 1,
         );
 
-        this.matView = Calc.mat4Mul(matMove, matAngle);
+        this.matView = matAngle.mul(matMove);//Calc.mat4Mul(matMove, matAngle);
 
 
         // 逆矩阵
@@ -178,7 +177,7 @@ export class Camera implements Base {
             0, 0, 0, 1,
         );
 
-        this.matViewIT = Calc.mat4Mul(matAngleIT, matMoveIT);
+        this.matViewIT = matMoveIT.mul(matAngleIT);//Calc.mat4Mul(matAngleIT, matMoveIT);
     }
 
     /**

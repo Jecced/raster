@@ -4,8 +4,8 @@ import { VBO } from "../data/vbo";
 import { GlData } from "../data/gl-data";
 import { ShaderVariable } from "../data/shader-variable";
 import { Vec4 } from "../../base/math/vec4";
-import { Calc } from "../../base/math/calc";
 import { Rasterizer } from "../rasterizer/rasterizer";
+import { Mat4 } from "../../base/math/mat4";
 
 /**
  * 渲染管线
@@ -60,13 +60,16 @@ export class RenderingPipeline {
         const variable: ShaderVariable[] = new Array(vertexCount);
         // 顶点着色器执行后的位置
         const positions: Vec4[] = new Array(vertexCount);
+        /**
+         * 预先算好屏幕矩阵
+         * 先正交到-1~1的标准空间
+         */
+        let matO = Mat4.identity();
+        matO = matO.mul(glData.matScreen, matO).mul(glData.matOrthographic, matO);
         for (let i = 0; i < vertexCount; i++) {
             variable[i] = new ShaderVariable();
             const point = this.vs.main(glData, vbo.getVertex(i), variable[i]);
-            // 正交投影
-            positions[i] = Calc.mat4MulVec4(glData.matOrthographic, point);
-            // 变换屏幕空间
-            positions[i] = Calc.mat4MulVec4(glData.matScreen, positions[i], positions[i]);
+            positions[i] = matO.mul(point);
         }
 
         // 遍历三角形的面
