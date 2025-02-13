@@ -1,3 +1,5 @@
+import { Vec4 } from "./vec4";
+
 export class Mat4 {
     private readonly data: Float32Array = undefined;
 
@@ -115,6 +117,90 @@ export class Mat4 {
         const mat = new Mat4();
         mat.setFromNumber(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p);
         return mat;
+    }
+
+    public mul(mat4: Mat4, out?: Mat4): Mat4;
+    public mul(vec4: Vec4, out?: Vec4): Vec4;
+    public mul(value: Vec4 | Mat4, out?: Vec4 | Mat4): Vec4 | Mat4 {
+        if (value instanceof Vec4) {
+            const a = this;
+            const b = value;
+            const x = a.get(0) * b.x + a.get(1) * b.y + a.get(2) * b.z + a.get(3) * b.w;
+            const y = a.get(4) * b.x + a.get(5) * b.y + a.get(6) * b.z + a.get(7) * b.w;
+            const z = a.get(8) * b.x + a.get(9) * b.y + a.get(10) * b.z + a.get(11) * b.w;
+            const w = a.get(12) * b.x + a.get(13) * b.y + a.get(14) * b.z + a.get(15) * b.w;
+            if (!out) {
+                out = new Vec4();
+            }
+            out.set(x, y, z, w);
+            return out;
+        } else if (value instanceof Mat4) {
+            if (!out) {
+                out = new Mat4();
+            }
+            out = out as Mat4;
+
+            /**
+             * b取横, a取纵
+             */
+            const a = value;
+            const b = this;
+            const a00 = a.get(0),
+                a01 = a.get(1),
+                a02 = a.get(2),
+                a03 = a.get(3),
+                a10 = a.get(4),
+                a11 = a.get(5),
+                a12 = a.get(6),
+                a13 = a.get(7),
+                a20 = a.get(8),
+                a21 = a.get(9),
+                a22 = a.get(10),
+                a23 = a.get(11),
+                a30 = a.get(12),
+                a31 = a.get(13),
+                a32 = a.get(14),
+                a33 = a.get(15);
+
+            // Cache only the current line of the second matrix
+            let b0 = b.get(0),
+                b1 = b.get(1),
+                b2 = b.get(2),
+                b3 = b.get(3);
+            out.set(0, b0 * a00 + b1 * a10 + b2 * a20 + b3 * a30);
+            out.set(1, b0 * a01 + b1 * a11 + b2 * a21 + b3 * a31);
+            out.set(2, b0 * a02 + b1 * a12 + b2 * a22 + b3 * a32);
+            out.set(3, b0 * a03 + b1 * a13 + b2 * a23 + b3 * a33);
+
+            b0 = b.get(4);
+            b1 = b.get(5);
+            b2 = b.get(6);
+            b3 = b.get(7);
+            out.set(4, b0 * a00 + b1 * a10 + b2 * a20 + b3 * a30);
+            out.set(5, b0 * a01 + b1 * a11 + b2 * a21 + b3 * a31);
+            out.set(6, b0 * a02 + b1 * a12 + b2 * a22 + b3 * a32);
+            out.set(7, b0 * a03 + b1 * a13 + b2 * a23 + b3 * a33);
+
+            b0 = b.get(8);
+            b1 = b.get(9);
+            b2 = b.get(10);
+            b3 = b.get(11);
+            out.set(8, b0 * a00 + b1 * a10 + b2 * a20 + b3 * a30);
+            out.set(9, b0 * a01 + b1 * a11 + b2 * a21 + b3 * a31);
+            out.set(10, b0 * a02 + b1 * a12 + b2 * a22 + b3 * a32);
+            out.set(11, b0 * a03 + b1 * a13 + b2 * a23 + b3 * a33);
+
+            b0 = b.get(12);
+            b1 = b.get(13);
+            b2 = b.get(14);
+            b3 = b.get(15);
+            out.set(12, b0 * a00 + b1 * a10 + b2 * a20 + b3 * a30);
+            out.set(13, b0 * a01 + b1 * a11 + b2 * a21 + b3 * a31);
+            out.set(14, b0 * a02 + b1 * a12 + b2 * a22 + b3 * a32);
+            out.set(15, b0 * a03 + b1 * a13 + b2 * a23 + b3 * a33);
+            return out;
+        }
+        return undefined;
     }
 
 }
