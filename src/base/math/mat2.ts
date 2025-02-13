@@ -1,3 +1,5 @@
+import { Vec2 } from "./vec2";
+
 export class Mat2 {
     private readonly data: Float32Array = undefined;
 
@@ -77,4 +79,49 @@ export class Mat2 {
         return mat;
     }
 
+
+    public mul(mat3: Mat2, out?: Mat2): Mat2;
+    public mul(vec3: Vec2, out?: Vec2): Vec2;
+    public mul(value: Vec2 | Mat2, out?: Vec2 | Mat2): Vec2 | Mat2 {
+        if (value instanceof Vec2) {
+            const a = this;
+            const b = value;
+            const x = a.get(0) * b.x + a.get(1) * b.y;
+            const y = a.get(2) * b.x + a.get(3) * b.y;
+            if (!out) {
+                out = new Vec2();
+            }
+            out.set(x, y);
+            return out;
+        } else if (value instanceof Mat2) {
+            if (!out) {
+                out = new Mat2();
+            }
+            out = out as Mat2;
+
+            /**
+             * b取横, a取纵
+             */
+            const a = value;
+            const b = this;
+            const a00 = a.get(0),
+                a01 = a.get(1),
+                a10 = a.get(2),
+                a11 = a.get(3)
+
+            // Cache only the current line of the second matrix
+            let b0 = b.get(0),
+                b1 = b.get(1);
+            out.set(0, b0 * a00 + b1 * a10);
+            out.set(1, b0 * a01 + b1 * a11);
+
+            b0 = b.get(3);
+            b1 = b.get(4);
+            out.set(4, b0 * a00 + b1 * a10);
+            out.set(5, b0 * a01 + b1 * a11);
+
+            return out;
+        }
+        return undefined;
+    }
 }
