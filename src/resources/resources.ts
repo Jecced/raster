@@ -11,6 +11,12 @@ import brick_wall from "../../resources/brickwall/brickwall.jpg"
 import brick_wall_normal from "../../resources/brickwall/brickwall_normal.jpg"
 import container2_diffuse from "../../resources/container2/container2_diffuse.png"
 import container2_specular from "../../resources/container2/container2_specular.png"
+import skybox1top from "../../resources/skybox/top.jpg"
+import skybox1bottom from "../../resources/skybox/bottom.jpg"
+import skybox1left from "../../resources/skybox/left.jpg"
+import skybox1right from "../../resources/skybox/right.jpg"
+import skybox1front from "../../resources/skybox/front.jpg"
+import skybox1back from "../../resources/skybox/back.jpg"
 
 export enum ResourcePng {
     Grid = grid,
@@ -29,6 +35,13 @@ export enum ResourcePng {
 
     Container2Diffuse = container2_diffuse,
     Container2Specular = container2_specular,
+
+    Skybox1Top = skybox1top,
+    Skybox1Bottom = skybox1bottom,
+    Skybox1Left = skybox1left,
+    Skybox1Right = skybox1right,
+    Skybox1Front = skybox1front,
+    Skybox1Back = skybox1back,
 }
 
 export enum ResourceObj {
