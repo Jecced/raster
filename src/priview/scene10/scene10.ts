@@ -6,7 +6,7 @@ import { Primitives } from "../../engine/geometry/primitives";
 import { VertSimple } from "../../engine/shader/vertex/vert-simple";
 import { Texture } from "../../base/texture";
 import { Loader } from "../../util/loader";
-import { ResourcePng } from "../../resources/resources";
+import { ResourceObj, ResourcePng } from "../../resources/resources";
 import { Vec4 } from "../../base/math/vec4";
 import { FragmentShader } from "../../engine/shader/fragment/fragment-shader";
 import { GlData } from "../../engine/data/gl-data";
@@ -17,6 +17,9 @@ import { LoopMoveSphereLight } from "../../scene/custom/loop-move-light-sphere";
 import { FragLightSphere } from "../../engine/shader/fragment/frag-light-sphere";
 import { FragLightLambert } from "../../engine/shader/fragment/frag-light-lambert";
 import { LoopMoveNode } from "../../scene/custom/loop-move-node";
+import { ObjParser } from "../../util/obj-parser";
+import { VertRotationY } from "../../engine/shader/vertex/vert-rotation-y";
+import { FragTexture } from "../../engine/shader/fragment/frag-texture";
 
 class NormalTextureShader implements FragmentShader {
 
@@ -103,13 +106,13 @@ export class Scene10 {
         // 设置摄像机信息
         const camera = new Camera(width, height, -1, -100, 90);
         camera.usePerspective();
-        camera.setPosition(0, 2, 2.7);
+        camera.setPosition(3, 1, 4);
         camera.lookAt(new Vec3(0, 0, 0));
         scene.setCamera(camera);
 
         // 设置点光源信息
         const sphereLight = new LoopMoveSphereLight(5, 2, 0, 1);
-        sphereLight.setPosition(1, 1, 0);
+        sphereLight.setPosition(1, 1, 2);
         sphereLight.setColor(new Vec4(1, 1, 1, 1));
         scene.setSphereLight(sphereLight);
 
@@ -125,7 +128,7 @@ export class Scene10 {
         const cube = new Node();
         cube.setVBO(Primitives.cube(), 3, 2, 3, 3, 0);
         cube.setPosition(0, 0, -5)
-        cube.setScaleFull(6);
+        cube.setScaleFull(8);
         // cube.setScale(3, 3, 3);
         cube.vs = new VertSimple();
         // cube.fs = new FragTexture();
@@ -134,6 +137,17 @@ export class Scene10 {
         cube.texture0 = new Texture(await Loader.loadImg(ResourcePng.BrickWall));
         cube.texture1 = new Texture(await Loader.loadImg(ResourcePng.BrickWallNormal));
         scene.addChild(cube);
+
+
+        const african = new Node();
+        african.setVBO(ObjParser.coverToVAO(await Loader.loadText(ResourceObj.African)), 3, 2, 0, 3, 0);
+        african.setPosition(0, 0.5, 0);
+        african.setScaleFull(2);
+        african.vs = new VertSimple();
+        african.fs = new NormalTextureShader(1, 2);
+        african.texture0 = new Texture(await Loader.loadImg(ResourcePng.AfricanDiffuse));
+        african.texture1 = new Texture(await Loader.loadImg(ResourcePng.AfricanNm));
+        scene.addChild(african);
 
 
         return scene;
