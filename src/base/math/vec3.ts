@@ -150,6 +150,18 @@ export class Vec3 {
         return `vec3(${this.x.toFixed(2)}, ${this.y.toFixed(2)}, ${this.z.toFixed(2)}})`;
     }
 
+    public static cross(a: Vec3, b: Vec3, out?: Vec3): Vec3 {
+        if (!out) {
+            out = new Vec3();
+        }
+        out.set(
+            a.y * b.z - a.z * b.y,
+            a.z * b.x - a.x * b.z,
+            a.x * b.y - a.y * b.x,
+        );
+        return out;
+    }
+
     public static fromArray(array: number[]): Vec3 {
         const len = array.length;
         const out = new Vec3();
