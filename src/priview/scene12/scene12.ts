@@ -9,7 +9,7 @@ import { FragmentShader } from "../../engine/shader/fragment/fragment-shader";
 import { GlData } from "../../engine/data/gl-data";
 import { ShaderVariable } from "../../engine/data/shader-variable";
 import { texture2D, textureCube } from "../../engine/shader/glsl-grammar/glsl-texture";
-import { dot, mat4, max, normalize, pow, reflect, vec3, vec4 } from "../../engine/shader/glsl-grammar/glsl";
+import { dot, mat4, max, normalize, pow, reflect, refract, vec3, vec4 } from "../../engine/shader/glsl-grammar/glsl";
 import { LoopMoveSphereLight } from "../../scene/custom/loop-move-light-sphere";
 import { FragLightLambert } from "../../engine/shader/fragment/frag-light-lambert";
 import { LoopMoveNode } from "../../scene/custom/loop-move-node";
@@ -72,6 +72,28 @@ class EnvFragment implements FragmentShader {
     }
 }
 
+class SnellLay implements FragmentShader {
+    private env: TextureCube = undefined;
+
+    /**
+     * 折射率
+     * @private
+     */
+    private refractiveIndex: number = 1;
+
+    constructor(env: TextureCube, refractiveIndex: number) {
+        this.env = env;
+        this.refractiveIndex = refractiveIndex;
+    }
+
+    main(glData: GlData, input: ShaderVariable): Vec4 {
+        const ratio = 1.0 / this.refractiveIndex;
+        const I = normalize(input.position.sub(glData.cameraPos));
+        const R = refract(I, normalize(input.normal), ratio);
+        return textureCube(this.env, R);
+    }
+}
+
 export class Scene12 {
     /**
      * 渲染一个天空盒
@@ -84,7 +106,7 @@ export class Scene12 {
         // 设置摄像机信息
         const camera = new Camera(width, height, -0.11, -1111, 45);
         camera.usePerspective();
-        camera.setPosition(0.1, 0.1, 0.1);
+        camera.setPosition(0, 0.1, 0.2);
         // camera.lookAt(new Vec3(-1, -1, 1));
         camera.lookAt(new Vec3(0, 0, -1));
         scene.setCamera(camera);
@@ -109,17 +131,26 @@ export class Scene12 {
         const skybox = new Node();
         skybox.setVBO(Primitives.sphere(2), 3, 0, 0, 0, 0);
         skybox.setPosition(0, 0, 0);
+        skybox.setScaleFull(3);
         skybox.vs = new SkyboxVertex();
         skybox.fs = new SkyboxFragment(cubeMap);
         scene.addChild(skybox);
 
         const sphere = new Node();
         sphere.setVBO(Primitives.sphere(3), 3, 0, 0, 3, 0);
-        sphere.setPosition(0, 0, -0.4);
+        sphere.setPosition(-0.1, 0, -0.4);
         sphere.setScaleFull(0.1)
         sphere.vs = new VertSimple();
         sphere.fs = new EnvFragment(cubeMap);
         scene.addChild(sphere);
+
+        const sphere2 = new Node();
+        sphere2.setVBO(Primitives.sphere(3), 3, 0, 0, 3, 0);
+        sphere2.setPosition(0.1, 0, -0.4);
+        sphere2.setScaleFull(0.1)
+        sphere2.vs = new VertSimple();
+        sphere2.fs = new SnellLay(cubeMap, 1.52);
+        scene.addChild(sphere2);
 
         // const cube = new Node();
         // cube.setVBO(Primitives.cube(), 3, 0, 0, 3, 0);
