@@ -5,19 +5,22 @@
     <title>Software Rasterizer</title>
 </head>
 <body>
-<div class="canvas">
-    <canvas id="canvas" width="800px" height="600px"></canvas>
-</div>
-<div class="canvas">
-    <canvas id="depth" width="800px" height="600px"></canvas>
-</div>
-<div class="canvas">
-    <canvas id="triangle" width="800px" height="600px"></canvas>
+<div class="raster">
+
+    <div class="canvas">
+        <canvas id="canvas" width="800px" height="600px"></canvas>
+    </div>
+    <div class="canvas">
+        <canvas id="depth" width="800px" height="600px"></canvas>
+    </div>
+    <div class="canvas">
+        <canvas id="triangle" width="800px" height="600px"></canvas>
+    </div>
 </div>
 
 
-<div>
-    <span id="rendering-time">111</span>
+<div class="debug">
+    <span id="rendering-time">渲染耗时: 0ms</span>
 </div>
 
 <script>
